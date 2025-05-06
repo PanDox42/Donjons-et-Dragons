@@ -1,0 +1,114 @@
+class Personnage
+string m_nom
+<Race> m_race
+<Classe> m_classe
+int m_pointDeVie
+int m_force
+int m_dexterite
+int m_vitesse
+int m_initiative
+<Objet>[] m_inventaire
+<Objet>[] m_equipement
+
+func Personnages(string nom, <Race> race, <Classe> classe)
+	m_nom = nom
+	m_race = race
+	m_classe = classe
+	m_pointDeVie = classe.getPointDeVie() + race.getPointDeVie()
+	m_force = classe.getForce() + race.getForce()
+	m_dexterite = classe.getDexterite() + race.getDexterite()
+	m_vitesse = classe.getVitesse() + race.getVitesse()
+	m_initiative = classe.getInitiative() + race.getInitiative()
+	
+func int getPointDeVie() -> retourne le nombre de points de vie du personnage
+func int getForce() -> retourne le bonus de force lors de l'utilisation d'une arme de corps à corps
+func int getDexterite() -> retourne le bonus de dextérité lors de l'utilisation de armes à distance
+func int getVitesse() -> retourne la vitesse du Personnage
+func int getInitiative() -> retourne l'initiative du personnage (ordre dans lequel il jouera dans un combat)
+func void diminuerVitesse(int diminution)
+func void diminuerForce(int diminution)
+
+-------------------------------------
+
+interface Objet
+
+-------------------------------------
+
+interface Armure
+func int getClasse()
+
+-------------------------------------
+
+interface Arme
+func int getPorte()
+
+-------------------------------------
+
+class armureLegere implements Objet, Armure
+func int getClasse()
+
+-------------------------------------
+
+class armureLourde implements Objet, Armure
+func int getClasse()
+
+-------------------------------------
+
+class armeCourante implements Objet, Armure
+func int getPorte()
+
+-------------------------------------
+
+class armeGuerre implements Objet, Armure
+func int getPorte()
+
+-------------------------------------
+
+class armeDistance implements Objet, Armure
+func int getPorte()
+
+-------------------------------------
+
+interface Race
+func int getPointDeVie()
+func int getForce()
+func int getDexterite()
+func int getVitesse()
+func int getInitiative()
+
+-------------------------------------
+
+class elfe extends Personnage implements Race
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
