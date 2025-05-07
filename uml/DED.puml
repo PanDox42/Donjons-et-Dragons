@@ -1,0 +1,124 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Personnage {
+  - string m_nom
+  - Race m_race
+  - Classe m_classe
+  - CaracteritiquePersonnage m_caracteristique
+  - Objet[] m_inventaire
+  - Objet[] m_equipement
+  + Personnage(string nom, Race race, Classe classe)
+}
+
+interface CaracteritiquePersonnage {
+  + int getCaracteristique()
+  + int diminuerCaracteristique()
+  + int augmenterCaracteristique()
+}
+
+class BaseCaracteritiquePersonnage {
+  - int m_caracteristique
+  + BaseCaracteristique(int caracteristique)
+  + int getCaracteristique()
+  + int diminuerCaracteristique()
+  + int augmenterCaracteristique()
+}
+
+class PointDeVie
+class Force
+class Dexterite
+class Vitesse
+class Initiative
+
+PointDeVie --|> BaseCaracteritiquePersonnage
+PointDeVie ..|> CaracteritiquePersonnage
+
+Force --|> BaseCaracteritiquePersonnage
+Force ..|> CaracteritiquePersonnage
+
+Dexterite --|> BaseCaracteritiquePersonnage
+Dexterite ..|> CaracteritiquePersonnage
+
+Vitesse --|> BaseCaracteritiquePersonnage
+Vitesse ..|> CaracteritiquePersonnage
+
+Initiative --|> BaseCaracteritiquePersonnage
+Initiative ..|> CaracteritiquePersonnage
+
+interface Objet {
+  + string getNom()
+}
+
+interface Armure {
+  + int getClasse()
+  + string getNom()
+}
+
+interface Arme {
+  + int getPorte()
+  + string getNom()
+}
+
+Objet <|.. Armure
+Objet <|.. Arme
+
+class ObjetDeBase {
+  - string m_nom
+  - int m_classe
+  + ObjetDeBase(string nom, int classe)
+  + string getNom()
+  + int getClasse()
+  + int getPorte()
+}
+
+class ArmureLegere
+class ArmureLourde
+class ArmeCourante
+class ArmeGuerre
+class ArmeDistance
+
+ArmureLegere --|> ObjetDeBase
+ArmureLegere ..|> Armure
+
+ArmureLourde --|> ObjetDeBase
+ArmureLourde ..|> Armure
+
+ArmeCourante --|> ObjetDeBase
+ArmeCourante ..|> Arme
+
+ArmeGuerre --|> ObjetDeBase
+ArmeGuerre ..|> Arme
+
+ArmeDistance --|> ObjetDeBase
+ArmeDistance ..|> Arme
+
+interface Classe {
+  + int getPointDeVie()
+}
+
+class BaseClasse {
+  - int m_pointDeVie
+  - Objet[] m_equipement
+  + int getPointDeVie()
+}
+
+class Clerc
+class Guerrier
+class Magicien
+class Roublard
+
+Clerc --|> BaseClasse
+Clerc ..|> Classe
+
+Guerrier --|> BaseClasse
+Guerrier ..|> Classe
+
+Magicien --|> BaseClasse
+Magicien ..|> Classe
+
+Roublard --|> BaseClasse
+Roublard ..|> Classe
+
+
+@enduml
