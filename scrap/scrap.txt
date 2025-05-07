@@ -1,23 +1,23 @@
 class Personnage
-- string m_nom
-- <Race> m_race
-- <Classe> m_classe
-- <CaracteritiquePersonnage> m_caracteristique
-- <Objet>[] m_inventaire
-- <Objet>[] m_equipement
+- string : m_nom
+- <Race> : m_race
+- <Classe> : m_classe
+- <Caracteritique> : m_caracteristique
+- <Objet>[] : m_inventaire
+- <Objet>[] : m_equipement
 
 func Personnages(string nom, <Race> race, <Classe> classe)
 
 -------------------------------------
 
-interface CaracteritiquePersonnage
+interface Caracteritique
 func int getCaracteristique()
 func int diminuerCaracteristique()
 func int augmenterCaracteristique()
 
 -------------------------------------
 
-class BaseCaracteritiquePersonnage
+class BaseCaracteritique
 - int m_caracteristique
 func BaseCaracteristique(int caracteristique)
 func int getCaracteristique()
@@ -26,27 +26,32 @@ func int augmenterCaracteristique()
 
 -------------------------------------
 
-class PointDeVie extends BaseCaracteritiquePersonnage implements CaracteritiquePersonnage
+class PointDeVie extends BaseCaracteritique implements Caracteritique
 func PointDeVie(int caracteristique)
 
 -------------------------------------
 
-class Force extends BaseCaracteritiquePersonnage implements CaracteritiquePersonnage
+class Force extends BaseCaracteritique implements Caracteritique
 func Force(int caracteristique) 
 -------------------------------------
 
-class Dexterite extends BaseCaracteritiquePersonnage implements CaracteritiquePersonnage
+class Dexterite extends BaseCaracteritique implements Caracteritique
 func Dexterite(int caracteristique)
 
 -------------------------------------
 
-class Vitesse extends BaseCaracteritiquePersonnage implements CaracteritiquePersonnage
+class Vitesse extends BaseCaracteritique implements Caracteritique
 func Vitesse(int caracteristique)
 
 -------------------------------------
 
-class Initiative extends BaseCaracteritiquePersonnage implements CaracteritiquePersonnage
+class Initiative extends BaseCaracteritique implements Caracteritique
 func Initiative(int caracteristique)
+
+-------------------------------------
+
+class ClasseArmure extends BaseCaracteritique implements Caracteritique
+func ClasseArmure(int caracteristique)
 
 -------------------------------------
 
@@ -181,6 +186,17 @@ func Magicien(int pointDeVie)
 class Roublard extends BaseClasse implements Classe
 func Roublard(int pointDeVie)
 
+-------------------------------------
+
+class Attaque
+
+-------------------------------------
+
+class Monstre
+- string m_espece
+- int m_numero
+- <Attaque> m_attaque
+- <Caracteristique> m_caracteristique
 
 
 
