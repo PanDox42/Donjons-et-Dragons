@@ -176,7 +176,8 @@ func int getPointDeVie()
 
 
 
-
+ajouter caracteristique vitesse montre
+arme lourde = arme de guerre
 
 
 
