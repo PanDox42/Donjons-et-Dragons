@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class De {
 
-    public int lancer(int nbDes, int nbFaces){
+    public static int lancer(int nbDes, int nbFaces){
         Random random = new Random();
         int valeur = 0;
 

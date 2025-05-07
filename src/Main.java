@@ -5,7 +5,7 @@ public class Main {
         System.out.println("Bienvenue dans DOOnjon et Dragons les putes");
 
         De de = new De();
-        System.out.print(de.lancer(8, 32));
+        System.out.print(De.lancer(8, 32));
     }
 
 
