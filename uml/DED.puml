@@ -5,24 +5,24 @@ class Personnage {
   - string m_nom
   - Race m_race
   - Classe m_classe
-  - CaracteritiquePersonnage m_caracteristique
+  - Caracteritique m_caracteristique
   - Objet[] m_inventaire
   - Objet[] m_equipement
   + Personnage(string nom, Race race, Classe classe)
 }
 
-interface CaracteritiquePersonnage {
+interface Caracteristique {
   + int getCaracteristique()
-  + int diminuerCaracteristique()
-  + int augmenterCaracteristique()
+  + void diminuerCaracteristique()
+  + void augmenterCaracteristique()
 }
 
-class BaseCaracteritiquePersonnage {
+class BaseCaracteristique {
   - int m_caracteristique
   + BaseCaracteristique(int caracteristique)
   + int getCaracteristique()
-  + int diminuerCaracteristique()
-  + int augmenterCaracteristique()
+  + void diminuerCaracteristique()
+  + void augmenterCaracteristique()
 }
 
 class PointDeVie
@@ -31,46 +31,32 @@ class Dexterite
 class Vitesse
 class Initiative
 
-PointDeVie --|> BaseCaracteritiquePersonnage
-PointDeVie ..|> CaracteritiquePersonnage
+PointDeVie --|> BaseCaracteristique
+Force --|> BaseCaracteristique
+Dexterite --|> BaseCaracteristique
+Vitesse --|> BaseCaracteristique
+Initiative --|> BaseCaracteristique
 
-Force --|> BaseCaracteritiquePersonnage
-Force ..|> CaracteritiquePersonnage
+PointDeVie ..|> Caracteristique
+Force ..|> Caracteristique
+Dexterite ..|> Caracteristique
+Vitesse ..|> Caracteristique
+Initiative ..|> Caracteristique
 
-Dexterite --|> BaseCaracteritiquePersonnage
-Dexterite ..|> CaracteritiquePersonnage
-
-Vitesse --|> BaseCaracteritiquePersonnage
-Vitesse ..|> CaracteritiquePersonnage
-
-Initiative --|> BaseCaracteritiquePersonnage
-Initiative ..|> CaracteritiquePersonnage
+BaseCaracteristique ..|> Caracteristique
 
 interface Objet {
   + string getNom()
 }
 
-interface Armure {
-  + int getClasse()
-  + string getNom()
+class Armure {
 }
 
-interface Arme {
-  + int getPorte()
-  + string getNom()
+class Arme {
 }
 
-Objet <|.. Armure
-Objet <|.. Arme
-
-class ObjetDeBase {
-  - string m_nom
-  - int m_classe
-  + ObjetDeBase(string nom, int classe)
-  + string getNom()
-  + int getClasse()
-  + int getPorte()
-}
+Armure ..|> Objet
+Arme ..|> Objet
 
 class ArmureLegere
 class ArmureLourde
@@ -78,28 +64,18 @@ class ArmeCourante
 class ArmeGuerre
 class ArmeDistance
 
-ArmureLegere --|> ObjetDeBase
-ArmureLegere ..|> Armure
-
-ArmureLourde --|> ObjetDeBase
-ArmureLourde ..|> Armure
-
-ArmeCourante --|> ObjetDeBase
-ArmeCourante ..|> Arme
-
-ArmeGuerre --|> ObjetDeBase
-ArmeGuerre ..|> Arme
-
-ArmeDistance --|> ObjetDeBase
-ArmeDistance ..|> Arme
+ArmureLegere --|> Armure
+ArmureLegere ..|> Objet
+ArmureLourde --|> Armure
+ArmureLourde ..|> Objet
+ArmeCourante --|> Arme
+ArmeCourante ..|> Objet
+ArmeGuerre --|> Arme
+ArmeGuerre ..|> Objet
+ArmeDistance --|> Arme
+ArmeDistance ..|> Objet
 
 interface Classe {
-  + int getPointDeVie()
-}
-
-class BaseClasse {
-  - int m_pointDeVie
-  - Objet[] m_equipement
   + int getPointDeVie()
 }
 
@@ -107,6 +83,8 @@ class Clerc
 class Guerrier
 class Magicien
 class Roublard
+
+BaseClasse ..|> Classe
 
 Clerc --|> BaseClasse
 Clerc ..|> Classe
