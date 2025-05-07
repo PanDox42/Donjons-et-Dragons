@@ -14,6 +14,8 @@ public class Personnage {
 
 
     public Personnage(String nom, Race race, Classe classe){
-
+        m_nom = nom;
+        m_race = race;
+        m_classe = classe;
     }
 }

@@ -9,16 +9,16 @@ public class BaseCaracteristique implements Caracteristique{
 
     @Override
     public int getCaracteristique() {
-        return 0;
+        return m_caracteristique;
     }
 
     @Override
-    public void diminuerCaracteristique() {
-        m_caracteristique -= 1;
+    public void diminuerCaracteristique(int diminution) {
+        m_caracteristique -= diminution;
     }
 
     @Override
-    public void augmenterCaracteristique() {
-        m_caracteristique += 1;
+    public void augmenterCaracteristique(int augmentation) {
+        m_caracteristique += augmentation;
     }
 }

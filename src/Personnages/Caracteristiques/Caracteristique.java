@@ -1,7 +1,7 @@
 package Personnages.Caracteristiques;
 
 public interface Caracteristique {
-    public int getCaracteristique();
-    public void diminuerCaracteristique();
-    public void augmenterCaracteristique();
+    int getCaracteristique();
+    void diminuerCaracteristique(int diminution);
+    void augmenterCaracteristique(int augmentation);
 }
