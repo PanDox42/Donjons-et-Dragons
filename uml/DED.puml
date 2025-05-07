@@ -2,34 +2,44 @@
 'https://plantuml.com/class-diagram
 
 class Personnage {
-  - string m_nom
-  - Race m_race
-  - Classe m_classe
-  - Caracteritique m_caracteristique
-  - Objet[] m_inventaire
-  - Objet[] m_equipement
-  + Personnage(string nom, Race race, Classe classe)
+    - String m_nom;
+    - Race m_race;
+    - Classe m_classe;
+    - ArrayList<Caracteristique> caracteristiques = new ArrayList<>();
+    - ArrayList<Objet> m_inventaire = new ArrayList<>();
+    - ArrayList<Objet> m_equipement = new ArrayList<>();
+    + Personnage(string nom, Race race, Classe classe)
 }
 
 interface Caracteristique {
   + int getCaracteristique()
-  + void diminuerCaracteristique()
-  + void augmenterCaracteristique()
+  + void diminuerCaracteristique(int diminution)
+  + void augmenterCaracteristique(int augmentation)
 }
 
 class BaseCaracteristique {
   - int m_caracteristique
-  + BaseCaracteristique(int caracteristique)
+  # BaseCaracteristique(int caracteristique)
   + int getCaracteristique()
-  + void diminuerCaracteristique()
-  + void augmenterCaracteristique()
+  + void diminuerCaracteristique(int diminution)
+  + void augmenterCaracteristique(int augmentation)
 }
 
-class PointDeVie
-class Force
-class Dexterite
-class Vitesse
-class Initiative
+class PointDeVie {
++ PointDeVie(int caracteristique)
+}
+class Force {
++ Force(int caracteristique)
+}
+class Dexterite {
++ Dexterite(int caracteristique)
+}
+class Vitesse {
++ Vitesse(int caracteristique)
+}
+class Initiative {
++ Initiative(int caracteristique)
+}
 
 PointDeVie --|> BaseCaracteristique
 Force --|> BaseCaracteristique
@@ -46,23 +56,41 @@ Initiative ..|> Caracteristique
 BaseCaracteristique ..|> Caracteristique
 
 interface Objet {
-  + string getNom()
+  + String getNom()
 }
 
 class Armure {
+- String m_nom;
+- int m_classe;
+# Armure(String nom, int classe)
++ int getClasse()
 }
 
 class Arme {
+- String m_nom;
+- int m_porte;
+# Arme(String nom, int porte)
++ int getPorte()
 }
 
 Armure ..|> Objet
 Arme ..|> Objet
 
-class ArmureLegere
-class ArmureLourde
-class ArmeCourante
-class ArmeGuerre
-class ArmeDistance
+class ArmureLegere {
++ ArmureLegere(String nom, int classe)
+}
+class ArmureLourde {
++ ArmureLourde(String nom, int classe)
+}
+class ArmeCourante {
++ ArmeCourante(String nom, int classe)
+}
+class ArmeGuerre {
++ ArmeGuerre(String nom, int classe)
+}
+class ArmeDistance {
++ ArmeDistance(String nom, int classe)
+}
 
 ArmureLegere --|> Armure
 ArmureLegere ..|> Objet

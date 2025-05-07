@@ -3,8 +3,8 @@ package Objets.Arme;
 import Objets.Objet;
 
 public class Arme implements Objet {
-    String m_nom;
-    int m_porte;
+    private String m_nom;
+    private int m_porte;
 
     protected Arme(String nom, int porte){
         m_nom = nom;
