@@ -1,96 +1,109 @@
 class Personnage
-- string m_nom
-- <Race> m_race
-- <Classe> m_classe
-- int m_pointDeVie
-- int m_force
-- int m_dexterite
-- int m_vitesse
-- int m_initiative
-- <Objet>[] m_inventaire
-- <Objet>[] m_equipement
+- string : m_nom
+- <Race> : m_race
+- <Classe> : m_classe
+- <Caracteritique> : m_caracteristique
+- <Objet>[] : m_inventaire
+- <Objet>[] : m_equipement
 
 func Personnages(string nom, <Race> race, <Classe> classe)
-	m_nom = nom
-	m_race = race
-	m_classe = classe
-	m_pointDeVie = classe.getPointDeVie() + race.getPointDeVie()
-	m_force = classe.getForce() + race.getForce()
-	m_dexterite = classe.getDexterite() + race.getDexterite()
-	m_vitesse = classe.getVitesse() + race.getVitesse()
-	m_initiative = classe.getInitiative() + race.getInitiative()
-	
-func int getPointDeVie() -> retourne le nombre de points de vie du personnage
-func int getForce() -> retourne le bonus de force lors de l'utilisation d'une arme de corps à corps
-func int getDexterite() -> retourne le bonus de dextérité lors de l'utilisation de armes à distance
-func int getVitesse() -> retourne la vitesse du Personnage
-func int getInitiative() -> retourne l'initiative du personnage (ordre dans lequel il jouera dans un combat)
-func void diminuerVitesse(int diminution)
-func void diminuerForce(int diminution)
+
+-------------------------------------
+
+interface Caracteritique
+func int getCaracteristique()
+func int diminuerCaracteristique()
+func int augmenterCaracteristique()
+
+-------------------------------------
+
+class BaseCaracteritique
+- int m_caracteristique
+func BaseCaracteristique(int caracteristique)
+func int getCaracteristique()
+func int diminuerCaracteristique()
+func int augmenterCaracteristique()
+
+-------------------------------------
+
+class PointDeVie extends BaseCaracteritique implements Caracteritique
+func PointDeVie(int caracteristique)
+
+-------------------------------------
+
+class Force extends BaseCaracteritique implements Caracteritique
+func Force(int caracteristique) 
+-------------------------------------
+
+class Dexterite extends BaseCaracteritique implements Caracteritique
+func Dexterite(int caracteristique)
+
+-------------------------------------
+
+class Vitesse extends BaseCaracteritique implements Caracteritique
+func Vitesse(int caracteristique)
+
+-------------------------------------
+
+class Initiative extends BaseCaracteritique implements Caracteritique
+func Initiative(int caracteristique)
+
+-------------------------------------
+
+class ClasseArmure extends BaseCaracteritique implements Caracteritique
+func ClasseArmure(int caracteristique)
 
 -------------------------------------
 
 interface Objet
+func string getNom()
 
 -------------------------------------
 
-interface Armure
+interface Armure implements Objet
 func int getClasse()
+func string getNom()
 
 -------------------------------------
 
-interface Arme
+interface Arme implements Objet
+func int getPorte()
+func string getNom()
+
+-------------------------------------
+
+class ObjetDeBase
+- string m_nom
+- int m_classe
+func ObjetDeBase(string nom, int classe)
+func string getNom()
+func int getClasse()
 func int getPorte()
 
 -------------------------------------
 
-class ArmureLegere implements Objet, Armure extends BaseArmure
-- string m_nom
-- int m_classe
+class ArmureLegere implements Armure extends ObjetDeBase
 func ArmureLegere(string nom, int classe)
-	m_nom = nom
-	m_classe = classe
-func int getClasse()
 
 -------------------------------------
 
-class ArmureLourde implements Objet, Armure extends BaseArmure
-- string m_nom
-- int m_classe
+class ArmureLourde implements Armure extends ObjetDeBase
 func ArmureLourde(string nom, int classe)
-	m_nom = nom
-	m_classe = classe
-func int getClasse()
 
 -------------------------------------
 
-class ArmeCourante implements Objet, Arme extends BaseArme
-- string m_nom
-- int m_classe
+class ArmeCourante implements Arme extends ObjetDeBase
 func ArmeCourante(string nom, int classe)
-	m_nom = nom
-	m_classe = classe
-func int getClasse()
 
 -------------------------------------
 
-class ArmeGuerre implements Objet, Arme extends BaseArme
-- string m_nom
-- int m_classe
+class ArmeGuerre implements Arme extends ObjetDeBase
 func ArmeGuerre(string nom, int classe)
-	m_nom = nom
-	m_classe = classe
-func int getClasse()
 
 -------------------------------------
 
-class ArmeDistance implements Objet, Arme extends BaseArme
-- string m_nom
-- int m_classe
+class ArmeDistance implements Arme extends ObjetDeBase
 func ArmeDistance(string nom, int classe)
-	m_nom = nom
-	m_classe = classe
-func int getClasse()
 
 -------------------------------------
 
@@ -104,11 +117,12 @@ func int getInitiative()
 -------------------------------------
 
 class BaseRace
-- int m_pointDeVie = 0
-- int m_force = 0
-- int m_dexterite = 0
-- int m_vitesse = 0
-- int m_initiative = 0
+- int m_pointDeVie
+- int m_force
+- int m_dexterite
+- int m_vitesse
+- int m_initiative
+func BaseRace(int pointDeVie, int force, int dextérité, int vitesse, int initiative)
 func int getPointDeVie()
 func int getForce()
 func int getDexterite()
@@ -118,27 +132,27 @@ func int getInitiative()
 -------------------------------------
 
 class Elfe extends BaseRace implements Race
-- int m_dexterite = 6
+- int m_dexterite
 
 -------------------------------------
 
 class Halfelin extends BaseRace implements Race
-- int m_dexterite = 4
-- int m_vitesse = 2
+- int m_dexterite
+- int m_vitesse
 
 -------------------------------------
 
 class Humain extends BaseRace implements Race
-- int m_pointDeVie = 2
-- int m_force = 2
-- int m_dexterite = 2
-- int m_vitesse = 2
-- int m_initiative = 2
+- int m_pointDeVie
+- int m_force
+- int m_dexterite
+- int m_vitesse 
+- int m_initiative 
 
 -------------------------------------
 
 class Nain extends BaseRace implements Race
-- int m_force = 6
+- int m_force 
 
 -------------------------------------
 
@@ -148,10 +162,41 @@ func int getPointDeVie()
 -------------------------------------
 
 class BaseClasse
-- int m_pointDeVie = 0
-- <Objet>[] m_equipement = 
+- int m_pointDeVie
+- <Objet>[] m_equipement
 func int getPointDeVie()
 
+-------------------------------------
+
+class Clerc extends BaseClasse implements Classe
+func Clerc(int pointDeVie)
+
+-------------------------------------
+
+class Guerrier extends BaseClasse implements Classe
+func Guerrier(int pointDeVie)
+
+-------------------------------------
+
+class Magicien extends BaseClasse implements Classe
+func Magicien(int pointDeVie)
+
+-------------------------------------
+
+class Roublard extends BaseClasse implements Classe
+func Roublard(int pointDeVie)
+
+-------------------------------------
+
+class Attaque
+
+-------------------------------------
+
+class Monstre
+- string m_espece
+- int m_numero
+- <Attaque> m_attaque
+- <Caracteristique> m_caracteristique
 
 
 
@@ -176,8 +221,7 @@ func int getPointDeVie()
 
 
 
-ajouter caracteristique vitesse montre
-arme lourde = arme de guerre
+
 
 
 
