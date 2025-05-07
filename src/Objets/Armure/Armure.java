@@ -3,8 +3,8 @@ package Objets.Armure;
 import Objets.Objet;
 
 public class Armure implements Objet {
-    String m_nom;
-    int m_classe;
+    private String m_nom;
+    private int m_classe;
 
     protected Armure(String nom, int classe){
         m_nom = nom;
@@ -18,5 +18,10 @@ public class Armure implements Objet {
     @Override
     public String getNom() {
         return m_nom;
+    }
+
+    @Override
+    public boolean estEquipe() {
+        return false;
     }
 }
