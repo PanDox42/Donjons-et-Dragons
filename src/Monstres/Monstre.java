@@ -10,8 +10,5 @@ public class Monstre {
     public Monstre(String espece, int numero, Attaque attaque, int classeArmure){
         m_espece = espece;
         m_numero = numero;
-
-        De de = new De();
-        m_initiative = de.lancer(1,20);
     }
 }
