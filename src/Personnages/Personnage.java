@@ -16,4 +16,7 @@ public class Personnage {
         m_race = race;
         m_classe = classe;
     }
+
+
+    
 }

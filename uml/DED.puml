@@ -2,104 +2,108 @@
 'https://plantuml.com/class-diagram
 
 class Personnage {
-  - string m_nom
-  - Race m_race
-  - Classe m_classe
-  - CaracteritiquePersonnage m_caracteristique
-  - Objet[] m_inventaire
-  - Objet[] m_equipement
-  + Personnage(string nom, Race race, Classe classe)
+    - String m_nom;
+    - Race m_race;
+    - Classe m_classe;
+    - ArrayList<Caracteristique> caracteristiques = new ArrayList<>();
+    - ArrayList<Objet> m_inventaire = new ArrayList<>();
+    - ArrayList<Objet> m_equipement = new ArrayList<>();
+    + Personnage(string nom, Race race, Classe classe)
 }
 
-interface CaracteritiquePersonnage {
+interface Caracteristique {
   + int getCaracteristique()
-  + int diminuerCaracteristique()
-  + int augmenterCaracteristique()
+  + void diminuerCaracteristique(int diminution)
+  + void augmenterCaracteristique(int augmentation)
 }
 
-class BaseCaracteritiquePersonnage {
+class BaseCaracteristique {
   - int m_caracteristique
-  + BaseCaracteristique(int caracteristique)
+  # BaseCaracteristique(int caracteristique)
   + int getCaracteristique()
-  + int diminuerCaracteristique()
-  + int augmenterCaracteristique()
+  + void diminuerCaracteristique(int diminution)
+  + void augmenterCaracteristique(int augmentation)
 }
 
-class PointDeVie
-class Force
-class Dexterite
-class Vitesse
-class Initiative
+class PointDeVie {
++ PointDeVie(int caracteristique)
+}
+class Force {
++ Force(int caracteristique)
+}
+class Dexterite {
++ Dexterite(int caracteristique)
+}
+class Vitesse {
++ Vitesse(int caracteristique)
+}
+class Initiative {
++ Initiative(int caracteristique)
+}
 
-PointDeVie --|> BaseCaracteritiquePersonnage
-PointDeVie ..|> CaracteritiquePersonnage
+PointDeVie --|> BaseCaracteristique
+Force --|> BaseCaracteristique
+Dexterite --|> BaseCaracteristique
+Vitesse --|> BaseCaracteristique
+Initiative --|> BaseCaracteristique
 
-Force --|> BaseCaracteritiquePersonnage
-Force ..|> CaracteritiquePersonnage
+PointDeVie ..|> Caracteristique
+Force ..|> Caracteristique
+Dexterite ..|> Caracteristique
+Vitesse ..|> Caracteristique
+Initiative ..|> Caracteristique
 
-Dexterite --|> BaseCaracteritiquePersonnage
-Dexterite ..|> CaracteritiquePersonnage
-
-Vitesse --|> BaseCaracteritiquePersonnage
-Vitesse ..|> CaracteritiquePersonnage
-
-Initiative --|> BaseCaracteritiquePersonnage
-Initiative ..|> CaracteritiquePersonnage
+BaseCaracteristique ..|> Caracteristique
 
 interface Objet {
-  + string getNom()
+  + String getNom()
 }
 
-interface Armure {
-  + int getClasse()
-  + string getNom()
+class Armure {
+- String m_nom;
+- int m_classe;
+# Armure(String nom, int classe)
++ int getClasse()
 }
 
-interface Arme {
-  + int getPorte()
-  + string getNom()
+class Arme {
+- String m_nom;
+- int m_porte;
+# Arme(String nom, int porte)
++ int getPorte()
 }
 
-Objet <|.. Armure
-Objet <|.. Arme
+Armure ..|> Objet
+Arme ..|> Objet
 
-class ObjetDeBase {
-  - string m_nom
-  - int m_classe
-  + ObjetDeBase(string nom, int classe)
-  + string getNom()
-  + int getClasse()
-  + int getPorte()
+class ArmureLegere {
++ ArmureLegere(String nom, int classe)
+}
+class ArmureLourde {
++ ArmureLourde(String nom, int classe)
+}
+class ArmeCourante {
++ ArmeCourante(String nom, int classe)
+}
+class ArmeGuerre {
++ ArmeGuerre(String nom, int classe)
+}
+class ArmeDistance {
++ ArmeDistance(String nom, int classe)
 }
 
-class ArmureLegere
-class ArmureLourde
-class ArmeCourante
-class ArmeGuerre
-class ArmeDistance
-
-ArmureLegere --|> ObjetDeBase
-ArmureLegere ..|> Armure
-
-ArmureLourde --|> ObjetDeBase
-ArmureLourde ..|> Armure
-
-ArmeCourante --|> ObjetDeBase
-ArmeCourante ..|> Arme
-
-ArmeGuerre --|> ObjetDeBase
-ArmeGuerre ..|> Arme
-
-ArmeDistance --|> ObjetDeBase
-ArmeDistance ..|> Arme
+ArmureLegere --|> Armure
+ArmureLegere ..|> Objet
+ArmureLourde --|> Armure
+ArmureLourde ..|> Objet
+ArmeCourante --|> Arme
+ArmeCourante ..|> Objet
+ArmeGuerre --|> Arme
+ArmeGuerre ..|> Objet
+ArmeDistance --|> Arme
+ArmeDistance ..|> Objet
 
 interface Classe {
-  + int getPointDeVie()
-}
-
-class BaseClasse {
-  - int m_pointDeVie
-  - Objet[] m_equipement
   + int getPointDeVie()
 }
 
@@ -107,6 +111,8 @@ class Clerc
 class Guerrier
 class Magicien
 class Roublard
+
+BaseClasse ..|> Classe
 
 Clerc --|> BaseClasse
 Clerc ..|> Classe
