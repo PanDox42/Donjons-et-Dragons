@@ -1,49 +1,60 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-package "Personnages" {
-    class Personnage {
-        - String m_nom;
-        - Race m_race;
-        - Classe m_classe;
-        - ArrayList<Caracteristique> caracteristiques = new ArrayList<>();
-        - ArrayList<Objet> m_inventaire = new ArrayList<>();
-        - ArrayList<Objet> m_equipement = new ArrayList<>();
-        +«Create» Personnage(string nom, Race race, Classe classe)
+package Entites {
+    package Personnages {
+        class Personnage {
+            - String m_nom
+            - Race m_race
+            - Classe m_classe
+            - ArrayList<Caracteristique> caracteristiques
+            - ArrayList<Objet> m_inventaire
+            - ArrayList<Objet> m_equipement
+            +«Create» Personnage(string nom, Race race, Classe classe)
+        }
+
+        interface Classe {
+          + int getPointDeVie()
+        }
+
+        class Clerc {
+        +«Create» Clerc(String nom, int pdv)
+        }
+        class Guerrier {
+        +«Create» Guerrier(String nom, int pdv)
+        }
+        class Magicien {
+        +«Create» Magicien(String nom, int pdv)
+        }
+        class Roublard {
+        +«Create» Roublard(String nom, int pdv)
+        }
+
+        BaseClasse ..|> Classe
+
+        Clerc --|> BaseClasse
+        Clerc ..|> Classe
+
+        Guerrier --|> BaseClasse
+        Guerrier ..|> Classe
+
+        Magicien --|> BaseClasse
+        Magicien ..|> Classe
+
+        Roublard --|> BaseClasse
+        Roublard ..|> Classe
     }
 
-    interface Classe {
-      + int getPointDeVie()
+    package Monstres {
+        class Monstre {
+            - String espece
+            - int numero
+            - <Attaque> attaque
+            - ArrayList<Caracteristique> caracteristiques
+        }
     }
 
-    class Clerc {
-    +«Create» Clerc(String nom, int pdv)
-    }
-    class Guerrier {
-    +«Create» Guerrier(String nom, int pdv)
-    }
-    class Magicien {
-    +«Create» Magicien(String nom, int pdv)
-    }
-    class Roublard {
-    +«Create» Roublard(String nom, int pdv)
-    }
-
-    BaseClasse ..|> Classe
-
-    Clerc --|> BaseClasse
-    Clerc ..|> Classe
-
-    Guerrier --|> BaseClasse
-    Guerrier ..|> Classe
-
-    Magicien --|> BaseClasse
-    Magicien ..|> Classe
-
-    Roublard --|> BaseClasse
-    Roublard ..|> Classe
-
-    package "Caracteristique" {
+    package "Caracteristiques" {
         interface Caracteristique {
           + int getCaracteristique()
           + void diminuerCaracteristique(int diminution)
@@ -89,7 +100,6 @@ package "Personnages" {
         BaseCaracteristique ..|> Caracteristique
 
     }
-
 }
 
 package Objets {
@@ -97,7 +107,7 @@ package Objets {
       + String getNom()
     }
 
-    package Arme {
+    package Armes {
         class Arme {
         - String m_nom;
         - int m_porte;
@@ -120,7 +130,7 @@ package Objets {
         ArmeDistance --|> Arme
         ArmeDistance ..|> Objet
     }
-    package Armure {
+    package Armures {
         class Armure {
         - String m_nom;
         - int m_classe;
