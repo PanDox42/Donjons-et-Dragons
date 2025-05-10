@@ -1,6 +1,6 @@
 @startuml
 'https://plantuml.com/class-diagram
-
+top to bottom direction
 package Entites {
     package Personnages {
         class Personnage {
@@ -12,6 +12,19 @@ package Entites {
             - ArrayList<Objet> m_equipement
             +«Create» Personnage(string nom, Race race, Classe classe)
         }
+
+        class MaitreJeu {
+            - <Donjon> donjonParDefault
+            +«Create» MaitreJeu(string nom, Race race, Classe classe)
+            + <Donjon> createDonjon(int x, int y)
+            + void createObstacle(<Donjon> donjon)
+            + void createMonstre(<Donjon> donjon)
+            + void positionnerEntite(<Donjon> donjon)
+            + void positionnerEquipement(<Donjon> donjon)
+            + void presenterContexte(<Donjon> donjon)
+        }
+
+        MaitreJeu --|> Personnage
 
         interface Classe {
           + int getPointDeVie()
@@ -47,10 +60,11 @@ package Entites {
 
     package Monstres {
         class Monstre {
-            - String espece
-            - int numero
-            - <Attaque> attaque
-            - ArrayList<Caracteristique> caracteristiques
+            - String m_espece
+            - int m_numero
+            - <Attaque> m_attaque
+            - ArrayList<Caracteristique> m_caracteristiques
+            +«Create» Monstre(String espece, int numero, <Attaque> attaque, ArrayList<Caracteristique> caracteristiques)
         }
     }
 
@@ -122,6 +136,9 @@ package Objets {
         class ArmeDistance {
         +«Create» ArmeDistance(String nom, int classe)
         }
+        class ArmeCourante {
+        +«Create» ArmeCourante(String nom, int classe)
+        }
 
         ArmeCourante --|> Arme
         ArmeCourante ..|> Objet
@@ -145,14 +162,26 @@ package Objets {
         class ArmureLourde {
         +«Create» ArmureLourde(String nom, int classe)
         }
-        class ArmeCourante {
-        +«Create» ArmeCourante(String nom, int classe)
-        }
 
         ArmureLegere --|> Armure
         ArmureLegere ..|> Objet
         ArmureLourde --|> Armure
         ArmureLourde ..|> Objet
+    }
+}
+
+package Donjon {
+    class Donjon {
+        - int[2] m_dimensions
+        - int[][] m_cases
+        - String contexte
+        +«Create» Donjon(int x, int y)
+    }
+}
+
+package Des {
+    class De {
+        + {static} int lancer(int nbDes, int nbFaces)
     }
 }
 
