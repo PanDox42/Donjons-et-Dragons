@@ -145,6 +145,7 @@ Un monstre est défini par:
   - sa dextérité (0 s'il attaque au corps à corps)
   - sa classe d'armure
   - son initiative
+  - sa vitesse
 
 
 
@@ -181,7 +182,7 @@ A la fin de chaque action le joueur ou le maître du jeu peut commenter l'action
 ##### S'équiper *(uniquement pour les personnages)*
 Un joueur peut équiper une arme ou une armure de son inventaire.
 (L'arme ou l'armure précédemment équipée retourne dans l'inventaire)
-Penser à mettre à jour la valeur de vitesse de personnage s'il s'agit d'une arme lourde ou d'une armure lourde.
+Penser à mettre à jour la valeur de vitesse de personnage s'il s'agit d'une arme de guerre ou d'une armure lourde.
 
 ##### Se Déplacer
 Un joueur ou un monstre peut de déplacer d'une distance égale à sa caractéristique de vitesse divisée par 3 sur une case sans monstre, joueur ou obstacle.
