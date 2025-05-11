@@ -19,4 +19,9 @@ public class Arme implements Objet {
     public String getNom() {
         return m_nom;
     }
+
+    @Override
+    public boolean estEquipe() {
+        return false;
+    }
 }
