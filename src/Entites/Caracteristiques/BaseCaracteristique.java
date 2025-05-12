@@ -1,4 +1,4 @@
-package Personnages.Caracteristiques;
+package Entites.Caracteristiques;
 
 public class BaseCaracteristique implements Caracteristique{
     private int m_caracteristique;

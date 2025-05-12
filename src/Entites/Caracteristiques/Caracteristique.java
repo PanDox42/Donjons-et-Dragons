@@ -1,4 +1,4 @@
-package Personnages.Caracteristiques;
+package Entites.Caracteristiques;
 
 public interface Caracteristique {
     int getCaracteristique();

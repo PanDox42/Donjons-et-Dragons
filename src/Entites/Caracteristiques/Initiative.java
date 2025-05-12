@@ -1,4 +1,4 @@
-package Personnages.Caracteristiques;
+package Entites.Caracteristiques;
 
 public class Initiative extends BaseCaracteristique{
     public Initiative(int caracteristique) {

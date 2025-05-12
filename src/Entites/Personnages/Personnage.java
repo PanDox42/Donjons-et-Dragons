@@ -1,6 +1,8 @@
-package Personnages;
+package Entites.Personnages;
+import Entites.Personnages.Classes.Classe;
+import Entites.Personnages.Races.Race;
 import Objets.Objet;
-import Personnages.Caracteristiques.Caracteristique;
+import Entites.Caracteristiques.Caracteristique;
 
 import java.util.ArrayList;
 
@@ -16,7 +18,4 @@ public class Personnage {
         m_race = race;
         m_classe = classe;
     }
-
-
-    
 }

@@ -2,6 +2,7 @@ package Objets.Armure;
 
 import Objets.Objet;
 
+// Type concret de Objet
 public class Armure implements Objet {
     private String m_nom;
     private int m_classe;
