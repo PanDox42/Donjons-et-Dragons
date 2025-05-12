@@ -2,8 +2,6 @@ import Des.De;
 
 public class Main {
     public static void main(String args[]){
-        System.out.println("Bienvenue dans DOOnjon et Dragons les putes");
-
-        System.out.print(De.lancer(8, 32));
+        System.out.println("Bienvenue dans DOOnjon et Dragons");
     }
 }
