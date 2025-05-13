@@ -10,7 +10,7 @@ import Objets.Objet;
 import java.util.ArrayList;
 
 public class Guerrier implements Classe {
-    int pvDepart = 20;
+    private int pvDepart = 20;
 
     @Override
     public int getPvDepart() {

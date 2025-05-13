@@ -8,7 +8,7 @@ import Objets.Objet;
 import java.util.ArrayList;
 
 public class Magicien implements Classe {
-    int pvDepart = 12;
+    private int pvDepart = 12;
 
     @Override
     public int getPvDepart() {

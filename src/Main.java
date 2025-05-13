@@ -14,7 +14,7 @@ public class Main {
         // QUE DES TESTS
         System.out.println("Vous avez réalisé un score de " + De.lancer(4,10));
 
-        Donjon d = new Donjon();
+        Donjon d = new Donjon(26,26);
         d.afficherCarte();
 
         Race r = new Elfe(); // La dcp il aura 16pts de vie psk c'est un elfe

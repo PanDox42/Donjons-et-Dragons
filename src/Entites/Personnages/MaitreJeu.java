@@ -5,11 +5,11 @@ import Entites.Personnages.Races.Race;
 import java.util.ArrayList;
 
 public class MaitreJeu{
-    private ArrayList<String> tour = new ArrayList<>();
+    private static ArrayList<String> tour = new ArrayList<>();
 
     public MaitreJeu(){};
 
-    public void ajouterLignes(String phrase){
+    public static void ajouterLignes(String phrase){
         tour.add(phrase);
     }
 

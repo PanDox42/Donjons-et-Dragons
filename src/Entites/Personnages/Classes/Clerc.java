@@ -7,7 +7,7 @@ import Objets.Armure.*;
 import java.util.ArrayList;
 
 public class Clerc implements Classe {
-    int pvDepart = 16;
+    private int pvDepart = 16;
 
     @Override
     public int getPvDepart(){

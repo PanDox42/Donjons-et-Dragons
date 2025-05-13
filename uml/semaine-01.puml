@@ -1,187 +1,216 @@
 @startuml
-'https://plantuml.com/class-diagram
-top to bottom direction
+left to right direction
+
+class Main {
+}
+
 package Entites {
     package Personnages {
         class Personnage {
-            - String m_nom
-            - Race m_race
-            - Classe m_classe
-            - ArrayList<Caracteristique> caracteristiques
-            - ArrayList<Objet> m_inventaire
-            - ArrayList<Objet> m_equipement
-            +«Create» Personnage(string nom, Race race, Classe classe)
+            - m_nom : String
+            - m_race : Race
+            - m_classe : Classe
+            - m_caracteristiques : Caracteristique
+            - m_inventaire : ArrayList<Objet>
+            + <<Create>> Personnage(nom : String, race : Race, classe : Classe)
+            + getNom() : String
+            + afficherInventaire() : String
+            + afficherSituation() : void
         }
 
-        class MaitreJeu {
-            - <Donjon> donjonParDefault
-            +«Create» MaitreJeu(string nom, Race race, Classe classe)
-            + <Donjon> createDonjon(int x, int y)
-            + void createObstacle(<Donjon> donjon)
-            + void createMonstre(<Donjon> donjon)
-            + void positionnerEntite(<Donjon> donjon)
-            + void positionnerEquipement(<Donjon> donjon)
-            + void presenterContexte(<Donjon> donjon)
+        package Races {
+            interface Race {
+                + getRace() : String
+            }
+
+            class Elfe {
+                + getRace() : String
+            }
+
+            class Halfelin {
+                + getRace() : String
+            }
+
+            class Humain {
+                + getRace() : String
+            }
+
+            class Nain {
+                + getRace() : String
+            }
+
+            Elfe ..|> Race
+            Halfelin ..|> Race
+            Humain ..|> Race
+            Nain ..|> Race
         }
 
-        MaitreJeu --|> Personnage
+        Personnage --> Race : utilise
 
-        interface Classe {
-          + int getPointDeVie()
+        package Classes {
+            interface Classe {
+                + getPvDepart() : int
+                + getEquipementDepart() : ArrayList<Objet>
+            }
+
+            class Clerc {
+                - pvDepart : int = 16
+            }
+            class Guerrier {
+                - pvDepart : int = 20
+            }
+            class Magicien {
+                - pvDepart : int = 12
+            }
+            class Roublard {
+                - pvDepart : int = 16
+            }
+
+            Clerc ..|> Classe
+            Guerrier ..|> Classe
+            Magicien ..|> Classe
+            Roublard ..|> Classe
         }
-
-        class Clerc {
-        +«Create» Clerc(String nom, int pdv)
-        }
-        class Guerrier {
-        +«Create» Guerrier(String nom, int pdv)
-        }
-        class Magicien {
-        +«Create» Magicien(String nom, int pdv)
-        }
-        class Roublard {
-        +«Create» Roublard(String nom, int pdv)
-        }
-
-        BaseClasse ..|> Classe
-
-        Clerc --|> BaseClasse
-        Clerc ..|> Classe
-
-        Guerrier --|> BaseClasse
-        Guerrier ..|> Classe
-
-        Magicien --|> BaseClasse
-        Magicien ..|> Classe
-
-        Roublard --|> BaseClasse
-        Roublard ..|> Classe
     }
+
+    class MaitreJeu {
+        - tour : ArrayList<String>
+        + <<Create>> MaitreJeu()
+        + ajouterLignes(phrase : String) : void
+        + raconterTour() : void
+    }
+
+    Personnage --> Classe : utilise
 
     package Monstres {
         class Monstre {
-            - String m_espece
-            - int m_numero
-            - <Attaque> m_attaque
-            - ArrayList<Caracteristique> m_caracteristiques
-            +«Create» Monstre(String espece, int numero, <Attaque> attaque, ArrayList<Caracteristique> caracteristiques)
+            - m_espece : String
+            - m_numero : int
+            - m_attaque : Attaque
+            - m_caracteristiques : ArrayList<Caracteristique>
+            + <<Create>> Monstre(espece : String, numero : int, attaque : Attaque, caracteristiques : ArrayList<Caracteristique>)
         }
     }
 
-    package "Caracteristiques" {
-        interface Caracteristique {
-          + int getCaracteristique()
-          + void diminuerCaracteristique(int diminution)
-          + void augmenterCaracteristique(int augmentation)
+    package Caracteristiques {
+        class Caracteristique {
+            - m_pv : int
+            - m_force : int
+            - m_dexterite : int
+            - m_vitesse : int
+            - m_initiative : int
+
+            + <<Create>> Caracteristique(pv : int, force : int, dexterite : int, vitesse : int, initiative : int)
+            + getPv() : int
+            + getForce() : int
+            + getDexterite() : int
+            + getVitesse() : int
+            + getInitiative() : int
+            + changerPv(changement : int) : void
+            + changerForce(changement : int) : void
+            + changerDexterite(changement : int) : void
+            + changerVitesse(changement : int) : void
+            + changerInitiative(changement : int) : void
         }
 
-        class BaseCaracteristique {
-          - int m_caracteristique
-          #«Create» BaseCaracteristique(int caracteristique)
-          + int getCaracteristique()
-          + void diminuerCaracteristique(int diminution)
-          + void augmenterCaracteristique(int augmentation)
+        class CaracteristiqueMonstre {
+            - m_classeArmure : int
+            + <<Create>> CaracteristiqueMonstre(pv : int, force : int, dexterite : int, vitesse : int, initiative : int, classeArmure : int)
+            + getClasseArmure() : int
+            + changerClasseArmure(changement : int) : void
         }
 
-        class PointDeVie {
-        +«Create» PointDeVie(int caracteristique)
-        }
-        class Force {
-        +«Create» Force(int caracteristique)
-        }
-        class Dexterite {
-        +«Create» Dexterite(int caracteristique)
-        }
-        class Vitesse {
-        +«Create» Vitesse(int caracteristique)
-        }
-        class Initiative {
-        +«Create» Initiative(int caracteristique)
-        }
-
-        PointDeVie --|> BaseCaracteristique
-        Force --|> BaseCaracteristique
-        Dexterite --|> BaseCaracteristique
-        Vitesse --|> BaseCaracteristique
-        Initiative --|> BaseCaracteristique
-
-        PointDeVie ..|> Caracteristique
-        Force ..|> Caracteristique
-        Dexterite ..|> Caracteristique
-        Vitesse ..|> Caracteristique
-        Initiative ..|> Caracteristique
-
-        BaseCaracteristique ..|> Caracteristique
-
+        Caracteristique --> CaracteristiqueMonstre
     }
+
+    Monstre --> CaracteristiqueMonstre : utilise
+    Personnage --> Caracteristique : utilise
 }
 
 package Objets {
     interface Objet {
-      + String getNom()
+        + getNom() : String
+        + estEquipe() : boolean
     }
 
     package Armes {
         class Arme {
-        - String m_nom;
-        - int m_porte;
-        #«Create» Arme(String nom, int porte)
-        + int getPorte()
+            - m_nom : String
+            - m_porte : int
+            + <<Create>> Arme(nom : String, porte : int)
+            + getPorte() : int
+            + getNom() : String
+            + estEquipe() : boolean
         }
         Arme ..|> Objet
 
         class ArmeGuerre {
-        +«Create» ArmeGuerre(String nom, int classe)
+            + <<Create>> ArmeGuerre(nom : String, porte : int)
         }
         class ArmeDistance {
-        +«Create» ArmeDistance(String nom, int classe)
+            + <<Create>> ArmeDistance(nom : String, porte : int)
         }
         class ArmeCourante {
-        +«Create» ArmeCourante(String nom, int classe)
+            + <<Create>> ArmeCourante(nom : String, porte : int)
         }
 
         ArmeCourante --|> Arme
-        ArmeCourante ..|> Objet
         ArmeGuerre --|> Arme
-        ArmeGuerre ..|> Objet
         ArmeDistance --|> Arme
-        ArmeDistance ..|> Objet
     }
+
     package Armures {
         class Armure {
-        - String m_nom;
-        - int m_classe;
-        #«Create» Armure(String nom, int classe)
-        + int getClasse()
+            - m_nom : String
+            - m_classe : int
+            + <<Create>> Armure(nom : String, classe : int)
+            + getClasse() : int
+            + getNom() : String
+            + estEquipe() : boolean
         }
         Armure ..|> Objet
 
         class ArmureLegere {
-        +«Create» ArmureLegere(String nom, int classe)
+            + <<Create>> ArmureLegere(nom : String, classe : int)
         }
         class ArmureLourde {
-        +«Create» ArmureLourde(String nom, int classe)
+            + <<Create>> ArmureLourde(nom : String, classe : int)
         }
 
         ArmureLegere --|> Armure
-        ArmureLegere ..|> Objet
         ArmureLourde --|> Armure
-        ArmureLourde ..|> Objet
     }
 }
 
-package Donjon {
+Personnage --> Objet : utilise
+
+package Donjons {
     class Donjon {
-        - int[2] m_dimensions
-        - int[][] m_cases
-        - String contexte
-        +«Create» Donjon(int x, int y)
+        + afficherCarte() : void
+        + <<Create>> Donjon()
     }
 }
 
 package Des {
     class De {
-        + {static} int lancer(int nbDes, int nbFaces)
+        + {static} lancer(nbDes : int, nbFaces : int) : int
+    }
+}
+
+package Tours {
+    class Action {
+    }
+
+    class Attaquer {
+    }
+
+    class Deplacer {
+    }
+
+    class Equiper {
+    }
+
+    class Tour {
     }
 }
 

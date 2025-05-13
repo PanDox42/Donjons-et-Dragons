@@ -1,4 +1,6 @@
 package Entites.Personnages;
+import Des.De;
+import Entites.Monstres.Monstre;
 import Entites.Personnages.Classes.Classe;
 import Entites.Personnages.Races.Race;
 import Objets.Arme.Arme;
@@ -17,6 +19,9 @@ public class Personnage {
     private Classe m_classe;
     private Caracteristique m_caracteristiques;
     private ArrayList<Objet> m_inventaire;
+    private Arme m_armeEquipe;
+    private Armure m_armureEquipe;
+
 
     public Personnage(String nom, Race race, Classe classe){
         m_nom = nom;
@@ -26,6 +31,12 @@ public class Personnage {
         m_caracteristiques = new Caracteristique(classe.getPvDepart(),2,3,4,5); // Rudimentaire encore
 
         m_inventaire = m_classe.getEquipementDepart();
+
+        // On initialise l'arme de base par un poing qui fait aucun degat
+        m_armeEquipe = new Arme("Poing", 0, new De(0,0));
+
+        // On initialise l'armure de base par une armure qui protege rien
+        m_armureEquipe = new Armure("À poil", 0);
     }
 
     public String getNom(){
@@ -33,13 +44,32 @@ public class Personnage {
     }
 
     public String afficherInventaire(){
+
+        // Variable inventaire qui sera construite dans la boucle
         String inventaire = "";
 
         for (int i = 0; i < m_inventaire.size(); i++){
+
+            // Structure : | item | item | ...
             inventaire += " | " + m_inventaire.get(i).getNom() ;
         }
 
         return inventaire;
+    }
+
+    public Arme getArmeEquipe(){
+        return m_armeEquipe;
+    }
+
+    public Armure getArmureEquipe(){
+        return m_armureEquipe;
+    }
+
+    public void attaquer(Monstre pasGentil){
+        System.out.println("Les dégâts que vous allez infliger à " + pasGentil.getNom() + " seront définie par un lancé " + m_armeEquipe.getDeAttque().get_nbDes() + "d" +  m_armeEquipe.getDeAttque().get_nbFaces());
+        int degat = m_armeEquipe.getDegat();
+        System.out.println("Vous avez infligé " + degat + " dégât(s) à " + pasGentil.getNom());
+        // pasGentil.diminuerVie(degat);
     }
 
     public void afficherSituation(){

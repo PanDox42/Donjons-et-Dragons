@@ -9,7 +9,7 @@ import Objets.Objet;
 import java.util.ArrayList;
 
 public class Roublard implements Classe {
-    int pvDepart = 16;
+    private int pvDepart = 16;
 
     @Override
     public int getPvDepart() {
