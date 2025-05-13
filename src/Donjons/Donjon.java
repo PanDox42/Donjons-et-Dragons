@@ -40,7 +40,7 @@ public class Donjon {
         }
         System.out.println("*");
 
-        for(int i = 1; i < m_y; i++) {
+        for(int i = 1; i < m_y+1; i++) {
             if(i<=9) {
                 System.out.print(i+"  |");
             }
