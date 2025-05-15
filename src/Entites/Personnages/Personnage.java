@@ -28,7 +28,60 @@ public class Personnage {
         m_race = race;
         m_classe = classe;
 
-        m_caracteristiques = new Caracteristique(classe.getPvDepart(),2,3,4,5); // Rudimentaire encore
+        // Création du dé qui servira à definir les caracteristiques (dé + 3 + bonus de la race)
+        De deCaracteristique = new De(4,4);
+
+
+        // Definition de la vie
+        System.out.println("Definition de votre vie :");
+        int vie = classe.getPvDepart();
+        System.out.println("Votre classe vous donne " + vie + " PV\n" +
+                "Votre race vous ajoute " + m_race.getPvAugmente());
+
+        System.out.println("Votre vie est donc définie à " + vie + "\n");
+
+
+        // Definition de la force
+        System.out.println("Definition de votre force :");
+        int force = deCaracteristique.lancer();
+        System.out.println("Vous avez obtenu " + force + " points avec vos lancés de dé. \n" +
+                "Votre race vous ajoute " + m_race.getForceAugmentee() + " et nous ajoutons 3 au score total");
+
+        force += 3 + m_race.getForceAugmentee();
+        System.out.println("Votre force est donc définie à " + force + "\n");
+
+
+        // Definition de la déxterité
+        System.out.println("Definition de votre déxterité :");
+        int dexterite = deCaracteristique.lancer();
+        System.out.println("Vous avez obtenu " + dexterite + " points avec vos lancés de dé. \n" +
+                "Votre race vous ajoute " + m_race.getDexteriteAugmentee() + " et nous ajoutons 3 au score total");
+
+        dexterite += 3 + m_race.getDexteriteAugmentee();
+        System.out.println("Votre déxterité est donc définie à " + dexterite + "\n");
+
+
+        // Definition de la vitesse
+        System.out.println("Definition de votre vitesse :");
+        int vitesse = deCaracteristique.lancer();
+        System.out.println("Vous avez obtenu " + vitesse + " points avec vos lancés de dé. \n" +
+                "Votre race vous ajoute " + m_race.getVitesseAugmentee() + " et nous ajoutons 3 au score total");
+
+        vitesse += 3 + m_race.getVitesseAugmentee();
+        System.out.println("Votre vitesse est donc définie à " + vitesse + "\n");
+
+
+        // Definition de la initiative
+        System.out.println("Definition de votre initiative :");
+        int initiative = deCaracteristique.lancer();
+        System.out.println("Vous avez obtenu " + initiative + " points avec vos lancés de dé. \n" +
+                "Votre race vous ajoute " + m_race.getInitiativeAugmentee() + " et nous ajoutons 3 au score total");
+
+        initiative += 3 + m_race.getInitiativeAugmentee();
+        System.out.println("Votre initiative est donc définie à " + initiative + "\n");
+
+
+        m_caracteristiques = new Caracteristique(vie, force, dexterite, vitesse, initiative);
 
         m_inventaire = m_classe.getEquipementDepart();
 
@@ -77,8 +130,8 @@ public class Personnage {
         System.out.println("\n" +
                 m_nom + "\n" + // tabulation de 2 espaces à chaque fois
                 "  Vie : " + m_caracteristiques.getPv() + "/" + m_classe.getPvDepart() + "\n" +
-                "  Armure : Pas encore codé" + "\n" +
-                "  Arme : Pas encore codé" + "\n" +
+                "  Armure : " + m_armureEquipe.getNom() + "\n" +
+                "  Arme : " + m_armeEquipe.getNom() + "\n" +
                 "  Inventaire : " + "[" + m_inventaire.size() + "]" + afficherInventaire() + "  --> (c'est par rapport à la classe de King Kong, j'ai tout codé tu peux essayer de changer sa classe pour voir, le stuff sera different.\n" +
                 "  Force : " + m_caracteristiques.getForce() + "\n" +
                 "  Dextérité : " + m_caracteristiques.getDexterite() + "\n" +

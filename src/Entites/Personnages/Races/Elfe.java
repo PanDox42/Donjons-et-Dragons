@@ -6,4 +6,29 @@ public class Elfe implements Race{
     public String getRace() {
         return "Elfe";
     }
+
+    @Override
+    public int getPvAugmente() {
+        return 0;
+    }
+
+    @Override
+    public int getForceAugmentee() {
+        return 0;
+    }
+
+    @Override
+    public int getDexteriteAugmentee() {
+        return 6;
+    }
+
+    @Override
+    public int getVitesseAugmentee() {
+        return 0;
+    }
+
+    @Override
+    public int getInitiativeAugmentee() {
+        return 0;
+    }
 }

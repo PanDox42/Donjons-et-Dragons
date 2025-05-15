@@ -6,4 +6,29 @@ public class Humain implements Race{
     public String getRace() {
         return "Humain";
     }
+
+    @Override
+    public int getPvAugmente() {
+        return 2;
+    }
+
+    @Override
+    public int getForceAugmentee() {
+        return 2;
+    }
+
+    @Override
+    public int getDexteriteAugmentee() {
+        return 2;
+    }
+
+    @Override
+    public int getVitesseAugmentee() {
+        return 2;
+    }
+
+    @Override
+    public int getInitiativeAugmentee() {
+        return 2;
+    }
 }

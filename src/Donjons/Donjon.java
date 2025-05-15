@@ -57,6 +57,6 @@ public class Donjon {
         for(int i = 0; i < m_x; i++) {
             System.out.print("---");
         }
-        System.out.print("*\n* Equipement   |   [ ] Obstacle  |\n");
+        System.out.println("*\n* Equipement   |   [ ] Obstacle  |\n");
     }
 }
