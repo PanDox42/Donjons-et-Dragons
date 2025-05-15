@@ -28,7 +28,7 @@ public class Personnage {
         m_race = race;
         m_classe = classe;
 
-        // Création du dé qui servira à definir les caracteristiques (dé + 3 + bonus de la race)
+        // Création du dé qui servira à définir les caractéristiques (dé + 3 + bonus de la race)
         De deCaracteristique = new De(4,4);
 
 
