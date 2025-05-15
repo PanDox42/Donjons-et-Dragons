@@ -1,7 +1,9 @@
 package Objets.Arme;
 
+import Des.De;
+
 public class ArmeGuerre extends Arme {
-    public ArmeGuerre(String nom, int porte, int nbDeDegat, int nbFaceDegat) {
-        super(nom, porte, nbDeDegat, nbFaceDegat);
+    public ArmeGuerre(String nom, int porte, De deAttaque) {
+        super(nom, porte, deAttaque);
     }
 }
