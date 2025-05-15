@@ -1,6 +1,14 @@
 @startuml
 left to right direction
 
+skinparam backGroundColor Ivory
+skinparam linetype ortho
+skinparam shadowing true
+skinparam class {
+BackgroundColor LightYellow
+BorderColor MidnightBlue
+}
+
 class Main {
 }
 

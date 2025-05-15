@@ -7,7 +7,7 @@ public class Armure implements Objet {
     private String m_nom;
     private int m_classe;
 
-    protected Armure(String nom, int classe){
+    public Armure(String nom, int classe){
         m_nom = nom;
         m_classe = classe;
     }
