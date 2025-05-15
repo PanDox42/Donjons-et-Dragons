@@ -6,13 +6,13 @@ import Entites.Personnages.Classes.Guerrier;
 import Entites.Personnages.Personnage;
 import Entites.Personnages.Races.Elfe;
 import Entites.Personnages.Races.Race;
+import Objets.Armure.ArmureLourde;
 
 public class Main {
     public static void main(String[] args){
         System.out.println("Bienvenue dans DOOnjon et Dragons\n");
 
         // QUE DES TESTS
-        System.out.println("Vous avez réalisé un score de " + De.lancer(4,10));
 
         Race r = new Elfe(); // La dcp il aura 16pts de vie psk c'est un elfe
         Classe c = new Clerc();

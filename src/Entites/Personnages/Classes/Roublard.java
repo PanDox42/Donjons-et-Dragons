@@ -21,8 +21,8 @@ public class Roublard implements Classe {
     @Override
     public ArrayList<Objet> getEquipementDepart() {
         ArrayList<Objet> equipement = new ArrayList<>();
-        equipement.add(new ArmeGuerre("Rapière", 1, new De(1,8)));
-        equipement.add(new ArmeDistance("Arc court", 16, new De(1,6)));
+        equipement.add(ArmeGuerre.creerRapiere());
+        equipement.add(ArmeDistance.creerArcCourt());
         return equipement;
     }
 }

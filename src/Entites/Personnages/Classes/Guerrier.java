@@ -21,9 +21,9 @@ public class Guerrier implements Classe {
     @Override
     public ArrayList<Objet> getEquipementDepart() {
         ArrayList<Objet> equipement = new ArrayList<>();
-        equipement.add(new ArmureLourde("Cotte de mailles", 11));
-        equipement.add(new ArmeGuerre("Épée longue", 1, new De(1,8)));
-        equipement.add(new ArmeDistance("Arbalète légère", 16, new De(1,8)));
+        equipement.add(ArmureLourde.creerCotteDeMaille());
+        equipement.add(ArmeGuerre.creerEpeeLongue());
+        equipement.add(ArmeDistance.creerArbaleteLegere());
         return equipement;
     }
 }

@@ -19,8 +19,8 @@ public class Magicien implements Classe {
     @Override
     public ArrayList<Objet> getEquipementDepart() {
         ArrayList<Objet> equipement = new ArrayList<>();
-        equipement.add(new ArmeCourante("Bâton", 1, new De(1,6)));
-        equipement.add(new ArmeDistance("Fronde", 6, new De(1,4)));
+        equipement.add(ArmeCourante.creerBaton());
+        equipement.add(ArmeDistance.creerFronde());
         return equipement;
     }
 }

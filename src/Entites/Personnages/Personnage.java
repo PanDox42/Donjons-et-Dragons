@@ -28,72 +28,32 @@ public class Personnage {
         m_race = race;
         m_classe = classe;
 
-        // Création du dé qui servira à définir les caractéristiques (dé + 3 + bonus de la race)
-        De deCaracteristique = new De(4,4);
+        // Appel d'une methode static permettant de créer les caractéristiques (lancés de dé)
+        m_caracteristiques = Caracteristique.creerCaracteristique(this);
 
-
-        // Definition de la vie
-        System.out.println("Definition de votre vie :");
-        int vie = classe.getPvDepart();
-        System.out.println("Votre classe vous donne " + vie + " PV\n" +
-                "Votre race vous ajoute " + m_race.getPvAugmente());
-
-        System.out.println("Votre vie est donc définie à " + vie + "\n");
-
-
-        // Definition de la force
-        System.out.println("Definition de votre force :");
-        int force = deCaracteristique.lancer();
-        System.out.println("Vous avez obtenu " + force + " points avec vos lancés de dé. \n" +
-                "Votre race vous ajoute " + m_race.getForceAugmentee() + " et nous ajoutons 3 au score total");
-
-        force += 3 + m_race.getForceAugmentee();
-        System.out.println("Votre force est donc définie à " + force + "\n");
-
-
-        // Definition de la déxterité
-        System.out.println("Definition de votre déxterité :");
-        int dexterite = deCaracteristique.lancer();
-        System.out.println("Vous avez obtenu " + dexterite + " points avec vos lancés de dé. \n" +
-                "Votre race vous ajoute " + m_race.getDexteriteAugmentee() + " et nous ajoutons 3 au score total");
-
-        dexterite += 3 + m_race.getDexteriteAugmentee();
-        System.out.println("Votre déxterité est donc définie à " + dexterite + "\n");
-
-
-        // Definition de la vitesse
-        System.out.println("Definition de votre vitesse :");
-        int vitesse = deCaracteristique.lancer();
-        System.out.println("Vous avez obtenu " + vitesse + " points avec vos lancés de dé. \n" +
-                "Votre race vous ajoute " + m_race.getVitesseAugmentee() + " et nous ajoutons 3 au score total");
-
-        vitesse += 3 + m_race.getVitesseAugmentee();
-        System.out.println("Votre vitesse est donc définie à " + vitesse + "\n");
-
-
-        // Definition de la initiative
-        System.out.println("Definition de votre initiative :");
-        int initiative = deCaracteristique.lancer();
-        System.out.println("Vous avez obtenu " + initiative + " points avec vos lancés de dé. \n" +
-                "Votre race vous ajoute " + m_race.getInitiativeAugmentee() + " et nous ajoutons 3 au score total");
-
-        initiative += 3 + m_race.getInitiativeAugmentee();
-        System.out.println("Votre initiative est donc définie à " + initiative + "\n");
-
-
-        m_caracteristiques = new Caracteristique(vie, force, dexterite, vitesse, initiative);
-
+        // Initialise l'inventaire du joueur par rapport à sa classe
         m_inventaire = m_classe.getEquipementDepart();
 
         // On initialise l'arme de base par un poing qui fait aucun degat
-        m_armeEquipe = new Arme("Poing", 0, new De(0,0));
+        m_armeEquipe = Arme.sansArme();
 
         // On initialise l'armure de base par une armure qui protege rien
-        m_armureEquipe = new Armure("À poil", 0);
+        m_armureEquipe = Armure.sansArmure();
+
+        // Fait un affichage des stats du joueur
+        afficherSituation();
     }
 
     public String getNom(){
         return m_nom;
+    }
+
+    public Classe getClasse(){
+        return m_classe;
+    }
+
+    public Race getRace(){
+        return m_race;
     }
 
     public String afficherInventaire(){

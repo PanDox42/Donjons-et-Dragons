@@ -24,52 +24,50 @@ public class De {
     }
 
     public int lancer(){
-
-        // Evite une erreur si la fonction est mal utilisée
-        if (m_nbFaces <= 0){
-            return 0;
-        }
-
-        Random random = new Random();
-        int valeur = 0;
-
-        // Boucle calculant la valeur des lancées de dés aléatoire
-        System.out.println("Vous allez lancer " + m_nbDes + " dé(s) de " + m_nbFaces + " faces\n");
-        for (int i = 0; i < m_nbDes; i++){
-            System.out.println("Lancer un dé de " + m_nbFaces + " (appuyer sur ENTRER)");
-            Scan.ScanLine(); // Attente d'une touche
-
-            int lance = random.nextInt(1,m_nbFaces + 1);
-
-            System.out.println("--- Vous avez fait " + lance + " ---");
-            valeur += lance;
-        }
-
-        return valeur;
+        return lancerDes(m_nbDes, m_nbFaces);
     }
 
-
     public static int lancer(int nbDes, int nbFaces){
+        return lancerDes(nbDes, nbFaces);
+    }
+
+    private static int lancerDes(int nbDes, int nbFaces){
 
         // Evite une erreur si la fonction est mal utilisée
-        if (nbFaces <= 0){
+        if (nbFaces <= 0 || nbDes <= 0){
             return 0;
         }
 
         Random random = new Random();
+
+        // Somme des lancés (valeur finale)
         int valeur = 0;
 
-        // Boucle calculant la valeur des lancées de dés aléatoire
-        System.out.println("Vous allez lancer " + nbDes + " dé(s) de " + nbFaces + " faces\n");
-        for (int i = 0; i < nbDes; i++){
-            System.out.println("Lancer un dé de " + nbFaces + " (appuyer sur ENTRER)");
-            Scan.ScanLine(); // Attente d'une touche
+        // Tableau qui stock les valeurs des lancée
+        int[] tabValeur = new int[nbDes];
 
+        System.out.println("Lancer " + nbDes + " dé(s) de " + nbFaces + " faces (appuyer sur ENTRER)");
+        Scan.ScanLine(); // Attente d'une touche
+
+        // Boucle calculant la valeur des lancées de dés aléatoire
+        for (int i = 0; i < nbDes; i++){
+
+            // Création de la variable lance et initialisation à un nombre aléatoire entre 1 et nbFabes inclu
             int lance = random.nextInt(1,nbFaces + 1);
 
-            System.out.println("--- Vous avez fait " + lance + " ---");
+            // Ajout de la valeur dans le tableau
+            tabValeur[i] = lance;
+
             valeur += lance;
         }
+
+        // Gere l'affichage des lancés executés à l'aide d'une boucle for qui parcourt le tableau tabValeur
+        System.out.print("--- Vous avez obtenu : ");
+
+        for (int i = 0; i < nbDes; i++){
+            System.out.print(tabValeur[i] + " ");
+        }
+        System.out.println("---\n");
 
         return valeur;
     }
