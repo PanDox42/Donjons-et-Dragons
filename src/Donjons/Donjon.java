@@ -1,6 +1,7 @@
 package Donjons;
 
 import Entites.Personnages.MaitreJeu;
+import Entites.Personnages.Personnage;
 import Scanner.Scan;
 
 import java.util.ArrayList;
@@ -38,11 +39,26 @@ public class Donjon {
         int x = 0;
         for(int i = 0; i < alphabet.size(); i++) {
             if(alphabet.get(i).equals(obstacleSplit[0])) {
-                x = i + 1;
+                x = i;
             }
         }
         int y = Integer.parseInt(obstacleSplit[1]);
         m_donjon[x][y] = "[ ]";
+    }
+
+    public void placerPersonnage(Personnage personnage) {
+        afficherCarte();
+
+        System.out.println("Veuillez indiquer les coordonnées du joueur à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
+        String[] obstacleSplit = Scan.ScanLine().split(":");
+        int x = 0;
+        for(int i = 0; i < alphabet.size(); i++) {
+            if(alphabet.get(i).equals(obstacleSplit[0])) {
+                x = i;
+            }
+        }
+        int y = Integer.parseInt(obstacleSplit[1]);
+        m_donjon[x][y] = personnage.getNom().substring(0,3).toUpperCase();
     }
 
     public void afficherCarte(){
@@ -66,7 +82,7 @@ public class Donjon {
                 System.out.print(i+" | ");
             }
             for(int j = 0; j < m_x; j++) {
-                System.out.print(m_donjon[i][j]);
+                System.out.print(m_donjon[j][i]);
             }
             System.out.println(" |");
         }

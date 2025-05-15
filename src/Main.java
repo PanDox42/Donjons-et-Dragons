@@ -14,13 +14,14 @@ public class Main {
         // QUE DES TESTS
         System.out.println("Vous avez réalisé un score de " + De.lancer(4,10));
 
-        Donjon d = new Donjon(26,26);
-        d.creationObstacle();
-        d.afficherCarte();
-
         Race r = new Elfe(); // La dcp il aura 16pts de vie psk c'est un elfe
         Classe c = new Clerc();
         Personnage bob = new Personnage("King Kong", r, c);
+
+        Donjon d = new Donjon(26,26);
+        d.creationObstacle();
+        d.placerPersonnage(bob);
+        d.afficherCarte();
 
         bob.afficherSituation();
 
