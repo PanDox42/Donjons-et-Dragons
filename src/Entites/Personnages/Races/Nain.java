@@ -7,4 +7,29 @@ public class Nain implements Race{
         return "Nain";
     }
 
+    @Override
+    public int getPvAugmente() {
+        return 0;
+    }
+
+    @Override
+    public int getForceAugmentee() {
+        return 6;
+    }
+
+    @Override
+    public int getDexteriteAugmentee() {
+        return 0;
+    }
+
+    @Override
+    public int getVitesseAugmentee() {
+        return 0;
+    }
+
+    @Override
+    public int getInitiativeAugmentee() {
+        return 0;
+    }
+
 }

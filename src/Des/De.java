@@ -41,7 +41,7 @@ public class De {
 
             int lance = random.nextInt(1,m_nbFaces + 1);
 
-            System.out.println("--- Vous avez fait " + lance + " ---");
+            System.out.println("--- Vous avez fait " + lance + " ---\n");
             valeur += lance;
         }
 
@@ -67,7 +67,7 @@ public class De {
 
             int lance = random.nextInt(1,nbFaces + 1);
 
-            System.out.println("--- Vous avez fait " + lance + " ---");
+            System.out.println("--- Vous avez fait " + lance + " ---\n");
             valeur += lance;
         }
 
