@@ -18,9 +18,9 @@ public class Clerc implements Classe {
     @Override
     public ArrayList<Objet> getEquipementDepart() {
         ArrayList<Objet> equipement = new ArrayList<>();
-        equipement.add(new ArmeCourante("Masse d'armes", 1, new De(1,6)));
-        equipement.add(new ArmureLegere("Armure d'écailles", 9));
-        equipement.add(new ArmeDistance("Arbalète légère", 16, new De(1,8)));
+        equipement.add(ArmeCourante.creerMasseArmes());
+        equipement.add(ArmureLegere.creerArmureEcailles());
+        equipement.add(ArmeDistance.creerArbaleteLegere());
         return equipement;
     }
 }

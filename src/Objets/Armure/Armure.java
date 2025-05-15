@@ -1,5 +1,7 @@
 package Objets.Armure;
 
+import Des.De;
+import Objets.Arme.Arme;
 import Objets.Objet;
 
 // Type concret de Objet
@@ -14,6 +16,10 @@ public class Armure implements Objet {
 
     public int getClasse(){
         return m_classe;
+    }
+
+    public static Armure sansArmure(){
+        return new Armure("À poil", 0);
     }
 
     @Override

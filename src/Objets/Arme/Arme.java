@@ -26,6 +26,9 @@ public class Arme implements Objet {
         return m_deAttaque;
     }
 
+    public static Arme sansArme(){
+        return new Arme("Poing", 0, new De(0,0));
+    }
 
     @Override
     public String getNom() {
