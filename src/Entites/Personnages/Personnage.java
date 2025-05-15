@@ -127,12 +127,12 @@ public class Personnage {
 
     public void afficherSituation(){
 
-        System.out.println("\n" +
+        System.out.println(
                 m_nom + "\n" + // tabulation de 2 espaces à chaque fois
                 "  Vie : " + m_caracteristiques.getPv() + "/" + m_classe.getPvDepart() + "\n" +
                 "  Armure : " + m_armureEquipe.getNom() + "\n" +
                 "  Arme : " + m_armeEquipe.getNom() + "\n" +
-                "  Inventaire : " + "[" + m_inventaire.size() + "]" + afficherInventaire() + "  --> (c'est par rapport à la classe de King Kong, j'ai tout codé tu peux essayer de changer sa classe pour voir, le stuff sera different.\n" +
+                "  Inventaire : " + "[" + m_inventaire.size() + "]" + afficherInventaire() + "\n" +
                 "  Force : " + m_caracteristiques.getForce() + "\n" +
                 "  Dextérité : " + m_caracteristiques.getDexterite() + "\n" +
                 "  Vitesse : " + m_caracteristiques.getVitesse() + "\n");

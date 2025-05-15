@@ -2,6 +2,7 @@ package Des;
 
 import java.util.Random;
 import java.util.Scanner;
+import Scanner.Scan;
 
 // Cette classe sert à appeler la fonction lancer en faisant De.lancer(nbDes, nbFaces)
 // Cette fonction renvoie un nombre aléatoire entre 1 et (nbFace * nbDes)
@@ -35,17 +36,16 @@ public class De {
         // Boucle calculant la valeur des lancées de dés aléatoire
         System.out.println("Vous allez lancer " + m_nbDes + " dé(s) de " + m_nbFaces + " faces\n");
 
-        Scanner scanner = new Scanner(System.in); // Création d'un scanner
+
         for (int i = 0; i < m_nbDes; i++){
             System.out.println("Lancer un dé de " + m_nbFaces + " (appuyer sur ENTRER)");
-            scanner.nextLine(); // Attente d'une touche
+            Scan.ScanLine(); // Attente d'une touche
 
             int lance = random.nextInt(1,m_nbFaces + 1);
 
             System.out.println("--- Vous avez fait " + lance + " ---\n");
             valeur += lance;
         }
-        scanner.close(); // Fermer le scanner
 
         return valeur;
     }
@@ -64,17 +64,15 @@ public class De {
         // Boucle calculant la valeur des lancées de dés aléatoire
         System.out.println("Vous allez lancer " + nbDes + " dé(s) de " + nbFaces + " faces\n");
 
-        Scanner scanner = new Scanner(System.in); // Création d'un scanner
         for (int i = 0; i < nbDes; i++){
             System.out.println("Lancer un dé de " + nbFaces + " (appuyer sur ENTRER)");
-            scanner.nextLine(); // Attente d'une touche
+            Scan.ScanLine(); // Attente d'une touche
 
             int lance = random.nextInt(1,nbFaces + 1);
 
             System.out.println("--- Vous avez fait " + lance + " ---");
             valeur += lance;
         }
-        scanner.close(); // Fermer le scanner
 
         return valeur;
     }
