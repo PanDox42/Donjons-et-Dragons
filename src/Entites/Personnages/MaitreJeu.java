@@ -19,4 +19,8 @@ public class MaitreJeu{
         }
         tour.clear();
     }
+
+    public void jouer() {
+
+    }
 }
