@@ -1,34 +1,31 @@
 package Objets.Armure;
 
-import Des.De;
 import Objets.Arme.Arme;
+import Objets.Arme.Poing;
 import Objets.Objet;
 
-// Type concret de Objet
 public class Armure implements Objet {
-    private String m_nom;
-    private int m_classe;
+    private final String m_nom;
+    private final int m_classeArmure;
 
-    public Armure(String nom, int classe){
+    protected Armure(String nom, int classeArmure) {
         m_nom = nom;
-        m_classe = classe;
+        m_classeArmure = classeArmure;
     }
 
-    public int getClasse(){
-        return m_classe;
-    }
-
-    public static Armure sansArmure(){
-        return new Armure("À poil", 0);
-    }
-
-    @Override
     public String getNom() {
         return m_nom;
     }
 
-    @Override
+    public int getClasse() {
+        return m_classeArmure;
+    }
+
     public boolean estEquipe() {
         return false;
+    }
+
+    public static Armure sansArmure(){
+        return new Nu();
     }
 }

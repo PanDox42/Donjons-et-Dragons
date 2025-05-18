@@ -1,11 +1,10 @@
 package Entites.Personnages.Classes;
 
-import Objets.Arme.ArmeCourante;
-import Objets.Arme.ArmeDistance;
-import Objets.Arme.ArmeGuerre;
-import Objets.Armure.ArmureLegere;
+import Objets.Arme.ArmeDistances.ArcCourt;
+import Objets.Arme.ArmeDistances.ArmeDistance;
+import Objets.Arme.ArmeGuerres.ArmeGuerre;
+import Objets.Arme.ArmeGuerres.Rapiere;
 import Objets.Objet;
-import Des.De;
 
 
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ public class Roublard implements Classe {
     @Override
     public ArrayList<Objet> getEquipementDepart() {
         ArrayList<Objet> equipement = new ArrayList<>();
-        equipement.add(ArmeGuerre.creerRapiere());
-        equipement.add(ArmeDistance.creerArcCourt());
+        equipement.add(new Rapiere());
+        equipement.add(new ArcCourt());
         return equipement;
     }
 }

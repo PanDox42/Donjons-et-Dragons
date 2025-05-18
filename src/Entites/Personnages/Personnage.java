@@ -1,15 +1,11 @@
 package Entites.Personnages;
-import Des.De;
-import Entites.Monstres.Monstre;
+import Entites.Monstre;
 import Entites.Personnages.Classes.Classe;
 import Entites.Personnages.Races.Race;
 import Objets.Arme.Arme;
-import Objets.Arme.ArmeDistance;
 import Objets.Armure.Armure;
-import Objets.Armure.ArmureLourde;
 import Objets.Objet;
 import Entites.Caracteristiques.Caracteristique;
-import Objets.Arme.*;
 
 import java.util.ArrayList;
 
@@ -79,7 +75,7 @@ public class Personnage {
     }
 
     public void attaquer(Monstre pasGentil){
-        System.out.println("Les dégâts que vous allez infliger à " + pasGentil.getNom() + " seront définie par un lancé " + m_armeEquipe.getDeAttque().get_nbDes() + "d" +  m_armeEquipe.getDeAttque().get_nbFaces());
+        System.out.println("Les dégâts que vous allez infliger à " + pasGentil.getNom() + " seront définie par un lancé " + m_armeEquipe.getDeAttaque().get_nbDes() + "d" +  m_armeEquipe.getDeAttaque().get_nbFaces());
         int degat = m_armeEquipe.getDegat();
         System.out.println("Vous avez infligé " + degat + " dégât(s) à " + pasGentil.getNom());
         // pasGentil.diminuerVie(degat);

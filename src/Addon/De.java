@@ -1,10 +1,8 @@
-package Des;
+package Addon;
 
 import java.util.Random;
-import java.util.Scanner;
-import Scanner.Scan;
 
-// Cette classe sert à appeler la fonction lancer en faisant De.lancer(nbDes, nbFaces)
+// Cette classe sert à appeler la fonction lancer en faisant Addon.De.lancer(nbDes, nbFaces)
 // Cette fonction renvoie un nombre aléatoire entre 1 et (nbFace * nbDes)
 public class De {
     private int m_nbDes;

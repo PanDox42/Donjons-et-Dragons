@@ -1,12 +1,12 @@
 package Entites.Personnages.Classes;
 
-import Objets.Arme.ArmeCourante;
-import Objets.Arme.ArmeDistance;
-import Objets.Arme.ArmeGuerre;
-import Objets.Armure.ArmureLegere;
-import Objets.Armure.ArmureLourde;
+import Objets.Arme.ArmeDistances.ArbaleteLegere;
+import Objets.Arme.ArmeDistances.ArmeDistance;
+import Objets.Arme.ArmeGuerres.ArmeGuerre;
+import Objets.Arme.ArmeGuerres.EpeeLongue;
+import Objets.Armure.ArmureLourdes.ArmureLourde;
+import Objets.Armure.ArmureLourdes.CotteMailles;
 import Objets.Objet;
-import Des.De;
 
 import java.util.ArrayList;
 
@@ -21,9 +21,9 @@ public class Guerrier implements Classe {
     @Override
     public ArrayList<Objet> getEquipementDepart() {
         ArrayList<Objet> equipement = new ArrayList<>();
-        equipement.add(ArmureLourde.creerCotteDeMaille());
-        equipement.add(ArmeGuerre.creerEpeeLongue());
-        equipement.add(ArmeDistance.creerArbaleteLegere());
+        equipement.add(new CotteMailles());
+        equipement.add(new EpeeLongue());
+        equipement.add(new ArbaleteLegere());
         return equipement;
     }
 }

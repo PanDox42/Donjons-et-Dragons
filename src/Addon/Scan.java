@@ -1,4 +1,5 @@
-package Scanner;
+package Addon;
+
 import java.util.Scanner;
 
 // Cette classe sert à éviter les problèmes lorsqu'on utilise plusieurs Scanner(System.in)

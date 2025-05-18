@@ -1,11 +1,9 @@
 package Donjons;
 
-import Entites.Monstres.Monstre;
-import Entites.Personnages.MaitreJeu;
+import Entites.Monstre;
 import Entites.Personnages.Personnage;
 import Objets.Objet;
-import Scanner.Scan;
-import org.w3c.dom.ranges.RangeException;
+import Addon.Scan;
 
 import java.util.*;
 
@@ -25,6 +23,7 @@ public class Donjon {
         m_y = y;
         m_x = x;
         m_donjon =  new String[m_x][m_y];
+        m_donjon_objets = new Objet[m_x][m_y];
         for(int i = 0; i<m_donjon.length; i++) {
             for(int j = 0; j<m_donjon[i].length; j++) {
                 m_donjon[i][j] = " . ";

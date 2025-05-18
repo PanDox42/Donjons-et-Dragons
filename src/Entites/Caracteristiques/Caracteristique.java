@@ -1,6 +1,6 @@
 package Entites.Caracteristiques;
 
-import Des.De;
+import Addon.De;
 import Entites.Personnages.Personnage;
 
 public class Caracteristique {

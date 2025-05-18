@@ -1,14 +1,8 @@
-import Des.De;
-import Donjons.Donjon;
-import Entites.Monstres.Monstre;
+import Addon.Scan;
 import Entites.Personnages.Classes.*;
+import Entites.Personnages.MaitreJeu;
 import Entites.Personnages.Personnage;
 import Entites.Personnages.Races.*;
-import Objets.Arme.Arme;
-import Objets.Arme.ArmeCourante;
-import Objets.Armure.ArmureLourde;
-import Objets.Objet;
-import Scanner.Scan;
 
 import java.util.*;
 
@@ -24,7 +18,7 @@ public class Main {
         Classe c = new Clerc();
         Personnage bob = new Personnage("bo", r, c);
         Monstre kingkong = new Monstre("King Kong");
-        Objet buche = new ArmeCourante("Bûche", 1, new De(1,6));
+        Objet buche = new ArmeCourante("Bûche", 1, new Addon.De(1,6));
 
         Donjon d = new Donjon(26,26);
         d.creationObstacle();
@@ -38,6 +32,8 @@ public class Main {
         // FIN TESTS
 
         // VRAI JEU
+        MaitreJeu mdj = new MaitreJeu();
+
         int m_nbJoueur = 0;
         while(true) {
             try {
@@ -108,5 +104,8 @@ public class Main {
 
             m_personnages.add(new Personnage(nom, raceClasse, classeClasse));
         }
+
+        // CREATION DONJON
+        mdj.creerDonjon();
     }
 }

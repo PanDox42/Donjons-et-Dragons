@@ -1,10 +1,10 @@
 package Entites.Personnages.Classes;
 
-import Objets.Arme.ArmeCourante;
-import Objets.Arme.ArmeDistance;
-import Objets.Armure.ArmureLegere;
+import Objets.Arme.ArmeCourantes.ArmeCourante;
+import Objets.Arme.ArmeCourantes.Baton;
+import Objets.Arme.ArmeDistances.ArmeDistance;
+import Objets.Arme.ArmeDistances.Fronde;
 import Objets.Objet;
-import Des.De;
 
 import java.util.ArrayList;
 
@@ -19,8 +19,8 @@ public class Magicien implements Classe {
     @Override
     public ArrayList<Objet> getEquipementDepart() {
         ArrayList<Objet> equipement = new ArrayList<>();
-        equipement.add(ArmeCourante.creerBaton());
-        equipement.add(ArmeDistance.creerFronde());
+        equipement.add(new Baton());
+        equipement.add(new Fronde());
         return equipement;
     }
 }
