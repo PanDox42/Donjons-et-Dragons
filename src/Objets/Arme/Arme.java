@@ -1,6 +1,6 @@
 package Objets.Arme;
 
-import Des.De;
+import Addon.De;
 import Objets.Objet;
 
 public class Arme implements Objet {
@@ -8,7 +8,7 @@ public class Arme implements Objet {
     private int m_porte;
     private De m_deAttaque;
 
-    public Arme(String nom, int porte, De deAttaque){
+    protected Arme(String nom, int porte, De deAttaque){
         m_nom = nom;
         m_porte = porte;
         m_deAttaque = deAttaque;
@@ -22,20 +22,18 @@ public class Arme implements Objet {
         return m_deAttaque.lancer();
     }
 
-    public De getDeAttque(){
+    public De getDeAttaque(){
         return m_deAttaque;
     }
 
     public static Arme sansArme(){
-        return new Arme("Poing", 0, new De(0,0));
+        return new Poing();
     }
 
-    @Override
     public String getNom() {
         return m_nom;
     }
 
-    @Override
     public boolean estEquipe() {
         return false;
     }
