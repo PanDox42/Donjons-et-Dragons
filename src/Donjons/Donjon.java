@@ -40,7 +40,7 @@ public class Donjon {
             try {
                 String[] obstacleSplit = Scan.ScanLine().split(":");
                 if (obstacleSplit.length != 2) {
-                    throw new IllegalArgumentException("Format incorrect. Utilisez le format x:x.");
+                    throw new IllegalArgumentException("Format incorrect. Utilisez le format x:x");
                 }
 
                 int x = -1;
