@@ -38,11 +38,27 @@ public class MaitreJeu{
     }
 
     public void creerDonjon() {
+        int x;
+        int y;
         // Afficher message de création du donjon pour le maitre du jeu
-        System.out.println("Veuillez indiquer la dimension du donjon\nExemple : vous voulez créer un donjon de la taille 25x25 alors rentrer : 25:25");
-        String dimensions = Scan.ScanLine();
-        int x = parseInt(dimensions.split(":")[0]);
-        int y = parseInt(dimensions.split(":")[1]);
+        System.out.println("Veuillez indiquer la dimension du donjon entre 15 et 25\nExemple : vous voulez créer un donjon de la taille 25x25 alors rentrer : 25:25");
+        while(true) {
+            try {
+                String dimensions = Scan.ScanLine();
+                x = parseInt(dimensions.split(":")[0]);
+                y = parseInt(dimensions.split(":")[1]);
+                if(x < 15 || y < 15 || x > 25 || y> 25) {
+                    throw new IllegalAccessException("La taille du donjon doit être compris entre 15 et 25");
+                }
+                break;
+            }
+            catch(IllegalAccessException iae) {
+                System.out.println(iae.getMessage());
+            }
+            catch(Exception e) {
+                System.out.println("Le format n'est pas le bon, merci de mettre x:x");
+            }
+        }
 
         // Appeler creator de donjon
         Donjon donjon = new Donjon(x,y);
@@ -80,16 +96,16 @@ public class MaitreJeu{
                 System.out.println("4 - Harnois, classe d'armure : 12");
                 int armure = parseInt(Scan.ScanLine());
 
-                switch (armure) {
-                    case 1:
-                        armureObjet = new ArmureEcailles();
-                    case 2:
-                        armureObjet = new DemiPlate();
-                    case 3:
-                        armureObjet = new CotteMailles();
-                    case 4:
-                        armureObjet = new Harnois();
+                if (armure == 1) {
+                    armureObjet = new ArmureEcailles();
+                } else if (armure == 2) {
+                    armureObjet = new DemiPlate();
+                } else if (armure == 3) {
+                    armureObjet = new CotteMailles();
+                } else if (armure == 4) {
+                    armureObjet = new Harnois();
                 }
+
                 donjon.placerEquipement(armureObjet);
             }
 
@@ -110,22 +126,22 @@ public class MaitreJeu{
 
                 int arme = parseInt(Scan.ScanLine());
 
-                switch (arme) {
-                    case 1:
-                        armeObjet = new Baton();
-                    case 2:
-                        armeObjet = new MasseArme();
-                    case 3:
-                        armeObjet = new EpeeLongue();
-                    case 4:
-                        armeObjet = new Rapiere();
-                    case 5:
-                        armeObjet = new ArbaleteLegere();
-                    case 6:
-                        armeObjet = new Fronde();
-                    case 7:
-                        armeObjet = new ArcCourt();
+                if (arme == 1) {
+                    armeObjet = new Baton();
+                } else if (arme == 2) {
+                    armeObjet = new MasseArme();
+                } else if (arme == 3) {
+                    armeObjet = new EpeeLongue();
+                } else if (arme == 4) {
+                    armeObjet = new Rapiere();
+                } else if (arme == 5) {
+                    armeObjet = new ArbaleteLegere();
+                } else if (arme == 6) {
+                    armeObjet = new Fronde();
+                } else if (arme == 7) {
+                    armeObjet = new ArcCourt();
                 }
+
                 donjon.placerEquipement(armeObjet);
             }
 

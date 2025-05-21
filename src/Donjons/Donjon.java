@@ -31,7 +31,7 @@ public class Donjon {
         }
     }
 
-    public void creationObstacle() {
+    public void placementObstacle() {
         afficherCarte();
 
         System.out.println("Veuillez indiquer les obstacles à créer dans le donjon : \n(exemple : pour mettre un obstacle à l'endroit A:5 vous devez indiquer A:5)\n");
@@ -50,21 +50,10 @@ public class Donjon {
                     }
                 }
 
-                if (x == -1) {
-                    throw new IllegalArgumentException("Colonne invalide.");
-                }
-
                 int y = Integer.parseInt(obstacleSplit[1]);
 
-                if (x < 0 || x >= m_donjon.length || y < 0 || y >= m_donjon[x].length) {
-                    throw new IllegalArgumentException("Coordonnées hors limites.");
-                }
+                placer("[ ]", x, y);
 
-                if(m_donjon[x][y]!=" . ") {
-                    throw new IllegalArgumentException("Endroit non disponible, il y a déjà -> "+ m_donjon[x][y]);
-                }
-
-                m_donjon[x][y] = "[ ]";
                 System.out.println("Obstacle placé avec succès à " + obstacleSplit[0] + ":" + y);
                 break;
 
@@ -93,25 +82,13 @@ public class Donjon {
                     }
                 }
 
-                if (x == -1) {
-                    throw new IllegalArgumentException("Colonne invalide.");
-                }
-
                 int y = Integer.parseInt(obstacleSplit[1]);
 
-                if (x < 0 || x >= m_donjon.length || y < 0 || y >= m_donjon[x].length) {
-                    throw new IllegalArgumentException("Coordonnées hors limites.");
-                }
-
-                if(m_donjon[x][y]!=" . ") {
-                    throw new IllegalArgumentException("Endroit non disponible, il y a déjà -> "+ m_donjon[x][y]);
-                }
-
                 if(personnage.getNom().length() < 3) {
-                    m_donjon[x][y] = personnage.getNom().toUpperCase();
+                    placer(personnage.getNom().toUpperCase(), x, y);
                 }
                 else {
-                    m_donjon[x][y] = personnage.getNom().substring(0,3).toUpperCase();
+                    placer(personnage.getNom().substring(0,3).toUpperCase(), x, y);
                 }
 
                 System.out.println("Joueur placé avec succès à " + obstacleSplit[0] + ":" + y);
@@ -140,10 +117,6 @@ public class Donjon {
                     if(m_alphabet.get(i).equals(obstacleSplit[0])) {
                         x = i;
                     }
-                }
-
-                if (x == -1) {
-                    throw new IllegalArgumentException("Colonne invalide.");
                 }
 
                 int y = Integer.parseInt(obstacleSplit[1]);
@@ -230,7 +203,7 @@ public class Donjon {
         }
         System.out.println("*");
 
-        for(int i = 1; i < m_y; i++) {
+        for(int i = 0; i < m_y; i++) {
             if(i<=9) {
                 System.out.print(i+"  | ");
             }
@@ -248,5 +221,25 @@ public class Donjon {
             System.out.print("---");
         }
         System.out.println("*\n* Equipement   |   [ ] Obstacle  |\n");
+    }
+
+    private void placer(String o, int x, int y) {
+        while(true) {
+            try {
+                if (x < 0 || x >= m_donjon.length || y < 0 || y >= m_donjon[x].length) {
+                    throw new IllegalArgumentException("Coordonnées hors limites.");
+                }
+                if(m_donjon[x][y]!=" . ") {
+                    throw new IllegalArgumentException("Endroit non disponible, il y a déjà -> "+ m_donjon[x][y]);
+                }
+                else {
+                    m_donjon[x][y] = o;
+                    break;
+                }
+            }
+            catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
