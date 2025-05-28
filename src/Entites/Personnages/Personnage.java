@@ -1,5 +1,6 @@
 package Entites.Personnages;
-import Entites.Monstre;
+import Entites.Entite;
+import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Classes.Classe;
 import Entites.Personnages.Races.Race;
 import Objets.Arme.Arme;
@@ -9,7 +10,7 @@ import Entites.Caracteristiques.Caracteristique;
 
 import java.util.ArrayList;
 
-public class Personnage {
+public class Personnage extends Entite {
     private String m_nom;
     private Race m_race;
     private Classe m_classe;
@@ -52,6 +53,10 @@ public class Personnage {
         return m_race;
     }
 
+    public Caracteristique getCaracteristiques(){
+        return m_caracteristiques;
+    }
+
     public String afficherInventaire(){
 
         // Variable inventaire qui sera construite dans la boucle
@@ -75,10 +80,15 @@ public class Personnage {
     }
 
     public void attaquer(Monstre pasGentil){
-        System.out.println("Les dégâts que vous allez infliger à " + pasGentil.getNom() + " seront définie par un lancé " + m_armeEquipe.getDeAttaque().get_nbDes() + "d" +  m_armeEquipe.getDeAttaque().get_nbFaces());
+        String nom = pasGentil.getEspece() + pasGentil.getNumero();
+        System.out.println("Les dégâts que vous allez infliger à " + nom + " seront définie par un lancé " + m_armeEquipe.getDeAttaque().get_nbDes() + "d" +  m_armeEquipe.getDeAttaque().get_nbFaces());
         int degat = m_armeEquipe.getDegat();
-        System.out.println("Vous avez infligé " + degat + " dégât(s) à " + pasGentil.getNom());
-        // pasGentil.diminuerVie(degat);
+        System.out.println("Vous avez infligé " + degat + " dégât(s) à " + nom);
+        pasGentil.diminuerVie(degat);
+    }
+
+    public void diminuerVie(int degat){
+        m_caracteristiques.changerPv(-degat);
     }
 
     public void afficherSituation(){
