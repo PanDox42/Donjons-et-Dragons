@@ -13,6 +13,8 @@ public class Jouer {
         MaitreJeu mdj = new MaitreJeu();
         Donjon donjon = mdj.creerDonjon();
         PreparerTour.creerObstacle(donjon);
-        donjon.placerObjet(PreparerTour.creerObjet());
+        PreparerTour.creerObjet();
+        donjon.placerMonstre(PreparerTour.creerObjet());
+        donjon.placerPersonnage(PreparerTour.creerObjet());
     }
 }

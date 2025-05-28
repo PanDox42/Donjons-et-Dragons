@@ -132,8 +132,8 @@ public class PreparerTour {
         return new ArrayList<Monstre>();
     }
 
-    public static ArrayList<Objet> creerObjet() {
-        ArrayList<Objet> m_objets = new ArrayList<>();
+    public static void creerObjet(Donjon donjon) {
+        Objet m_objets = null;
         while(true) {
             System.out.println("Quel objet voulez-vous placer dans le donjon ?");
             System.out.println("0 pour armure et 1 pour arme :");
@@ -208,7 +208,7 @@ public class PreparerTour {
                 break;
             }
         }
-        return m_objets;
+        donjon.placerMonstre(m_objets);
     }
 
     public static void creerObstacle(Donjon donjon) {
