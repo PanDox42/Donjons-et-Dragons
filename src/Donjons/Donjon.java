@@ -31,7 +31,7 @@ public class Donjon {
         }
     }
 
-    public void placementObstacle() {
+    public void placerObstacle() {
         afficherCarte();
 
         System.out.println("Veuillez indiquer les obstacles à créer dans le donjon : \n(exemple : pour mettre un obstacle à l'endroit A:5 vous devez indiquer A:5)\n");
@@ -145,7 +145,7 @@ public class Donjon {
         }
     }
 
-    public void placerEquipement(Objet objet) {
+    public void placerObjet(Objet objet) {
         afficherCarte();
 
         System.out.println("Veuillez indiquer les coordonnées de l'équipement à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
