@@ -4,7 +4,7 @@ import Objets.Arme.Arme;
 import Objets.Arme.Poing;
 import Objets.Objet;
 
-public class Armure implements Objet {
+public abstract class Armure implements Objet {
     private final String m_nom;
     private final int m_classeArmure;
 

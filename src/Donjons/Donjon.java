@@ -1,6 +1,6 @@
 package Donjons;
 
-import Entites.Monstre;
+import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Personnage;
 import Objets.Objet;
 import Addon.Scan;

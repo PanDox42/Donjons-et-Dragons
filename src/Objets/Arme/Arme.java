@@ -3,7 +3,7 @@ package Objets.Arme;
 import Addon.De;
 import Objets.Objet;
 
-public class Arme implements Objet {
+public abstract class Arme implements Objet {
     private String m_nom;
     private int m_porte;
     private De m_deAttaque;

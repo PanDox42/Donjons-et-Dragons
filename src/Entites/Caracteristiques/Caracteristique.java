@@ -30,6 +30,8 @@ public class Caracteristique {
         System.out.println("Votre classe vous donne " + vie + " PV\n" +
                 "Votre race vous ajoute " + personnage.getRace().getPvAugmente());
 
+        vie += personnage.getRace().getPvAugmente();
+
         System.out.println("Votre vie est donc définie à " + vie + "\n");
 
 
