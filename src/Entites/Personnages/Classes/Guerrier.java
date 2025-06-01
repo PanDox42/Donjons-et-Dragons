@@ -1,10 +1,7 @@
 package Entites.Personnages.Classes;
 
 import Objets.Arme.ArmeDistances.ArbaleteLegere;
-import Objets.Arme.ArmeDistances.ArmeDistance;
-import Objets.Arme.ArmeGuerres.ArmeGuerre;
 import Objets.Arme.ArmeGuerres.EpeeLongue;
-import Objets.Armure.ArmureLourdes.ArmureLourde;
 import Objets.Armure.ArmureLourdes.CotteMailles;
 import Objets.Objet;
 

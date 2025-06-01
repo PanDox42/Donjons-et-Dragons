@@ -1,6 +1,7 @@
 package Entites.Personnages.Classes;
 
 import Objets.Objet;
+
 import java.util.ArrayList;
 
 public interface Classe {

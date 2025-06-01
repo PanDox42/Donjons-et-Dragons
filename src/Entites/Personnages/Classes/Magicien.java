@@ -1,8 +1,6 @@
 package Entites.Personnages.Classes;
 
-import Objets.Arme.ArmeCourantes.ArmeCourante;
 import Objets.Arme.ArmeCourantes.Baton;
-import Objets.Arme.ArmeDistances.ArmeDistance;
 import Objets.Arme.ArmeDistances.Fronde;
 import Objets.Objet;
 

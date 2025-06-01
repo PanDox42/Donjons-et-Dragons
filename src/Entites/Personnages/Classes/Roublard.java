@@ -1,11 +1,8 @@
 package Entites.Personnages.Classes;
 
 import Objets.Arme.ArmeDistances.ArcCourt;
-import Objets.Arme.ArmeDistances.ArmeDistance;
-import Objets.Arme.ArmeGuerres.ArmeGuerre;
 import Objets.Arme.ArmeGuerres.Rapiere;
 import Objets.Objet;
-
 
 import java.util.ArrayList;
 

@@ -1,20 +1,6 @@
 package Entites.Personnages;
 
 import Donjons.Donjon;
-import Objets.Arme.ArmeCourantes.Baton;
-import Objets.Arme.ArmeCourantes.MasseArme;
-import Objets.Arme.ArmeDistances.ArbaleteLegere;
-import Objets.Arme.ArmeDistances.ArcCourt;
-import Objets.Arme.ArmeDistances.Fronde;
-import Objets.Arme.ArmeGuerres.EpeeLongue;
-import Objets.Arme.ArmeGuerres.Rapiere;
-import Objets.Arme.Poing;
-import Objets.Armure.ArmureLegeres.ArmureEcailles;
-import Objets.Armure.ArmureLegeres.DemiPlate;
-import Objets.Armure.ArmureLourdes.CotteMailles;
-import Objets.Armure.ArmureLourdes.Harnois;
-import Objets.Armure.Nu;
-import Objets.Objet;
 import Addon.Scan;
 
 import java.util.ArrayList;
