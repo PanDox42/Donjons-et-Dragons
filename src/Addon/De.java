@@ -29,44 +29,44 @@ public class De {
         return lancerDes(nbDes, nbFaces);
     }
 
-    private static int lancerDes(int nbDes, int nbFaces){
-
-        // Evite une erreur si la fonction est mal utilisée
-        if (nbFaces <= 0 || nbDes <= 0){
-            return 0;
+    // Partie logique : effectue les lancers de dés et retourne les valeurs
+    private static int[] lancerDesValeurs(int nbDes, int nbFaces) {
+        if (nbDes <= 0 || nbFaces <= 0) {
+            return new int[0]; // tableau vide
         }
 
         Random random = new Random();
+        int[] resultats = new int[nbDes];
 
-        // Somme des lancés (valeur finale)
-        int valeur = 0;
-
-        // Tableau qui stock les valeurs des lancée
-        int[] tabValeur = new int[nbDes];
-
-        System.out.println("Lancer " + nbDes + " dé(s) de " + nbFaces + " faces (appuyer sur ENTRER)");
-        Scan.ScanLine(); // Attente d'une touche
-
-        // Boucle calculant la valeur des lancées de dés aléatoire
-        for (int i = 0; i < nbDes; i++){
-
-            // Création de la variable lance et initialisation à un nombre aléatoire entre 1 et nbFabes inclu
-            int lance = random.nextInt(1,nbFaces + 1);
-
-            // Ajout de la valeur dans le tableau
-            tabValeur[i] = lance;
-
-            valeur += lance;
+        for (int i = 0; i < nbDes; i++) {
+            resultats[i] = random.nextInt(1, nbFaces + 1);
         }
 
-        // Gere l'affichage des lancés executés à l'aide d'une boucle for qui parcourt le tableau tabValeur
-        System.out.print("--- Vous avez obtenu : ");
+        return resultats;
+    }
 
-        for (int i = 0; i < nbDes; i++){
-            System.out.print(tabValeur[i] + " ");
+    // Partie affichage : affiche les lancers et retourne la somme
+    private static int lancerDes(int nbDes, int nbFaces) {
+        System.out.println("Lancer " + nbDes + " dé(s) de " + nbFaces + " faces (appuyer sur ENTRER)");
+        Scan.ScanLine(); // Pause
+
+        int[] resultats = lancerDesValeurs(nbDes, nbFaces);
+
+        if (resultats.length == 0) {
+            System.out.println("Paramètres invalides pour le lancer de dés.");
+            return 0;
+        }
+
+        // Affichage des résultats
+        System.out.print("--- Vous avez obtenu : ");
+        int somme = 0;
+        for (int val : resultats) {
+            System.out.print(val + " ");
+            somme += val;
         }
         System.out.println("---\n");
 
-        return valeur;
+        return somme;
     }
+
 }

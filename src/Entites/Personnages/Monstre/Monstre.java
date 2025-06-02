@@ -16,7 +16,7 @@ public class Monstre extends Entite {
         m_numero = numero;
         m_espece = espece;
         m_attaque = Attaque.creerAttaque();
-        m_caracteristiques = CaracteristiqueMonstre.creerCaracteristique(this);
+        m_caracteristiques = CaracteristiqueMonstre.creerCaracteristique();
     }
 
     public Monstre(int numero, String espece, String nom, Attaque attaque){
@@ -24,7 +24,7 @@ public class Monstre extends Entite {
         m_numero = numero;
         m_espece = espece;
         m_attaque = attaque;
-        m_caracteristiques = CaracteristiqueMonstre.creerCaracteristique(this);
+        m_caracteristiques = CaracteristiqueMonstre.creerCaracteristique();
     }
 
     public Monstre(int numero, String espece, String nom, Attaque attaque, CaracteristiqueMonstre caracteristique){

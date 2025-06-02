@@ -1,6 +1,9 @@
 package Donjons;
 
 import Addon.Scan;
+import Entites.Caracteristiques.Caracteristique;
+import Entites.Caracteristiques.CaracteristiqueMonstre;
+import Entites.Personnages.Monstre.Attaque;
 import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Classes.*;
 import Entites.Personnages.Personnage;
@@ -23,67 +26,74 @@ import Objets.Objet;
 import static java.lang.Integer.parseInt;
 
 public class PreparerTour {
-    public static Personnage creerJoueur() {
-        try {
-            String nom = "";
-            int race = 0;
-            int classe = 0;
-            Race raceClasse = null;
-            Classe classeClasse = null;
+    public static Personnage creerPersonnage(String nom, int race, int classe) {
+        Race raceClasse;
+        Classe classeClasse;
 
-            // Nom du joueur
+        switch (race) {
+            case 0 -> raceClasse = new Elfe();
+            case 1 -> raceClasse = new Halfelin();
+            case 2 -> raceClasse = new Humain();
+            case 3 -> raceClasse = new Nain();
+            default -> throw new IllegalArgumentException("Race inconnue.");
+        }
+
+        switch (classe) {
+            case 0 -> classeClasse = new Clerc();
+            case 1 -> classeClasse = new Guerrier();
+            case 2 -> classeClasse = new Magicien();
+            case 3 -> classeClasse = new Roublard();
+            default -> throw new IllegalArgumentException("Classe inconnue.");
+        }
+
+        return new Personnage(nom, raceClasse, classeClasse);
+    }
+
+    public static Personnage demanderJoueur() {
+        try {
+            String nom;
+            int race = -1;
+            int classe = -1;
+
+            // Saisie du nom
             System.out.println("Quel sera le nom du joueur ?");
             nom = Scan.ScanLine();
 
-            // Choix de la race
+            // Saisie de la race
             while (true) {
                 try {
                     System.out.println("Quelle sera la race du joueur parmi celles-ci :");
-                    System.out.println("Entrez 0 pour Elfe\nEntrez 1 pour Halfelin\nEntrez 2 pour Humain\nEntrez 3 pour Nain");
+                    System.out.println("0 - Elfe");
+                    System.out.println("1 - Halfelin");
+                    System.out.println("2 - Humain");
+                    System.out.println("3 - Nain");
 
                     race = Integer.parseInt(Scan.ScanLine());
-                    if (race < 0 || race > 3) {
-                        throw new IllegalArgumentException("Veuillez entrer un nombre entier entre 0 et 3 inclus");
-                    }
+                    if (race < 0 || race > 3) throw new IllegalArgumentException();
                     break;
                 } catch (Exception e) {
-                    System.out.println("Erreur : Veuillez entrer un nombre entier entre 0 et 3 inclus");
+                    System.out.println("Erreur : veuillez entrer un nombre entier entre 0 et 3 inclus.");
                 }
             }
 
-            // Choix de la classe
+            // Saisie de la classe
             while (true) {
                 try {
                     System.out.println("Quelle sera la classe du joueur parmi celles-ci :");
-                    System.out.println("Entrez 0 pour Clerc\nEntrez 1 pour Guerrier\nEntrez 2 pour Magicien\nEntrez 3 pour Roublard");
+                    System.out.println("0 - Clerc");
+                    System.out.println("1 - Guerrier");
+                    System.out.println("2 - Magicien");
+                    System.out.println("3 - Roublard");
 
                     classe = Integer.parseInt(Scan.ScanLine());
-                    if (classe < 0 || classe > 3) {
-                        throw new IllegalArgumentException("Veuillez entrer un nombre entier entre 0 et 3 inclus");
-                    }
+                    if (classe < 0 || classe > 3) throw new IllegalArgumentException();
                     break;
                 } catch (Exception e) {
-                    System.out.println("Erreur : Veuillez entrer un nombre entier entre 0 et 3 inclus");
+                    System.out.println("Erreur : veuillez entrer un nombre entier entre 0 et 3 inclus.");
                 }
             }
 
-            // Instanciation de la race
-            switch (race) {
-                case 0 -> raceClasse = new Elfe();
-                case 1 -> raceClasse = new Halfelin();
-                case 2 -> raceClasse = new Humain();
-                case 3 -> raceClasse = new Nain();
-            }
-
-            // Instanciation de la classe
-            switch (classe) {
-                case 0 -> classeClasse = new Clerc();
-                case 1 -> classeClasse = new Guerrier();
-                case 2 -> classeClasse = new Magicien();
-                case 3 -> classeClasse = new Roublard();
-            }
-
-            return new Personnage(nom, raceClasse, classeClasse);
+            return creerPersonnage(nom, race, classe);
 
         } catch (Exception e) {
             System.out.println("Une erreur est survenue : " + e.getMessage());
@@ -91,140 +101,140 @@ public class PreparerTour {
         }
     }
 
+    public static Monstre creerMonstreDepuisValeurs(int numero, String espece, String nom) {
+        if (numero < 0) {
+            throw new IllegalArgumentException("Le numéro doit être positif.");
+        }
+        if (espece == null || espece.trim().isEmpty()) {
+            throw new IllegalArgumentException("L'espèce ne peut pas être vide.");
+        }
+        if (nom == null || nom.trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom ne peut pas être vide.");
+        }
+
+        return new Monstre(numero, espece.trim(), nom.trim());
+    }
+
+
     public static Monstre creerMonstre() {
         int numero = -1;
         String espece = "";
         String nom = "";
 
+        // Saisie du numéro
+        while (true) {
+            try {
+                System.out.print("Entrez un numéro pour le monstre : ");
+                numero = Integer.parseInt(Scan.ScanLine());
+                if (numero < 0) throw new IllegalArgumentException("Le numéro doit être positif.");
+                break;
+            } catch (Exception e) {
+                System.out.println("Erreur : Veuillez entrer un entier valide pour le numéro.");
+            }
+        }
+
+        // Saisie de l'espèce
+        while (true) {
+            try {
+                System.out.print("Entrez l'espèce du monstre : ");
+                espece = Scan.ScanLine().trim();
+                if (espece.isEmpty()) throw new IllegalArgumentException("L'espèce ne peut pas être vide.");
+                break;
+            } catch (Exception e) {
+                System.out.println("Erreur : " + e.getMessage());
+            }
+        }
+
+        // Saisie du nom
+        while (true) {
+            try {
+                System.out.print("Entrez le nom du monstre : ");
+                nom = Scan.ScanLine().trim();
+                if (nom.isEmpty()) throw new IllegalArgumentException("Le nom ne peut pas être vide.");
+                break;
+            } catch (Exception e) {
+                System.out.println("Erreur : " + e.getMessage());
+            }
+        }
+
+        // Appel de la fonction logique
         try {
-            // Saisie du numéro
-            while (true) {
-                try {
-                    System.out.print("Entrez un numéro pour le monstre : ");
-                    numero = parseInt(Scan.ScanLine());
-                    if (numero < 0) throw new IllegalArgumentException("Le numéro doit être positif.");
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Erreur : Veuillez entrer un entier valide pour le numéro.");
-                }
-            }
-
-            // Saisie de l'espèce
-            while (true) {
-                try {
-                    System.out.print("Entrez l'espèce du monstre : ");
-                    espece = Scan.ScanLine().trim();
-                    if (espece.isEmpty()) throw new IllegalArgumentException("L'espèce ne peut pas être vide.");
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Erreur : " + e.getMessage());
-                }
-            }
-
-            // Saisie du nom
-            while (true) {
-                try {
-                    System.out.print("Entrez le nom du monstre : ");
-                    nom = Scan.ScanLine().trim();
-                    if (nom.isEmpty()) throw new IllegalArgumentException("Le nom ne peut pas être vide.");
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Erreur : " + e.getMessage());
-                }
-            }
-
-            // Création de l’objet Monstre
-            return new Monstre(numero, espece, nom);
-
+            return creerMonstreDepuisValeurs(numero, espece, nom);
         } catch (Exception e) {
-            System.out.println("Erreur inattendue lors de la création du monstre : " + e.getMessage());
+            System.out.println("Erreur lors de la création du monstre : " + e.getMessage());
         }
 
         return null;
     }
+
+    public static Objet creerObjetDepuisChoix(int type, int id) {
+        if (type == 0) { // ARMURE
+            return switch (id) {
+                case 1 -> new ArmureEcailles();
+                case 2 -> new DemiPlate();
+                case 3 -> new CotteMailles();
+                case 4 -> new Harnois();
+                default -> throw new IllegalArgumentException("ID d'armure invalide (1-4 attendu).");
+            };
+        } else if (type == 1) { // ARME
+            return switch (id) {
+                case 1 -> new Baton();
+                case 2 -> new MasseArme();
+                case 3 -> new EpeeLongue();
+                case 4 -> new Rapiere();
+                case 5 -> new ArbaleteLegere();
+                case 6 -> new Fronde();
+                case 7 -> new ArcCourt();
+                default -> throw new IllegalArgumentException("ID d'arme invalide (1-7 attendu).");
+            };
+        } else {
+            throw new IllegalArgumentException("Type d'objet invalide (0 = armure, 1 = arme).");
+        }
+    }
+
 
     public static Objet creerObjet() {
-        Objet m_objets = null;
-        System.out.println("Quel objet voulez-vous placer dans le donjon ?");
-        System.out.println("0 pour armure et 1 pour arme :");
-        int type = parseInt(Scan.ScanLine());
+        int type = -1;
 
-        System.out.println("Indiquez le numéro de l'objet à placer parmi :");
-        Objet armeObjet = new Poing();
-        Objet armureObjet = new Nu();
+        while (true) {
+            try {
+                System.out.println("Quel objet voulez-vous placer dans le donjon ?");
+                System.out.println("0 pour armure, 1 pour arme :");
+                type = Integer.parseInt(Scan.ScanLine());
 
-        // CAS ARMURE
-        if (type == 0) {
-            System.out.println("Armures légères :");
-            System.out.println("1 - Armure d'écailles, classe d'armure : 9");
-            System.out.println("2 - Demi-plate, classe d'armure : 10");
-
-            System.out.println("Armures lourdes :");
-            System.out.println("3 - Cotte de mailles, classe d'armure : 11");
-            System.out.println("4 - Harnois, classe d'armure : 12");
-            int armure = parseInt(Scan.ScanLine());
-
-            if (armure == 1) {
-                armureObjet = new ArmureEcailles();
-            } else if (armure == 2) {
-                armureObjet = new DemiPlate();
-            } else if (armure == 3) {
-                armureObjet = new CotteMailles();
-            } else if (armure == 4) {
-                armureObjet = new Harnois();
-            }
-
-            return armureObjet;
-        }
-
-        // CAS ARME
-        else if (type == 1) {
-            System.out.println("Armes courantes au corps-à-corps :");
-            System.out.println("1 - Bâton, dégât : 1d6, portée : 1 case");
-            System.out.println("2 - Masse d'armes, dégât : 1d6, portée : 1 case");
-
-            System.out.println("Armes de guerre au corps-à-corps :");
-            System.out.println("3 - Épée longue, dégât : 1d8, portée : 1 case");
-            System.out.println("4 - Rapière, dégât : 1d8, portée : 1 case");
-
-            System.out.println("Armes à distance :");
-            System.out.println("5 - Arbalète légère, dégât : 1d8, portée : 16 cases");
-            System.out.println("6 - Fronde, dégât : 1d4, portée : 6 cases");
-            System.out.println("7 - Arc court, dégât : 1d6, portée : 16 cases");
-
-            int arme = parseInt(Scan.ScanLine());
-
-            if (arme == 1) {
-                armeObjet = new Baton();
-            } else if (arme == 2) {
-                armeObjet = new MasseArme();
-            } else if (arme == 3) {
-                armeObjet = new EpeeLongue();
-            } else if (arme == 4) {
-                armeObjet = new Rapiere();
-            } else if (arme == 5) {
-                armeObjet = new ArbaleteLegere();
-            } else if (arme == 6) {
-                armeObjet = new Fronde();
-            } else if (arme == 7) {
-                armeObjet = new ArcCourt();
-            }
-
-            return armeObjet;
-        }
-        return null;
-    }
-
-    public static void creerObstacle(Donjon donjon) {
-        // Appeler creationObstacle
-        donjon.placerObstacle();
-        while(true) {
-            System.out.println("Voulez-vous continuer à créer un obstacle ?\nSi non, alors entrez 0\nSi oui, alors entrez 1");
-            if(parseInt(Scan.ScanLine())==0) {
+                if (type != 0 && type != 1) {
+                    throw new IllegalArgumentException("Entrez 0 pour une armure ou 1 pour une arme.");
+                }
                 break;
+            } catch (Exception e) {
+                System.out.println("Erreur : " + e.getMessage());
             }
-            else {
-                donjon.placerObstacle();
+        }
+
+        while (true) {
+            try {
+                if (type == 0) {
+                    System.out.println("Choisissez une armure :");
+                    System.out.println("1 - Armure d'écailles (CA 9)");
+                    System.out.println("2 - Demi-plate (CA 10)");
+                    System.out.println("3 - Cotte de mailles (CA 11)");
+                    System.out.println("4 - Harnois (CA 12)");
+                } else {
+                    System.out.println("Choisissez une arme :");
+                    System.out.println("1 - Bâton (1d6, portée 1)");
+                    System.out.println("2 - Masse d'armes (1d6, portée 1)");
+                    System.out.println("3 - Épée longue (1d8, portée 1)");
+                    System.out.println("4 - Rapière (1d8, portée 1)");
+                    System.out.println("5 - Arbalète légère (1d8, portée 16)");
+                    System.out.println("6 - Fronde (1d4, portée 6)");
+                    System.out.println("7 - Arc court (1d6, portée 16)");
+                }
+
+                int id = Integer.parseInt(Scan.ScanLine());
+                return creerObjetDepuisChoix(type, id);
+
+            } catch (Exception e) {
+                System.out.println("Erreur : " + e.getMessage());
             }
         }
     }

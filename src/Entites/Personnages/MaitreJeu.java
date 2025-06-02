@@ -1,26 +1,23 @@
 package Entites.Personnages;
 
+import Addon.De;
 import Donjons.Donjon;
 import Addon.Scan;
+import Donjons.Jouer;
+import Donjons.Obstacle;
+import Donjons.PreparerTour;
+import Entites.Personnages.Monstre.Monstre;
 
 import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
 
 public class MaitreJeu{
-    private static ArrayList<String> tour = new ArrayList<>();
 
     public MaitreJeu(){};
 
-    public static void ajouterLignes(String phrase){
-        tour.add(phrase);
-    }
-
     public void raconterTour(){
-        for (int i = 0; i < tour.size(); i++){
-            System.out.println(tour.get(i));
-        }
-        tour.clear();
+        System.out.println("Maitre du jeu - Écrivez le contexte :\n"+Scan.ScanLine());
     }
 
     public Donjon creerDonjon() {
@@ -47,8 +44,31 @@ public class MaitreJeu{
         }
 
         // Appeler creator de donjon
-        Donjon donjon = new Donjon(x,y);
+        Donjon donjon = new Donjon(x,y, this);
 
+        donjon.afficherCarte();
         return donjon;
+    }
+
+    public Donjon creerDonjonParDefaut() {
+        try {
+            Donjon donjon = new Donjon(25, 25, this);
+            donjon.placerObstacle(5, 9, new Obstacle());
+            donjon.placerObstacle(6, 9, new Obstacle());
+            donjon.placerObstacle(7, 9, new Obstacle());
+            donjon.placerObstacle(7, 10, new Obstacle());
+            donjon.placerObstacle(7, 11, new Obstacle());
+            donjon.placerObjet(6, 15, PreparerTour.creerObjetDepuisChoix(0,0));
+            donjon.placerObjet(8, 0, PreparerTour.creerObjetDepuisChoix(0,1));
+            donjon.placerObjet(3, 5, PreparerTour.creerObjetDepuisChoix(0,3));
+            donjon.placerObjet(20, 6, PreparerTour.creerObjetDepuisChoix(1,2));
+            donjon.placerObjet(16, 15, PreparerTour.creerObjetDepuisChoix(1,1));
+            donjon.placerObjet(9, 3, PreparerTour.creerObjetDepuisChoix(1,5));
+
+            return donjon;
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }
