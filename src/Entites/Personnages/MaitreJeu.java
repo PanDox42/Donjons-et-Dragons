@@ -6,6 +6,8 @@ import Addon.Scan;
 import Donjons.Jouer;
 import Donjons.Obstacle;
 import Donjons.PreparerTour;
+import Entites.Caracteristiques.CaracteristiqueMonstre;
+import Entites.Personnages.Monstre.Attaque;
 import Entites.Personnages.Monstre.Monstre;
 
 import java.util.ArrayList;
@@ -16,8 +18,9 @@ public class MaitreJeu{
 
     public MaitreJeu(){};
 
-    public void raconterTour(){
-        System.out.println("Maitre du jeu - Écrivez le contexte :\n"+Scan.ScanLine());
+    public String raconterTour(){
+        System.out.println("Maitre du jeu - Écrivez le contexte :");
+        return Scan.ScanLine();
     }
 
     public Donjon creerDonjon() {
@@ -58,12 +61,23 @@ public class MaitreJeu{
             donjon.placerObstacle(7, 9, new Obstacle());
             donjon.placerObstacle(7, 10, new Obstacle());
             donjon.placerObstacle(7, 11, new Obstacle());
-            donjon.placerObjet(6, 15, PreparerTour.creerObjetDepuisChoix(0,0));
+            donjon.placerObstacle(15, 19, new Obstacle());
+            donjon.placerObstacle(16, 19, new Obstacle());
+            donjon.placerObstacle(17, 19, new Obstacle());
+            donjon.placerObstacle(17, 20, new Obstacle());
+            donjon.placerObstacle(17, 21, new Obstacle());
+            donjon.placerObstacle(9, 8, new Obstacle());
+            donjon.placerObstacle(8, 8, new Obstacle());
+            donjon.placerObstacle(7, 8, new Obstacle());
+            donjon.placerObjet(6, 15, PreparerTour.creerObjetDepuisChoix(0,1));
             donjon.placerObjet(8, 0, PreparerTour.creerObjetDepuisChoix(0,1));
             donjon.placerObjet(3, 5, PreparerTour.creerObjetDepuisChoix(0,3));
             donjon.placerObjet(20, 6, PreparerTour.creerObjetDepuisChoix(1,2));
             donjon.placerObjet(16, 15, PreparerTour.creerObjetDepuisChoix(1,1));
-            donjon.placerObjet(9, 3, PreparerTour.creerObjetDepuisChoix(1,5));
+            donjon.placerObjet(9, 3, PreparerTour.creerObjetDepuisChoix(1,4));
+            donjon.placerMonstre(24,15,PreparerTour.creerMonstreDepuisValeurs(0,"Dragon", "Dragou", new Attaque(2, new De(10, 4)), new CaracteristiqueMonstre(200, 30, 12, 22, 12, 20)));
+            donjon.placerMonstre(4,5,PreparerTour.creerMonstreDepuisValeurs(0,"Berserk", "B-Rex", new Attaque(2, new De(10, 4)), new CaracteristiqueMonstre(200, 30, 12, 22, 12, 20)));
+            donjon.placerMonstre(14,15,PreparerTour.creerMonstreDepuisValeurs(0,"Mutant", "Jean-Pierre", new Attaque(2, new De(10, 4)), new CaracteristiqueMonstre(200, 30, 12, 22, 12, 20)));
 
             return donjon;
         } catch(Exception e) {

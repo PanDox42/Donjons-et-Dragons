@@ -10,7 +10,7 @@ public class Jouer {
         Donjon donjon = null;
         while (true) {
             try {
-                System.out.println("Souhaitez-vous créer le donjon manuellement ou choisir celui par défault ?");
+                System.out.println("Maître du Jeu - Souhaitez-vous créer le donjon manuellement ou choisir celui par défault ?");
                 System.out.println("1 - Manuellement");
                 System.out.println("2 - Par Default");
 
@@ -31,8 +31,9 @@ public class Jouer {
                 System.out.println(e.getMessage());
             }
         }
-        donjon.placerMonstresAvecConfirmation();
+        donjon.afficherCarte();
         donjon.placerJoueursAvecConfirmation();
+        donjon.modifierContexte(donjon.m_mdj.raconterTour());
     }
 
     private static Donjon preparerDonjonManuellement() {
@@ -40,6 +41,7 @@ public class Jouer {
         Donjon donjon = mdj.creerDonjon();
         donjon.placerObstaclesAvecConfirmation();
         donjon.placerObjetsAvecConfirmation();
+        donjon.placerMonstresAvecConfirmation();
         return donjon;
     }
 

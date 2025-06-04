@@ -101,6 +101,20 @@ public class PreparerTour {
         }
     }
 
+    public static Monstre creerMonstreDepuisValeurs(int numero, String espece, String nom, Attaque attaque, CaracteristiqueMonstre caracteristiqueMonstre) {
+        if (numero < 0) {
+            throw new IllegalArgumentException("Le numéro doit être positif.");
+        }
+        if (espece == null || espece.trim().isEmpty()) {
+            throw new IllegalArgumentException("L'espèce ne peut pas être vide.");
+        }
+        if (nom == null || nom.trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom ne peut pas être vide.");
+        }
+
+        return new Monstre(numero, espece.trim(), nom.trim(), attaque, caracteristiqueMonstre);
+    }
+
     public static Monstre creerMonstreDepuisValeurs(int numero, String espece, String nom) {
         if (numero < 0) {
             throw new IllegalArgumentException("Le numéro doit être positif.");
