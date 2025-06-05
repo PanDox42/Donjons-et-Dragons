@@ -23,6 +23,9 @@ import Objets.Armure.ArmureLourdes.Harnois;
 import Objets.Armure.Nu;
 import Objets.Objet;
 
+import java.util.Dictionary;
+import java.util.List;
+
 import static java.lang.Integer.parseInt;
 
 public class PreparerTour {
@@ -57,7 +60,15 @@ public class PreparerTour {
 
             // Saisie du nom
             System.out.println("Quel sera le nom du joueur ?");
-            nom = Scan.ScanLine();
+            while(true) {
+                nom = Scan.ScanLine();
+                if(!nom.isEmpty()) {
+                    break;
+                }
+                else {
+                    System.out.println("Le nom ne doit pas être vide");
+                }
+            }
 
             // Saisie de la race
             while (true) {
@@ -130,22 +141,10 @@ public class PreparerTour {
     }
 
 
-    public static Monstre creerMonstre() {
-        int numero = -1;
+    public static Monstre creerMonstre(Donjon donjon) {
+        int numero = 0;
         String espece = "";
         String nom = "";
-
-        // Saisie du numéro
-        while (true) {
-            try {
-                System.out.print("Entrez un numéro pour le monstre : ");
-                numero = Integer.parseInt(Scan.ScanLine());
-                if (numero < 0) throw new IllegalArgumentException("Le numéro doit être positif.");
-                break;
-            } catch (Exception e) {
-                System.out.println("Erreur : Veuillez entrer un entier valide pour le numéro.");
-            }
-        }
 
         // Saisie de l'espèce
         while (true) {
@@ -155,20 +154,20 @@ public class PreparerTour {
                 if (espece.isEmpty()) throw new IllegalArgumentException("L'espèce ne peut pas être vide.");
                 break;
             } catch (Exception e) {
-                System.out.println("Erreur : " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
 
-        // Saisie du nom
-        while (true) {
-            try {
-                System.out.print("Entrez le nom du monstre : ");
-                nom = Scan.ScanLine().trim();
-                if (nom.isEmpty()) throw new IllegalArgumentException("Le nom ne peut pas être vide.");
-                break;
-            } catch (Exception e) {
-                System.out.println("Erreur : " + e.getMessage());
-            }
+        numero = donjon.getNombreEspeceMonstre(espece)+1;
+
+        if(espece.length() == 1) {
+            nom = " "+espece.toUpperCase()+numero;
+        }
+        else if(espece.length() == 2) {
+            nom = espece.toUpperCase()+numero;
+        }
+        else {
+            nom = espece.substring(0,2).toUpperCase()+numero;
         }
 
         // Appel de la fonction logique
@@ -209,19 +208,21 @@ public class PreparerTour {
 
     public static Objet creerObjet() {
         int type = -1;
-
+        System.out.println("Quel objet voulez-vous placer dans le donjon ?");
+        System.out.println("0 pour armure, 1 pour arme :");
         while (true) {
             try {
-                System.out.println("Quel objet voulez-vous placer dans le donjon ?");
-                System.out.println("0 pour armure, 1 pour arme :");
                 type = Integer.parseInt(Scan.ScanLine());
 
                 if (type != 0 && type != 1) {
-                    throw new IllegalArgumentException("Entrez 0 pour une armure ou 1 pour une arme.");
+                    throw new NumberFormatException();
                 }
+
                 break;
+            } catch (NumberFormatException e) {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre (0 ou 1).");
             } catch (Exception e) {
-                System.out.println("Erreur : " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
 
@@ -247,8 +248,10 @@ public class PreparerTour {
                 int id = Integer.parseInt(Scan.ScanLine());
                 return creerObjetDepuisChoix(type, id);
 
+            } catch (NumberFormatException e) {
+                System.out.println("Entrée invalide. Veuillez entrer un nombre valide.");
             } catch (Exception e) {
-                System.out.println("Erreur : " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }

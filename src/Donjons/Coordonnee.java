@@ -17,11 +17,11 @@ public class Coordonnee {
         return m_y;
     }
 
-    public void SetX(int x) {
+    public void setX(int x) {
         m_x = x;
     }
 
-    public void SetY(int y) {
+    public void setY(int y) {
         m_y = y;
     }
 }

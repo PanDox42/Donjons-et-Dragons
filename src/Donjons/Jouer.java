@@ -26,22 +26,22 @@ public class Jouer {
                 }
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Erreur : entrée invalide. Veuillez entrer un nombre (1 ou 2).");
+                System.out.println("Entrée invalide. Veuillez entrer un nombre (1 ou 2).");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
         donjon.afficherCarte();
         donjon.placerJoueursAvecConfirmation();
-        donjon.modifierContexte(donjon.m_mdj.raconterTour());
+        donjon.modifierContexte(donjon.raconterTourMdj());
     }
 
     private static Donjon preparerDonjonManuellement() {
         MaitreJeu mdj = new MaitreJeu();
         Donjon donjon = mdj.creerDonjon();
-        donjon.placerObstaclesAvecConfirmation();
-        donjon.placerObjetsAvecConfirmation();
         donjon.placerMonstresAvecConfirmation();
+        donjon.placerObjetsAvecConfirmation();
+        donjon.placerObstaclesAvecConfirmation();
         return donjon;
     }
 

@@ -107,11 +107,12 @@ public class Personnage extends Entite {
     @Override
     public String getSymbole() {
         String afficherDonjon = "";
+        String nom = getNom().toUpperCase().trim();
         if(getNom().length() == 1) {
-            afficherDonjon = " "+getNom().toUpperCase()+" ";
+            afficherDonjon = " "+nom+" ";
         }
         else if(getNom().length() == 2) {
-            afficherDonjon = getNom().toUpperCase()+" ";
+            afficherDonjon = nom+" ";
         }
         else {
             afficherDonjon = getNom().substring(0,3).toUpperCase();

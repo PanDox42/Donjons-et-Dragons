@@ -19,42 +19,44 @@ public class Attaque {
     }
 
     public static Attaque creerAttaque() {
+        int portee = 0;
+        De degat = null;
+
+        // Saisie de la portée
         while (true) {
             try {
-                // Saisie de la portée
-                System.out.println("Veuillez saisir la portée de l'attaque :");
-                int portee = Integer.parseInt(Scan.ScanLine());
-
-                // Saisie du dé sous forme XdY
-                System.out.println("Veuillez saisir le nombre de dés et de faces (exemple : 3d4) :");
-                String saisie = Scan.ScanLine().toLowerCase().trim();
-
-                if (!saisie.matches("\\d+d\\d+")) {
-                    throw new IllegalArgumentException("Format invalide. Utilisez le format XdY, par exemple 2d6.");
-                }
-
-                String[] parts = saisie.split("d");
-                int nbDes = Integer.parseInt(parts[0]);
-                int nbFaces = Integer.parseInt(parts[1]);
-
-                if (nbDes <= 0 || nbFaces <= 0) {
-                    throw new IllegalArgumentException("Le nombre de dés et de faces doit être supérieur à zéro.");
-                }
-
-                De de = new De(nbDes, nbFaces);
-                return new Attaque(portee, de);
-            } catch (NumberFormatException e) {
-                System.out.println("Erreur : vous devez entrer un nombre entier valide.");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Erreur : " + e.getMessage());
+                System.out.println("Veuillez saisir le dé pour la valeur de portée de l'attaque (au format 3d3 par exemple) :");
+                portee = De.convertirStringDe(Scan.ScanLine()).lancer();
+                break;
             } catch (Exception e) {
-                System.out.println("Erreur inattendue : " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
+
+        // Saisie des dégâts
+        while (true) {
+            try {
+                System.out.println("Veuillez saisir le dé pour les dégats de l'attaque (au format 3d3 par exemple) :");
+                degat = De.convertirStringDe(Scan.ScanLine());
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return new Attaque(portee, degat);
     }
 
 
     public De getDeAttaque(){
         return m_degat;
+    }
+
+    public De getDegat() {
+        return m_degat;
+    }
+
+    public int getPorte() {
+        return m_portee;
     }
 }
