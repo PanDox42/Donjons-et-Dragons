@@ -1,245 +1,341 @@
 package Donjons;
 
-import Entites.Monstre;
+import Entites.Entite;
+import Entites.Personnages.MaitreJeu;
+import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Personnage;
-import Objets.Objet;
 import Addon.Scan;
+import Objets.Objet;
 
 import java.util.*;
 
 public class Donjon {
-    private int m_x;
-    private int m_y;
-    private String[][] m_donjon;
-    private Objet[][] m_donjon_objets;
+    public MaitreJeu m_mdj = null;
+    public Coordonnee m_coordonnee = null;
+    private List<Contenu>[][] m_donjon_contenu;
+    private String m_contexte = "";
+    private List<Personnage> m_joueur;
     private ArrayList<String> m_alphabet = new ArrayList<>(Arrays.asList(
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
             "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
             "U", "V", "W", "X", "Y", "Z"
     ));
 
-    public Donjon(int x, int y)
+    public Donjon(int x, int y, MaitreJeu mdj)
     {
-        m_y = y;
-        m_x = x;
-        m_donjon =  new String[m_x][m_y];
-        m_donjon_objets = new Objet[m_x][m_y];
-        for(int i = 0; i<m_donjon.length; i++) {
-            for(int j = 0; j<m_donjon[i].length; j++) {
-                m_donjon[i][j] = " . ";
-            }
-        }
+        m_coordonnee = new Coordonnee(x, y);
+        m_donjon_contenu = new ArrayList[m_coordonnee.getX()][m_coordonnee.getY()];
+        m_joueur = new ArrayList<>();
+        m_mdj = mdj;
     }
 
-    public void placerObstacle() {
-        afficherCarte();
+    public Coordonnee getCoordonnee() {
+        return m_coordonnee;
+    }
 
-        System.out.println("Veuillez indiquer les obstacles à créer dans le donjon : \n(exemple : pour mettre un obstacle à l'endroit A:5 vous devez indiquer A:5)\n");
+    public void placerObstacle(int x, int y, Obstacle obstacle) {
+        verifierdeplacerEntiteValide(new Coordonnee(x, y));
 
-        while (true) {
+        obstacle.m_coordonnee = new Coordonnee(x, y);
+
+        modifierDonjon(obstacle, obstacle.m_coordonnee);
+    }
+
+    public void placerObstaclesAvecConfirmation() {
+        boolean continuer = true;
+
+        while (continuer) {
             try {
-                String[] obstacleSplit = Scan.ScanLine().split(":");
-                if (obstacleSplit.length != 2) {
-                    throw new IllegalArgumentException("Format incorrect. Utilisez le format x:x");
+                Obstacle obstacle = new Obstacle();
+                System.out.println("Maître du Jeu - Veuillez indiquer les obstacles à créer dans le donjon : \n(exemple : pour mettre un obstacle à l'endroit A:5 vous devez indiquer A:5)\n");
+                int[] XY = convertirCoordonnnee(Scan.ScanLine());
+                placerObstacle(XY[0], XY[1], obstacle);
+
+                afficherCarte();
+
+                System.out.println("Maître du Jeu - Voulez-vous ajouter un autre obstacle ? (oui/non)");
+
+                String reponse = Scan.ScanLine().trim().toLowerCase();
+
+                while (!reponse.equals("oui") && !reponse.equals("non")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                    reponse = Scan.ScanLine().trim().toLowerCase();
                 }
 
-                int x = -1;
-                for (int i = 0; i < m_alphabet.size(); i++) {
-                    if (m_alphabet.get(i).equals(obstacleSplit[0])) {
-                        x = i;
-                    }
+                if (reponse.equals("non")) {
+                    continuer = false;
                 }
-
-                int y = Integer.parseInt(obstacleSplit[1]);
-
-                placer("[ ]", x, y);
-
-                System.out.println("Obstacle placé avec succès à " + obstacleSplit[0] + ":" + y);
-                break;
 
             } catch (Exception e) {
-                System.out.println("Erreur: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    public void placerPersonnage(Personnage personnage) {
-        afficherCarte();
+    public void placerJoueur(int x, int y, Personnage joueur) {
+        verifierdeplacerEntiteValide(new Coordonnee(x, y));
 
-        System.out.println("Veuillez indiquer les coordonnées du joueur à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
+        joueur.m_coordonnee = new Coordonnee(x, y);
 
-        while (true) {
+        modifierDonjon(joueur, joueur.m_coordonnee);
+
+        m_joueur.add(joueur);
+    }
+
+    public void placerJoueursAvecConfirmation() {
+        boolean continuer = true;
+
+        while (continuer) {
             try {
-                String[] obstacleSplit = Scan.ScanLine().split(":");
-                if (obstacleSplit.length != 2) {
-                    throw new IllegalArgumentException("Format incorrect. Utilisez le format x:x.");
-                }
+                Personnage joueur = PreparerTour.demanderJoueur();
 
-                int x = -1;
-                for(int i = 0; i < m_alphabet.size(); i++) {
-                    if(m_alphabet.get(i).equals(obstacleSplit[0])) {
-                        x = i;
+                while(true) {
+                    try {
+                        System.out.println("Ajout du/des Joueur(s) :\n\nVeuillez indiquer les coordonnées du joueur à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
+                        int[] XY = convertirCoordonnnee(Scan.ScanLine());
+                        placerJoueur(XY[0], XY[1], joueur); // Appel de votre fonction existante
+                        break;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
                 }
+                afficherCarte();
 
-                int y = Integer.parseInt(obstacleSplit[1]);
+                System.out.println("Voulez-vous ajouter un autre joueur ? (oui/non)");
 
-                if(personnage.getNom().length() < 3) {
-                    placer(personnage.getNom().toUpperCase(), x, y);
+                String reponse = Scan.ScanLine().trim().toLowerCase();
+
+                while (!reponse.equals("oui") && !reponse.equals("non")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                    reponse = Scan.ScanLine().trim().toLowerCase();
                 }
-                else {
-                    placer(personnage.getNom().substring(0,3).toUpperCase(), x, y);
-                }
 
-                System.out.println("Joueur placé avec succès à " + obstacleSplit[0] + ":" + y);
-                break;
+                if (reponse.equals("non")) {
+                    continuer = false;
+                }
 
             } catch (Exception e) {
-                System.out.println("Erreur: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    public void placerMonstre(Monstre monstre) {
-        afficherCarte();
 
-        System.out.println("Veuillez indiquer les coordonnées du Monstre à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
+    public void placerMonstre(int x, int y, Monstre monstre) {
+        verifierdeplacerEntiteValide(new Coordonnee(x, y));
 
-        while (true) {
+        monstre.m_coordonnee = new Coordonnee(x, y);
+
+        modifierDonjon(monstre, monstre.m_coordonnee);
+    }
+
+    public void placerMonstresAvecConfirmation() {
+        boolean continuer = true;
+
+        while (continuer) {
             try {
-                String[] obstacleSplit = Scan.ScanLine().split(":");
-                if (obstacleSplit.length != 2) {
-                    throw new IllegalArgumentException("Format incorrect. Utilisez le format x:x.");
-                }
+                Monstre monstre = PreparerTour.creerMonstre();
 
-                int x = -1;
-                for(int i = 0; i < m_alphabet.size(); i++) {
-                    if(m_alphabet.get(i).equals(obstacleSplit[0])) {
-                        x = i;
+                while(true) {
+                    try {
+                        System.out.println("Veuillez indiquer les coordonnées du Monstre à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
+                        int[] XY = convertirCoordonnnee(Scan.ScanLine());
+
+                        placerMonstre(XY[0], XY[1], monstre);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
                 }
+                afficherCarte();
 
-                int y = Integer.parseInt(obstacleSplit[1]);
+                System.out.println("Voulez-vous ajouter un autre monstre ? (oui/non)");
 
-                if (x < 0 || x >= m_donjon.length || y < 0 || y >= m_donjon[x].length) {
-                    throw new IllegalArgumentException("Coordonnées hors limites.");
+                String reponse = Scan.ScanLine().trim().toLowerCase();
+
+                while (!reponse.equals("oui") && !reponse.equals("non")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                    reponse = Scan.ScanLine().trim().toLowerCase();
                 }
 
-                if(m_donjon[x][y]!=" . ") {
-                    throw new IllegalArgumentException("Endroit non disponible, il y a déjà -> "+ m_donjon[x][y]);
+                if (reponse.equals("non")) {
+                    continuer = false;
                 }
-
-                if(monstre.getNom().length() < 3) {
-                    m_donjon[x][y] = monstre.getNom().toUpperCase();
-                }
-                else {
-                    m_donjon[x][y] = monstre.getNom().substring(0,3).toUpperCase();
-                }
-
-                System.out.println("Monstre placé avec succès à " + obstacleSplit[0] + ":" + y);
-                break;
 
             } catch (Exception e) {
-                System.out.println("Erreur: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    public void placerObjet(Objet objet) {
-        afficherCarte();
 
-        System.out.println("Veuillez indiquer les coordonnées de l'équipement à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
+    public void placerObjet(int x, int y, Objet objet) {
+        verifierdeplacerEntiteValide(new Coordonnee(x, y));
 
-        while (true) {
+        objet.m_coordonnee = new Coordonnee(x, y);
+        modifierDonjon(objet, objet.m_coordonnee);
+    }
+
+    public void placerObjetsAvecConfirmation() {
+        boolean continuer = true;
+
+        while (continuer) {
             try {
-                String[] obstacleSplit = Scan.ScanLine().split(":");
-                if (obstacleSplit.length != 2) {
-                    throw new IllegalArgumentException("Format incorrect. Utilisez le format x:x.");
-                }
+                Objet objet = PreparerTour.creerObjet();
+                while(true) {
+                    try {
+                        System.out.println("Veuillez indiquer les coordonnées du Monstre à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
+                        int[] XY = convertirCoordonnnee(Scan.ScanLine());
 
-                int x = -1;
-                for(int i = 0; i < m_alphabet.size(); i++) {
-                    if(m_alphabet.get(i).equals(obstacleSplit[0])) {
-                        x = i;
+                        placerObjet(XY[0], XY[1], objet);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
                 }
+                afficherCarte();
 
-                if (x == -1) {
-                    throw new IllegalArgumentException("Colonne invalide.");
+                System.out.println("Voulez-vous ajouter un autre équipement ? (oui/non)");
+
+                String reponse = Scan.ScanLine().trim().toLowerCase();
+
+                while (!reponse.equals("oui") && !reponse.equals("non")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                    reponse = Scan.ScanLine().trim().toLowerCase();
                 }
 
-                int y = Integer.parseInt(obstacleSplit[1]);
-
-                if (x < 0 || x >= m_donjon.length || y < 0 || y >= m_donjon[x].length) {
-                    throw new IllegalArgumentException("Coordonnées hors limites.");
+                if (reponse.equals("non")) {
+                    continuer = false;
                 }
-
-                if(m_donjon[x][y]!=" . ") {
-                    throw new IllegalArgumentException("Endroit non disponible, il y a déjà -> "+ m_donjon[x][y]);
-                }
-
-                m_donjon[x][y] = " * ";
-                m_donjon_objets[x][y] = objet;
-
-                System.out.println("Equipement placé avec succès à " + obstacleSplit[0] + ":" + y);
-                break;
 
             } catch (Exception e) {
-                System.out.println("Erreur: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
+
 
     public void afficherCarte(){
         System.out.print("\n      ");
-        for(int i = 0; i < m_x; i++) {
+        for(int i = 0; i < m_coordonnee.getX(); i++) {
             System.out.print(m_alphabet.get(i)+"  ");
         }
         System.out.println();
 
         System.out.print("   *--");
-        for(int i = 0; i < m_x; i++) {
+        for(int i = 0; i < m_coordonnee.getX(); i++) {
             System.out.print("---");
         }
         System.out.println("*");
 
-        for(int i = 0; i < m_y; i++) {
+        for(int i = 0; i < m_coordonnee.getY(); i++) {
             if(i<=9) {
                 System.out.print(i+"  | ");
             }
             else {
                 System.out.print(i+" | ");
             }
-            for(int j = 0; j < m_x; j++) {
-                System.out.print(m_donjon[j][i]);
+            for(int j = 0; j < m_coordonnee.getX(); j++) {
+                if (!(m_donjon_contenu[j][i] ==null)) {
+                    System.out.print(quoiAfficher(m_donjon_contenu[j][i]).getSymbole());
+                } else {
+                    System.out.print(" . ");
+                }
             }
             System.out.println(" |");
         }
 
         System.out.print("   *--");
-        for(int i = 0; i < m_x; i++) {
+        for(int i = 0; i < m_coordonnee.getX(); i++) {
             System.out.print("---");
         }
         System.out.println("*\n* Equipement   |   [ ] Obstacle  |\n");
     }
 
-    private void placer(String o, int x, int y) {
+    public void deplacerEntite(Entite entite) {
         while(true) {
-            try {
-                if (x < 0 || x >= m_donjon.length || y < 0 || y >= m_donjon[x].length) {
-                    throw new IllegalArgumentException("Coordonnées hors limites.");
-                }
-                if(m_donjon[x][y]!=" . ") {
-                    throw new IllegalArgumentException("Endroit non disponible, il y a déjà -> "+ m_donjon[x][y]);
-                }
-                else {
-                    m_donjon[x][y] = o;
-                    break;
-                }
-            }
-            catch(Exception e) {
-                System.out.println(e.getMessage());
+            int[] XY = convertirCoordonnnee(Scan.ScanLine());
+            Coordonnee coordonnee = new Coordonnee(XY[0], XY[1]);
+            if(verifierdeplacerEntiteValide(coordonnee)) {
+                entite.m_coordonnee = coordonnee;
+                afficherCarte();
+                break;
             }
         }
+    }
+
+    public boolean verifierdeplacerEntiteValide(Coordonnee coordonnee) {
+        if(!Objects.equals(m_donjon_contenu[coordonnee.getX()][coordonnee.getY()], null)) {
+            if(!Objects.equals(m_donjon_contenu[coordonnee.getX()][coordonnee.getY()].getLast().getSymbole(), " * ") || Objects.equals(m_donjon_contenu[coordonnee.getX()][coordonnee.getY()].getLast().getSymbole(), "[ ]")) {
+                throw new IllegalArgumentException("Endroit non disponible, il y a déjà -> " + quoiAfficher(m_donjon_contenu[coordonnee.getX()][coordonnee.getY()]).getSymbole());
+            }
+        }
+        else if(coordonnee.getX()<0 || coordonnee.getY()<0 || coordonnee.getX()>m_coordonnee.getX() || coordonnee.getY()>m_coordonnee.getY()) {
+            throw new IllegalArgumentException("L'emplacement est en dehors du donjon");
+        }
+        else {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean detecterEntiteCase(List<Contenu> listContenu) {
+        for(Contenu c : listContenu) {
+            if(!(Objects.equals(c.getSymbole(), " * ") || Objects.equals(c.getSymbole(), "[ ]"))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Contenu quoiAfficher(List<Contenu> listContenu) {
+        if(detecterEntiteCase(listContenu)) {
+            return listContenu.getLast();
+        }
+        else {
+            return listContenu.getFirst();
+        }
+    }
+
+    public int[] convertirCoordonnnee(String coordonnee) {
+        int[] result = new int[2];
+        String[] coordonneeSplit = coordonnee.split(":");
+        if (coordonneeSplit.length != 2) {
+            throw new IllegalArgumentException("Format incorrect. Utilisez le format x:x.");
+        }
+        int x = -1;
+        for(int i = 0; i < m_alphabet.size(); i++) {
+            if(m_alphabet.get(i).equals(coordonneeSplit[0])) {
+                x = i;
+            }
+        }
+        if (x == -1) {
+            throw new IllegalArgumentException("Colonne invalide.");
+        }
+        int y = Integer.parseInt(coordonneeSplit[1]);
+
+        result[0] = x;
+        result[1] = y;
+
+        return result;
+    }
+
+    public void modifierDonjon(Contenu contenu, Coordonnee coordonee) {
+        if(m_donjon_contenu[coordonee.getX()][coordonee.getY()]==null) {
+            m_donjon_contenu[coordonee.getX()][coordonee.getY()] = new ArrayList<Contenu>();
+        }
+        if(contenu.getSymbole()==" * ") {
+            m_donjon_contenu[coordonee.getX()][coordonee.getY()].addFirst(contenu);
+        }
+        else if(contenu.getSymbole()=="[ ]") {
+            m_donjon_contenu[coordonee.getX()][coordonee.getY()].add(contenu);
+        }
+        else {
+            m_donjon_contenu[coordonee.getX()][coordonee.getY()].addLast(contenu);
+        }
+    }
+
+    public void modifierContexte(String contexte) {
+        m_contexte = contexte;
     }
 }

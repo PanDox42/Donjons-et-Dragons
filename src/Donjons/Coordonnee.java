@@ -4,7 +4,7 @@ public class Coordonnee {
     private int m_x;
     private int m_y;
 
-    private Coordonnee(int x, int y) {
+    public Coordonnee(int x, int y) {
         m_x = x;
         m_y = y;
     }

@@ -25,36 +25,28 @@ public class CaracteristiqueMonstre extends Caracteristique{
     }
 
 
-    public static CaracteristiqueMonstre creerCaracteristique(Monstre monstre){
-
-        // Definition de la vie
-        System.out.println("Definition de la vie :");
-        int vie = parseInt(Scan.ScanLine());
-
-        // Definition de la force
-        System.out.println("Definition de la force :");
-        int force = parseInt(Scan.ScanLine());
-
-
-        // Definition de la déxterité
-        System.out.println("Definition de la déxterité :");
-        int dexterite = parseInt(Scan.ScanLine());
-
-
-        // Definition de la classe d'armure
-        System.out.println("Definition de la classe d'armure :");
-        int classeArmure = parseInt(Scan.ScanLine());
-
-
-        // Definition de la vitesse
-        System.out.println("Definition de la vitesse :");
-        int vitesse = parseInt(Scan.ScanLine());
-
-
-        // Definition de l'initiative
-        System.out.println("Definition de l'initiative :");
-        int initiative = parseInt(Scan.ScanLine());
+    public static CaracteristiqueMonstre creerCaracteristique() {
+        int vie = demanderEntier("Définition de la vie :");
+        int force = demanderEntier("Définition de la force :");
+        int dexterite = demanderEntier("Définition de la dextérité :");
+        int classeArmure = demanderEntier("Définition de la classe d'armure :");
+        int vitesse = demanderEntier("Définition de la vitesse :");
+        int initiative = demanderEntier("Définition de l’initiative :");
 
         return new CaracteristiqueMonstre(vie, force, dexterite, classeArmure, vitesse, initiative);
+    }
+
+    private static int demanderEntier(String message) {
+        while (true) {
+            try {
+                System.out.println(message);
+                String ligne = Scan.ScanLine(); // suppose que ScanLine() lit une ligne depuis l'entrée standard
+                return Integer.parseInt(ligne);
+            } catch (NumberFormatException e) {
+                System.out.println("Erreur : veuillez entrer un nombre entier valide.");
+            } catch (Exception e) {
+                System.out.println("Erreur inattendue : " + e.getMessage());
+            }
+        }
     }
 }

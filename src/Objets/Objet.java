@@ -1,14 +1,27 @@
 package Objets;
 
+import Donjons.Coordonnee;
+import Donjons.Contenu;
 
-// Objet est le type abstrait de la classe armure et arme
-// Cela servira à créer une ArrayListe de type <Objet> qui representera
-// l'inventaire d'un Joueur, contenant potentiellement des armes ET
-// des armures
+public abstract class Objet implements Contenu {
+    private String m_nom;
+    public Coordonnee m_coordonnee;
 
-public interface Objet {
-    public String getNom();
+    protected Objet(String nom) {
+        m_nom = nom;
+    }
+
+    public String getNom() {
+        return m_nom;
+    }
 
     // Servant à connaitre les objets que le joueur possède en main
-    public boolean estEquipe();
+    public boolean estEquipe() {
+        return false;
+    }
+
+    @Override
+    public String getSymbole() {
+        return " * ";
+    }
 }

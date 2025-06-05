@@ -3,13 +3,12 @@ package Objets.Arme;
 import Addon.De;
 import Objets.Objet;
 
-public abstract class Arme implements Objet {
-    private String m_nom;
+public abstract class Arme extends Objet {
     private int m_porte;
     private De m_deAttaque;
 
     protected Arme(String nom, int porte, De deAttaque){
-        m_nom = nom;
+        super(nom);
         m_porte = porte;
         m_deAttaque = deAttaque;
     }
@@ -28,13 +27,5 @@ public abstract class Arme implements Objet {
 
     public static Arme sansArme(){
         return new Poing();
-    }
-
-    public String getNom() {
-        return m_nom;
-    }
-
-    public boolean estEquipe() {
-        return false;
     }
 }

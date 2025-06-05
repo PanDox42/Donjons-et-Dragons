@@ -5,8 +5,8 @@ import Entites.Personnages.Classes.Classe;
 import Entites.Personnages.Races.Race;
 import Objets.Arme.Arme;
 import Objets.Armure.Armure;
-import Objets.Objet;
 import Entites.Caracteristiques.Caracteristique;
+import Objets.Objet;
 
 import java.util.ArrayList;
 
@@ -41,12 +41,12 @@ public class Personnage extends Entite {
         afficherSituation();
     }
 
-    public String getNom(){
-        return m_nom;
-    }
-
     public Classe getClasse(){
         return m_classe;
+    }
+
+    public String getNom(){
+        return m_nom;
     }
 
     public Race getRace(){
@@ -102,5 +102,20 @@ public class Personnage extends Entite {
                 "  Force : " + m_caracteristiques.getForce() + "\n" +
                 "  Dextérité : " + m_caracteristiques.getDexterite() + "\n" +
                 "  Vitesse : " + m_caracteristiques.getVitesse() + "\n");
+    }
+
+    @Override
+    public String getSymbole() {
+        String afficherDonjon = "";
+        if(getNom().length() == 1) {
+            afficherDonjon = " "+getNom().toUpperCase()+" ";
+        }
+        else if(getNom().length() == 2) {
+            afficherDonjon = getNom().toUpperCase()+" ";
+        }
+        else {
+            afficherDonjon = getNom().substring(0,3).toUpperCase();
+        }
+        return afficherDonjon;
     }
 }

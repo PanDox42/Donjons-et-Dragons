@@ -1,0 +1,420 @@
+@startuml
+skinparam backGroundColor Ivory
+skinparam linetype ortho
+skinparam shadowing true
+skinparam groupInheritance 2
+skinparam class {
+    BackgroundColor LightYellow
+    BorderColor MidnightBlue
+}
+
+' Packages
+package DED {
+    package Addon {
+        class De {
+            - int m_nbDes
+            - int m_nbFaces
+            --
+            + De(int nbDes, int nbFaces)
+            + int get_nbDes()
+            + int get_nbFaces()
+            + int lancer()
+            + static int lancer(int nbDes, int nbFaces)
+            - static int lancerDes(int nbDes, int nbFaces)
+        }
+
+        class Scan {
+            - static Scanner scanner
+            + static String ScanLine()
+        }
+    }
+
+    package Donjons {
+        interface Contenu {
+            + String getSymbole()
+        }
+        class Coordonnee {
+            - int m_x
+            - int m_y
+            --
+            + Coordonnee(int x, int y)
+            + int getX()
+            + int getY()
+            + void SetX(int x)
+            + void SetY(int y)
+        }
+        class Donjon {
+            - Coordonnee coordonnee
+            - Contenu[][] m_donjon_contenu
+            - ArrayList<String> m_alphabet
+            --
+            + Donjon(int x, int y)
+            + void placerObstacle()
+            + void placerObstaclesAvecConfirmation()
+            + void placerJoueur()
+            + void placerJoueursAvecConfirmation()
+            + void placerMonstre()
+            + void placerMonstresAvecConfirmation()
+            + void placerObjet()
+            + void placerObjetsAvecConfirmation()
+            + void afficherCarte()
+        }
+        class Jouer {
+            + static void jouer()
+        }
+        class Obstacle {
+            + Coordonnee m_coordonnee
+            + Obstacle()
+            + String getSymbole()
+        }
+        class PreparerTour {
+            +creerJoueur() : Personnage
+            +creerMonstre() : Monstre
+            +creerObjet() : Objet
+            +creerObstacle(donjon : Donjon) : void
+        }
+    }
+
+    package Entites {
+        package Caracteristiques {
+            class Caracteristique {
+                - m_pv : int
+                - m_force : int
+                - m_dexterite : int
+                - m_vitesse : int
+                - m_initiative : int
+
+                + Caracteristique(pv : int, force : int, dexterite : int, vitesse : int, initiative : int)
+                + static creerCaracteristique(personnage : Personnage) : Caracteristique
+
+                + getPv() : int
+                + getForce() : int
+                + getDexterite() : int
+                + getVitesse() : int
+                + getInitiative() : int
+
+                + changerPv(changement : int) : void
+                + changerForce(changement : int) : void
+                + changerDexterite(changement : int) : void
+                + changerVitesse(changement : int) : void
+                + changerInitiative(changement : int) : void
+            }
+
+            class CaracteristiqueMonstre {
+                - m_classeArmure : int
+
+                + CaracteristiqueMonstre(pv : int, force : int, dexterite : int, classeArmure : int, vitesse : int, initiative : int)
+                + static creerCaracteristique(monstre : Monstre) : CaracteristiqueMonstre
+
+                + getClasseArmure() : int
+                + changerClasseArmure(changement : int) : void
+            }
+        }
+
+        package Personnages {
+            package Classes {
+                interface Classe {
+                    + getPvDepart() : int
+                    + getEquipementDepart() : ArrayList<Objet>
+                }
+                class Clerc {
+                    - pvDepart : int = 16
+                    + getPvDepart() : int
+                    + getEquipementDepart() : ArrayList<Objet>
+                }
+                class Guerrier {
+                    - pvDepart : int = 20
+                    + getPvDepart() : int
+                    + getEquipementDepart() : ArrayList<Objet>
+                }
+                class Magicien {
+                    - pvDepart : int = 12
+                    + getPvDepart() : int
+                    + getEquipementDepart() : ArrayList<Objet>
+                }
+                class Roublard {
+                    - pvDepart : int = 16
+                    + getPvDepart() : int
+                    + getEquipementDepart() : ArrayList<Objet>
+                }
+            }
+
+            package Monstres {
+                class Attaque {
+                    - m_portee : int
+                    - m_degat : De
+                    + Attaque(portee : int, degat : De)
+                    + genererAttaque() : int
+                    + creerAttaque() : Attaque {static}
+                    + getDeAttaque() : De
+                }
+
+                class Monstre {
+                    - m_nom : String
+                    - m_numero : int
+                    - m_espece : String
+                    - m_attaque : Attaque
+                    - m_caracteristiques : CaracteristiqueMonstre
+
+                    + Monstre(numero : int, espece : String, nom : String)
+                    + Monstre(numero : int, espece : String, nom : String, attaque : Attaque)
+                    + Monstre(numero : int, espece : String, nom : String, attaque : Attaque, caracteristique : CaracteristiqueMonstre)
+
+                    + Attaquer(perso : Personnage) : void
+                    + getNom() : String
+                    + diminuerVie(degat : int) : void
+                    + getNumero() : int
+                    + getEspece() : String
+                    + getDeAttaque() : Attaque
+                    + getCaracteristique() : CaracteristiqueMonstre
+                    + getSymbole() : String
+                }
+            }
+
+            package Races {
+                interface Race {
+                    + getRace() : String
+                    + getPvAugmente() : int
+                    + getForceAugmentee() : int
+                    + getDexteriteAugmentee() : int
+                    + getVitesseAugmentee() : int
+                    + getInitiativeAugmentee() : int
+                }
+                class Elfe {
+                    + getRace() : String
+                    + getPvAugmente() : int
+                    + getForceAugmentee() : int
+                    + getDexteriteAugmentee() : int
+                    + getVitesseAugmentee() : int
+                    + getInitiativeAugmentee() : int
+                }
+                class Halfelin {
+                    + getRace() : String
+                    + getPvAugmente() : int
+                    + getForceAugmentee() : int
+                    + getDexteriteAugmentee() : int
+                    + getVitesseAugmentee() : int
+                    + getInitiativeAugmentee() : int
+                }
+                class Humain {
+                    + getRace() : String
+                    + getPvAugmente() : int
+                    + getForceAugmentee() : int
+                    + getDexteriteAugmentee() : int
+                    + getVitesseAugmentee() : int
+                    + getInitiativeAugmentee() : int
+                }
+                class Nain {
+                    + getRace() : String
+                    + getPvAugmente() : int
+                    + getForceAugmentee() : int
+                    + getDexteriteAugmentee() : int
+                    + getVitesseAugmentee() : int
+                    + getInitiativeAugmentee() : int
+                }
+            }
+
+            class MaitreJeu {
+                - static ArrayList<String> tour
+                + MaitreJeu()
+                + static void ajouterLignes(String phrase)
+                + void raconterTour()
+                + Donjon creerDonjon()
+            }
+
+            class Personnage {
+                - String m_nom
+                - Race m_race
+                - Classe m_classe
+                - Caracteristique m_caracteristiques
+                - ArrayList<Objet> m_inventaire
+                - Arme m_armeEquipe
+                - Armure m_armureEquipe
+
+                + Personnage(String nom, Race race, Classe classe)
+                + Classe getClasse()
+                + String getNom()
+                + Race getRace()
+                + Caracteristique getCaracteristiques()
+                + String afficherInventaire()
+                + Arme getArmeEquipe()
+                + Armure getArmureEquipe()
+                + void attaquer(Monstre pasGentil)
+                + void diminuerVie(int degat)
+                + void afficherSituation()
+                + String getSymbole()
+            }
+        }
+        class Entite {
+            - Coordonnee m_coordonnee
+            + Coordonnee getCoordonnee()
+            + void setCoordonnee(int x, int y)
+        }
+    }
+
+    package Objets {
+        package Armes {
+            package ArmeCourantes {
+                abstract class ArmeCourante {
+                    # <<protected>> ArmeCourante(String nom, int portee, De deAttaque)
+                }
+                class Baton {
+                    + Baton()
+                }
+                class MasseArme {
+                    + MasseArme()
+                }
+            }
+
+            package ArmeDistances {
+                abstract class ArmeDistance {
+                    # <<protected>> ArmeDistance(String nom, int portee, De deAttaque)
+                }
+                class ArbaleteLegere {
+                    + ArbaleteLegere()
+                }
+                class ArcCourt {
+                    + ArcCourt()
+                }
+                class Fronde {
+                    + Fronde()
+                }
+            }
+
+            package ArmeGuerres {
+                abstract class ArmeGuerre {
+                    + ArmeGuerre(String nom, int portee, De deAttaque)
+                }
+                class EpeeLongue {
+                    + EpeeLongue()
+                }
+                class Rapiere {
+                    + Rapiere()
+                }
+            }
+            abstract class Arme {
+                - int m_porte
+                - De m_deAttaque
+                + Arme(String nom, int porte, De deAttaque)
+                + int getPorte()
+                + int getDegat()
+                + De getDeAttaque()
+                + static Arme sansArme()
+            }
+            class Poing {
+                + Poing()
+            }
+        }
+        package Armures {
+            package ArmureLegeres {
+                class ArmureEcailles {
+                    + ArmureEcailles()
+                }
+                class ArmureLegere {
+                    + ArmureLegere(String nom, int classe)
+                }
+                class DemiPlate {
+                    + DemiPlate()
+                }
+            }
+
+            package ArmureLourdes {
+                class ArmureLourde {
+                    + ArmureLourde(String nom, int classe)
+                }
+                class CotteMailles {
+                    + CotteMailles()
+                }
+                class Harnois {
+                    + Harnois()
+                }
+            }
+            abstract class Armure {
+                - int m_classeArmure
+                + Armure(String nom, int classeArmure)
+                + int getClasse()
+                + static Armure sansArmure()
+            }
+            class Nu {
+                + Nu()
+            }
+        }
+        abstract class Objet {
+            - String m_nom
+            + Coordonnee m_coordonnee
+            # Objet(String nom)
+            + String getNom()
+            + boolean estEquipe()
+            + String getSymbole()
+        }
+    }
+
+    class Main {
+        + static void main(String[] args)
+    }
+}
+
+Jouer ..> MaitreJeu : utilise
+Jouer ..> Donjon : utilise
+Obstacle ..|> Contenu
+CaracteristiqueMonstre --|> Caracteristique
+
+Clerc ..|> Classe
+Guerrier ..|> Classe
+Magicien ..|> Classe
+Roublard ..|> Classe
+
+Monstre --|> Entite
+Monstre --> Attaque
+Monstre --> CaracteristiqueMonstre
+Monstre ..> Personnage : utilise
+
+Elfe ..|> Race
+Halfelin ..|> Race
+Humain ..|> Race
+Nain ..|> Race
+
+Personnage --> Entite
+Personnage --> Race
+Personnage --> Classe
+Personnage --> Caracteristique
+Personnage --> Objet : m_inventaire
+Personnage --> Arme
+Personnage --> Armure
+Personnage --> Monstre : attaquer(pasGentil)
+
+Entite ..|> Contenu
+Entite --> Coordonnee
+
+Arme --> De
+Arme --|> Objet
+Poing --|> Arme
+
+ArmeCourante --|> Arme
+Baton --|> ArmeCourante
+MasseArme --|> ArmeCourante
+
+ArmeDistance --|> Arme
+ArbaleteLegere --|> ArmeDistance
+ArcCourt --|> ArmeDistance
+Fronde --|> ArmeDistance
+
+ArmeGuerre --|> Arme
+EpeeLongue --|> ArmeGuerre
+Rapiere --|> ArmeGuerre
+
+Armure --|> Objet
+Nu --|> Armure
+
+ArmureLegere --|> Armure
+ArmureEcailles --|> ArmureLegere
+DemiPlate --|> ArmureLegere
+
+ArmureLourde --|> Armure
+CotteMailles --|> ArmureLourde
+Harnois --|> ArmureLourde
+
+Objet ..> Coordonnee
+Objet ..|> Contenu
+
+@enduml

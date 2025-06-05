@@ -1,11 +1,8 @@
 package Entites.Personnages.Classes;
 
-import Objets.Arme.ArmeCourantes.ArmeCourante;
 import Objets.Arme.ArmeCourantes.MasseArme;
 import Objets.Arme.ArmeDistances.ArbaleteLegere;
-import Objets.Arme.ArmeDistances.ArmeDistance;
 import Objets.Armure.ArmureLegeres.ArmureEcailles;
-import Objets.Armure.ArmureLegeres.ArmureLegere;
 import Objets.Objet;
 
 import java.util.ArrayList;
