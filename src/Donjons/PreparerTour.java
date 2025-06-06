@@ -52,7 +52,7 @@ public class PreparerTour {
         return new Personnage(nom, raceClasse, classeClasse);
     }
 
-    public static Personnage demanderJoueur() {
+    public static Personnage demanderJoueur(List<String> Listjoueur) {
         try {
             String nom;
             int race = -1;
@@ -61,12 +61,21 @@ public class PreparerTour {
             // Saisie du nom
             System.out.println("Quel sera le nom du joueur ?");
             while(true) {
-                nom = Scan.ScanLine();
-                if(!nom.isEmpty()) {
-                    break;
-                }
-                else {
-                    System.out.println("Le nom ne doit pas être vide");
+                try {
+                    nom = Scan.ScanLine();
+                    if(Listjoueur.contains(nom.toUpperCase())) {
+                        throw new IllegalArgumentException();
+                    }
+                    else if(nom.isEmpty()) {
+                        throw new Exception("Le nom ne doit pas être vide");
+                    }
+                    else {
+                        break;
+                    }
+                } catch(IllegalArgumentException iae) {
+                    System.out.println("Le nom est déjà utilisé");
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
 

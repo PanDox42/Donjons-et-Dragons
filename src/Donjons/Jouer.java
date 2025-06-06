@@ -2,6 +2,7 @@ package Donjons;
 
 import Addon.Scan;
 import Entites.Personnages.MaitreJeu;
+import Entites.Personnages.Personnage;
 
 import static java.lang.Integer.parseInt;
 
@@ -32,16 +33,19 @@ public class Jouer {
             }
         }
         donjon.afficherCarte();
-        donjon.placerJoueursAvecConfirmation();
         donjon.modifierContexte(donjon.raconterTourMdj());
+        donjon.equiperObjet();
     }
 
     private static Donjon preparerDonjonManuellement() {
         MaitreJeu mdj = new MaitreJeu();
         Donjon donjon = mdj.creerDonjon();
-        donjon.placerMonstresAvecConfirmation();
-        donjon.placerObjetsAvecConfirmation();
+        donjon.placerJoueursAvecConfirmation();
+        donjon.equiperObjet();
         donjon.placerObstaclesAvecConfirmation();
+        donjon.placerMonstresAvecConfirmation();
+        donjon.placerJoueursAvecConfirmation();
+        donjon.placerObjetsAvecConfirmation();
         return donjon;
     }
 

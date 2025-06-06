@@ -9,11 +9,14 @@ import Objets.Objet;
 
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 public class Donjon {
     private MaitreJeu m_mdj = null;
     private Coordonnee m_coordonnee = null;
     private Contenu[][][] m_donjon_contenu;
     private String m_contexte = "";
+    private List<String> m_joueurNom;
     private List<Personnage> m_joueur;
     private Map<String, Integer> m_dicoMonstre;
     private ArrayList<String> m_alphabet = new ArrayList<>(Arrays.asList(
@@ -26,7 +29,8 @@ public class Donjon {
     {
         m_coordonnee = new Coordonnee(x, y);
         m_donjon_contenu = new Contenu[m_coordonnee.getX()][m_coordonnee.getY()][2];
-        m_joueur = new ArrayList<>();;
+        m_joueurNom = new ArrayList<>();
+        m_joueur = new ArrayList<>();
         m_mdj = mdj;
         m_dicoMonstre = new HashMap<String, Integer>();
     }
@@ -55,12 +59,12 @@ public class Donjon {
 
                 afficherCarte();
 
-                System.out.println("Maître du Jeu - Voulez-vous ajouter un autre obstacle ? (o = oui/n = non)");
+                System.out.println("Maître du Jeu - Voulez-vous ajouter un autre obstacle ? (o/n)");
 
                 String reponse = Scan.ScanLine().trim().toLowerCase();
 
                 while (!reponse.equals("o") && !reponse.equals("n")) {
-                    System.out.println("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                    System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
                     reponse = Scan.ScanLine().trim().toLowerCase();
                 }
 
@@ -81,6 +85,7 @@ public class Donjon {
 
         modifierDonjon(joueur, joueur.m_coordonnee);
 
+        m_joueurNom.add(joueur.getNom().toUpperCase());
         m_joueur.add(joueur);
     }
 
@@ -89,7 +94,7 @@ public class Donjon {
 
         while (continuer) {
             try {
-                Personnage joueur = PreparerTour.demanderJoueur();
+                Personnage joueur = PreparerTour.demanderJoueur(m_joueurNom);
 
                 while(true) {
                     try {
@@ -103,16 +108,16 @@ public class Donjon {
                 }
                 afficherCarte();
 
-                System.out.println("Voulez-vous ajouter un autre joueur ? (oui/non)");
+                System.out.println("Maître du Jeu - Voulez-vous ajouter un autre joueur ? (o/n)");
 
                 String reponse = Scan.ScanLine().trim().toLowerCase();
 
-                while (!reponse.equals("oui") && !reponse.equals("non")) {
-                    System.out.println("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                while (!reponse.equals("o") && !reponse.equals("n")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
                     reponse = Scan.ScanLine().trim().toLowerCase();
                 }
 
-                if (reponse.equals("non")) {
+                if (reponse.equals("n")) {
                     continuer = false;
                 }
 
@@ -152,16 +157,16 @@ public class Donjon {
                 }
                 afficherCarte();
 
-                System.out.println("Voulez-vous ajouter un autre monstre ? (oui/non)");
+                System.out.println("Maître du Jeu - Voulez-vous ajouter un autre monstre ? (o/n)");
 
                 String reponse = Scan.ScanLine().trim().toLowerCase();
 
-                while (!reponse.equals("oui") && !reponse.equals("non")) {
-                    System.out.println("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                while (!reponse.equals("o") && !reponse.equals("n")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
                     reponse = Scan.ScanLine().trim().toLowerCase();
                 }
 
-                if (reponse.equals("non")) {
+                if (reponse.equals("n")) {
                     continuer = false;
                 }
 
@@ -175,8 +180,8 @@ public class Donjon {
     public void placerObjet(int x, int y, Objet objet) {
         verifierDeplacerContenuValide(objet, new Coordonnee(x, y));
 
-        objet.m_coordonnee = new Coordonnee(x, y);
-        modifierDonjon(objet, objet.m_coordonnee);
+        objet.setCoordonnee(new Coordonnee(x, y));
+        modifierDonjon(objet, objet.getCoordonnee());
     }
 
     public void placerObjetsAvecConfirmation() {
@@ -198,16 +203,16 @@ public class Donjon {
                 }
                 afficherCarte();
 
-                System.out.println("Voulez-vous ajouter un autre équipement ? (oui/non)");
+                System.out.println("Maître du Jeu - Voulez-vous ajouter un autre objet ? (o/n)");
 
                 String reponse = Scan.ScanLine().trim().toLowerCase();
 
-                while (!reponse.equals("oui") && !reponse.equals("non")) {
-                    System.out.println("Réponse invalide. Veuillez répondre par 'oui' ou 'non'.");
+                while (!reponse.equals("o") && !reponse.equals("n")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
                     reponse = Scan.ScanLine().trim().toLowerCase();
                 }
 
-                if (reponse.equals("non")) {
+                if (reponse.equals("n")) {
                     continuer = false;
                 }
 
@@ -372,4 +377,46 @@ public class Donjon {
         m_dicoMonstre.put(cle, compteur + 1);
     }
 
+    public List<Personnage> getJoueur() {
+        return m_joueur;
+    }
+
+    public void equiperArmureJoueur() {
+
+    }
+
+    public void equiperObjet() {
+        System.out.println("Equiper les objets :");
+        for(Personnage p : m_joueur) {
+            System.out.println(p.getNom() + " - Voulez-vous équiper un objet ? (o/n)");
+
+            String reponse = Scan.ScanLine().trim().toLowerCase();
+
+            while (!reponse.equals("o") && !reponse.equals("n")) {
+                System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
+                reponse = Scan.ScanLine().trim().toLowerCase();
+            }
+
+            if (reponse.equals("o")) {
+                for(int i = 0; i<p.getInventaire().size(); i++) {
+                    System.out.println("["+ i + "] " + p.getInventaire().get(i).getNom());
+                }
+                System.out.println(p.getNom() + " - Quel objet voulez-vous équiper ? (rentrer son numéro)");
+                try {
+                    int num = 0;
+                    try {
+                        num = parseInt(Scan.ScanLine());
+                    } catch(Exception e) {
+                        System.out.println("Le numéro n'est pas valide");
+                    }
+                    if(p.getInventaire().get(num)) {
+
+                    }
+                    p.equiperObjet(num);
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
 }

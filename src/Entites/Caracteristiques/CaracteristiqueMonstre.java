@@ -79,15 +79,8 @@ public class CaracteristiqueMonstre extends Caracteristique{
             }
         }
 
-        while (true) {
-            try {
-                System.out.println("Veuillez saisir le dé pour la valeur de initiative (au format 3d3 par exemple) :");
-                initiative = De.convertirStringDe(Scan.ScanLine()).lancer();
-                break;
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        System.out.println("Definition de votre initiative avec un dé '1d20'");
+        initiative = new De(1,20).lancer();
 
         return new CaracteristiqueMonstre(vie, force, dexterite, classeArmure, vitesse, initiative);
     }

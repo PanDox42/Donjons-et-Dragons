@@ -78,7 +78,7 @@ public class MaitreJeu{
             donjon.placerMonstre(24,15,PreparerTour.creerMonstreDepuisValeurs(0,"Dragon", "Dragou", new Attaque(2, new De(10, 4)), new CaracteristiqueMonstre(200, 30, 12, 22, 12, 20)));
             donjon.placerMonstre(4,5,PreparerTour.creerMonstreDepuisValeurs(0,"Berserk", "B-Rex", new Attaque(2, new De(10, 4)), new CaracteristiqueMonstre(200, 30, 12, 22, 12, 20)));
             donjon.placerMonstre(14,15,PreparerTour.creerMonstreDepuisValeurs(0,"Mutant", "Jean-Pierre", new Attaque(2, new De(10, 4)), new CaracteristiqueMonstre(200, 30, 12, 22, 12, 20)));
-
+            donjon.placerJoueursAvecConfirmation();
             return donjon;
         } catch(Exception e) {
             System.out.println(e.getMessage());
