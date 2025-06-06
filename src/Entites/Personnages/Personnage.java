@@ -9,6 +9,7 @@ import Entites.Caracteristiques.Caracteristique;
 import Objets.Objet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Personnage extends Entite {
     private String m_nom;
@@ -119,5 +120,19 @@ public class Personnage extends Entite {
 
     public void equiperObjet(int num) {
         m_inventaire.get(num).setEquipe();
+    }
+
+    public ArrayList<Objet> getObjetEquipe() {
+        ArrayList<Objet> listObjetEquipe = new ArrayList<>();
+        for(Objet o : m_inventaire) {
+            if(o.estEquipe()) {
+                listObjetEquipe.add(o);
+            }
+        }
+        return listObjetEquipe;
+    }
+
+    public void tourPersonnage() {
+
     }
 }

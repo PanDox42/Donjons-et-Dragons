@@ -32,20 +32,25 @@ public class Jouer {
                 System.out.println(e.getMessage());
             }
         }
-        donjon.afficherCarte();
-        donjon.modifierContexte(donjon.raconterTourMdj());
-        donjon.equiperObjet();
+
+        boolean continuer = true;
+        while(continuer) {
+            for(Personnage p : donjon.getOrdrePersonnage()) {
+                p.
+            }
+        }
     }
 
     private static Donjon preparerDonjonManuellement() {
         MaitreJeu mdj = new MaitreJeu();
         Donjon donjon = mdj.creerDonjon();
-        donjon.placerJoueursAvecConfirmation();
-        donjon.equiperObjet();
         donjon.placerObstaclesAvecConfirmation();
         donjon.placerMonstresAvecConfirmation();
         donjon.placerJoueursAvecConfirmation();
+        donjon.equiperObjet();
         donjon.placerObjetsAvecConfirmation();
+        donjon.afficherCarte();
+        donjon.modifierContexte(donjon.raconterTourMdj());
         return donjon;
     }
 

@@ -7,9 +7,11 @@ public abstract class Objet implements Contenu {
     private String m_nom;
     private Coordonnee m_coordonnee;
     private boolean m_equipe;
+    private String m_type;
 
-    protected Objet(String nom) {
+    protected Objet(String nom, String type) {
         m_nom = nom;
+        m_type = type;
     }
 
     public String getNom() {
@@ -40,5 +42,9 @@ public abstract class Objet implements Contenu {
 
     public void setNonEquipe() {
         m_equipe = false;
+    }
+
+    public String getType() {
+        return m_type;
     }
 }

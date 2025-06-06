@@ -7,6 +7,7 @@ import Entites.Personnages.Personnage;
 import Addon.Scan;
 import Objets.Objet;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
@@ -381,8 +382,19 @@ public class Donjon {
         return m_joueur;
     }
 
-    public void equiperArmureJoueur() {
-
+    public void equiperObjetJoueur(int num, Personnage joueur) {
+        if(joueur.getInventaire().get(num).estEquipe()) {
+            throw new IllegalArgumentException("L'objet est déjà équipé");
+        }
+        for(Objet o : joueur.getInventaire()) {
+            if(o.getType()==joueur.getInventaire().get(num).getType()) {
+                if(o.estEquipe()) {
+                    throw new IllegalArgumentException("Il y a déjà un objet de se type d'équipé");
+                }
+            }
+        }
+        joueur.equiperObjet(num);
+        System.out.println("L'objet "+joueur.getInventaire().get(num).getNom()+" est équipé");
     }
 
     public void equiperObjet() {
@@ -401,22 +413,48 @@ public class Donjon {
                 for(int i = 0; i<p.getInventaire().size(); i++) {
                     System.out.println("["+ i + "] " + p.getInventaire().get(i).getNom());
                 }
-                System.out.println(p.getNom() + " - Quel objet voulez-vous équiper ? (rentrer son numéro)");
-                try {
+                while(true) {
+                    System.out.println(p.getNom() + " - Quel objet voulez-vous équiper ? (rentrer son numéro)");
                     int num = 0;
                     try {
-                        num = parseInt(Scan.ScanLine());
+                        try {
+                            num = parseInt(Scan.ScanLine());
+                        } catch(Exception e) {
+                            System.out.println("Le numéro n'est pas valide");
+                        }
+                        equiperObjetJoueur(num, p);
                     } catch(Exception e) {
-                        System.out.println("Le numéro n'est pas valide");
+                        System.out.println(e.getMessage());
                     }
-                    if(p.getInventaire().get(num)) {
 
+                    System.out.println(p.getNom() + " - Voulez-vous continuer à équiper un objet ? (o/n)");
+
+                    reponse = Scan.ScanLine().trim().toLowerCase();
+
+                    while (!reponse.equals("o") && !reponse.equals("n")) {
+                        System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
+                        reponse = Scan.ScanLine().trim().toLowerCase();
                     }
-                    p.equiperObjet(num);
-                } catch(Exception e) {
-                    System.out.println(e.getMessage());
+
+                    if(reponse.equals("n")) {
+                        break;
+                    }
                 }
             }
+            System.out.print("Objet(s) Equipé(s) : ");
+            for(Objet o : p.getObjetEquipe()) {
+                System.out.print(o.getNom()+" | ");
+            }
+            System.out.println();
         }
+    }
+
+    public ArrayList<Personnage> getOrdrePersonnage() {
+        ArrayList<Personnage> ordre = new ArrayList<>(m_joueur); // copie de la liste
+        ordre.sort((p1, p2) -> Integer.compare(
+                p2.getCaracteristiques().getInitiative(),
+                p1.getCaracteristiques().getInitiative()
+        ));
+        return ordre;
     }
 }

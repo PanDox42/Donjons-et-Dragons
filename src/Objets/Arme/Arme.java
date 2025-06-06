@@ -8,7 +8,7 @@ public abstract class Arme extends Objet {
     private De m_deAttaque;
 
     protected Arme(String nom, int porte, De deAttaque){
-        super(nom);
+        super(nom, "arme");
         m_porte = porte;
         m_deAttaque = deAttaque;
     }
