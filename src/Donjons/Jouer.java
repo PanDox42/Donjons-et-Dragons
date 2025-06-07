@@ -2,6 +2,7 @@ package Donjons;
 
 import Addon.Scan;
 import Entites.Personnages.MaitreJeu;
+import Entites.Personnages.Personnage;
 
 import static java.lang.Integer.parseInt;
 
@@ -26,22 +27,30 @@ public class Jouer {
                 }
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Erreur : entrée invalide. Veuillez entrer un nombre (1 ou 2).");
+                System.out.println("Entrée invalide. Veuillez entrer un nombre (1 ou 2).");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        donjon.afficherCarte();
-        donjon.placerJoueursAvecConfirmation();
-        donjon.modifierContexte(donjon.m_mdj.raconterTour());
+
+        boolean continuer = true;
+        while(continuer) {
+            for(Personnage p : donjon.getOrdrePersonnage()) {
+                p.
+            }
+        }
     }
 
     private static Donjon preparerDonjonManuellement() {
         MaitreJeu mdj = new MaitreJeu();
         Donjon donjon = mdj.creerDonjon();
         donjon.placerObstaclesAvecConfirmation();
-        donjon.placerObjetsAvecConfirmation();
         donjon.placerMonstresAvecConfirmation();
+        donjon.placerJoueursAvecConfirmation();
+        donjon.equiperObjet();
+        donjon.placerObjetsAvecConfirmation();
+        donjon.afficherCarte();
+        donjon.modifierContexte(donjon.raconterTourMdj());
         return donjon;
     }
 

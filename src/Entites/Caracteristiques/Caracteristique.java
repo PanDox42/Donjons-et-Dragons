@@ -66,8 +66,8 @@ public class Caracteristique {
 
 
         // Definition de la initiative
-        System.out.println("Definition de votre initiative :");
-        int initiative = deCaracteristique.lancer();
+        System.out.println("Definition de votre initiative qui sera un dé '1d20'");
+        int initiative = new De(1,20).lancer();
         System.out.println("Vous avez obtenu " + initiative + " points avec vos lancés de dé. \n" +
                 "Votre race vous ajoute " + personnage.getRace().getInitiativeAugmentee() + " et nous ajoutons 3 au score total");
 

@@ -9,6 +9,7 @@ import Entites.Caracteristiques.Caracteristique;
 import Objets.Objet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Personnage extends Entite {
     private String m_nom;
@@ -57,18 +58,8 @@ public class Personnage extends Entite {
         return m_caracteristiques;
     }
 
-    public String afficherInventaire(){
-
-        // Variable inventaire qui sera construite dans la boucle
-        String inventaire = "";
-
-        for (int i = 0; i < m_inventaire.size(); i++){
-
-            // Structure : | item | item | ...
-            inventaire += " | " + m_inventaire.get(i).getNom() ;
-        }
-
-        return inventaire;
+    public ArrayList<Objet> getInventaire(){
+        return m_inventaire;
     }
 
     public Arme getArmeEquipe(){
@@ -98,7 +89,14 @@ public class Personnage extends Entite {
                 "  Vie : " + m_caracteristiques.getPv() + "/" + m_classe.getPvDepart() + "\n" +
                 "  Armure : " + m_armureEquipe.getNom() + "\n" +
                 "  Arme : " + m_armeEquipe.getNom() + "\n" +
-                "  Inventaire : " + "[" + m_inventaire.size() + "]" + afficherInventaire() + "\n" +
+                "  Inventaire : " + "[" + m_inventaire.size() + "]");
+        for (int i = 0; i < m_inventaire.size(); i++) {
+            // Structure : | item | item | ...
+            System.out.print(" | " + m_inventaire.get(i).getNom());
+        }
+        System.out.println();
+
+        System.out.println(
                 "  Force : " + m_caracteristiques.getForce() + "\n" +
                 "  Dextérité : " + m_caracteristiques.getDexterite() + "\n" +
                 "  Vitesse : " + m_caracteristiques.getVitesse() + "\n");
@@ -107,15 +105,34 @@ public class Personnage extends Entite {
     @Override
     public String getSymbole() {
         String afficherDonjon = "";
+        String nom = getNom().toUpperCase().trim();
         if(getNom().length() == 1) {
-            afficherDonjon = " "+getNom().toUpperCase()+" ";
+            afficherDonjon = " "+nom+" ";
         }
         else if(getNom().length() == 2) {
-            afficherDonjon = getNom().toUpperCase()+" ";
+            afficherDonjon = nom+" ";
         }
         else {
             afficherDonjon = getNom().substring(0,3).toUpperCase();
         }
         return afficherDonjon;
+    }
+
+    public void equiperObjet(int num) {
+        m_inventaire.get(num).setEquipe();
+    }
+
+    public ArrayList<Objet> getObjetEquipe() {
+        ArrayList<Objet> listObjetEquipe = new ArrayList<>();
+        for(Objet o : m_inventaire) {
+            if(o.estEquipe()) {
+                listObjetEquipe.add(o);
+            }
+        }
+        return listObjetEquipe;
+    }
+
+    public void tourPersonnage() {
+
     }
 }

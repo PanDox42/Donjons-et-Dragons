@@ -2,6 +2,7 @@ package Entites.Caracteristiques;
 
 import Addon.De;
 import Addon.Scan;
+import Entites.Personnages.Monstre.Attaque;
 import Entites.Personnages.Monstre.Monstre;
 
 import static java.lang.Integer.parseInt;
@@ -26,15 +27,64 @@ public class CaracteristiqueMonstre extends Caracteristique{
 
 
     public static CaracteristiqueMonstre creerCaracteristique() {
-        int vie = demanderEntier("Définition de la vie :");
-        int force = demanderEntier("Définition de la force :");
-        int dexterite = demanderEntier("Définition de la dextérité :");
-        int classeArmure = demanderEntier("Définition de la classe d'armure :");
-        int vitesse = demanderEntier("Définition de la vitesse :");
-        int initiative = demanderEntier("Définition de l’initiative :");
+        int vie = 0, force = 0, dexterite = 0, classeArmure = 0, vitesse = 0, initiative = 0;
+
+        while (true) {
+            try {
+                System.out.println("Veuillez saisir le dé pour la valeur de vie (au format 3d3 par exemple) :");
+                vie = De.convertirStringDe(Scan.ScanLine()).lancer();
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.println("Veuillez saisir le dé pour la valeur de force (au format 3d3 par exemple) :");
+                force = De.convertirStringDe(Scan.ScanLine()).lancer();
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.println("Veuillez saisir le dé pour la valeur de dexterite (au format 3d3 par exemple) :");
+                dexterite = De.convertirStringDe(Scan.ScanLine()).lancer();
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.println("Veuillez saisir le dé pour la valeur de la classe d'armure (au format 3d3 par exemple) :");
+                classeArmure = De.convertirStringDe(Scan.ScanLine()).lancer();
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.println("Veuillez saisir le dé pour la valeur de vitesse (au format 3d3 par exemple) :");
+                vitesse = De.convertirStringDe(Scan.ScanLine()).lancer();
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        System.out.println("Definition de votre initiative avec un dé '1d20'");
+        initiative = new De(1,20).lancer();
 
         return new CaracteristiqueMonstre(vie, force, dexterite, classeArmure, vitesse, initiative);
     }
+
 
     private static int demanderEntier(String message) {
         while (true) {

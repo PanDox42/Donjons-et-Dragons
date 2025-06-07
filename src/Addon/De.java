@@ -69,4 +69,26 @@ public class De {
         return somme;
     }
 
+    public static De convertirStringDe(String deString) {
+        String saisie = deString.toLowerCase().trim();
+
+        if (!saisie.matches("\\d+d\\d+")) {
+            throw new IllegalArgumentException("Format invalide. Utilisez le format XdY, par exemple 2d6.");
+        }
+
+        String[] parts = saisie.split("d");
+        int nbDes = Integer.parseInt(parts[0]);
+        int nbFaces = Integer.parseInt(parts[1]);
+
+        if (nbDes <= 0 || nbFaces <= 0) {
+            throw new IllegalArgumentException("Le nombre de dés et de faces doit être supérieur à zéro.");
+        }
+
+        return new De(nbDes, nbFaces);
+    }
+
+    @Override
+    public String toString() {
+        return m_nbDes+"d"+m_nbFaces;
+    }
 }

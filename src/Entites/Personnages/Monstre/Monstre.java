@@ -17,6 +17,7 @@ public class Monstre extends Entite {
         m_espece = espece;
         m_attaque = Attaque.creerAttaque();
         m_caracteristiques = CaracteristiqueMonstre.creerCaracteristique();
+        afficherSituation();
     }
 
     public Monstre(int numero, String espece, String nom, Attaque attaque){
@@ -25,6 +26,7 @@ public class Monstre extends Entite {
         m_espece = espece;
         m_attaque = attaque;
         m_caracteristiques = CaracteristiqueMonstre.creerCaracteristique();
+        afficherSituation();
     }
 
     public Monstre(int numero, String espece, String nom, Attaque attaque, CaracteristiqueMonstre caracteristique){
@@ -33,6 +35,7 @@ public class Monstre extends Entite {
         m_espece = espece;
         m_attaque = attaque;
         m_caracteristiques = caracteristique;
+        afficherSituation();
     }
 
     public void Attaquer(Personnage perso){
@@ -64,6 +67,20 @@ public class Monstre extends Entite {
 
     public CaracteristiqueMonstre getCaracteristique(){
         return m_caracteristiques;
+    }
+
+    public void afficherSituation(){
+
+        System.out.println(
+                m_nom + "\n" + // tabulation de 2 espaces à chaque fois
+                        "   Espèce : " + m_espece + "\n" +
+                        "   Numéro : " + m_numero + "\n" +
+                        "   Attaque : dégats = " + m_attaque.getDegat().toString() + " portée = " + m_attaque.getPorte() + "\n" +
+                        "   Force : " + m_caracteristiques.getForce() + "\n" +
+                        "   Dexterité : " + m_caracteristiques.getDexterite() + "\n" +
+                        "   Classe Armure : " + m_caracteristiques.getClasseArmure() + "\n" +
+                        "   Vitesse : " + m_caracteristiques.getVitesse() + "\n" +
+                        "   Inititative : " + m_caracteristiques.getInitiative() + "\n");
     }
 
     @Override
