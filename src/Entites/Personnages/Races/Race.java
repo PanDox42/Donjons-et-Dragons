@@ -8,6 +8,5 @@ public interface Race {
     int getForceAugmentee();
     int getDexteriteAugmentee();
     int getVitesseAugmentee();
-    int getInitiativeAugmentee();
 
 }

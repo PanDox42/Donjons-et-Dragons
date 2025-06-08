@@ -1,5 +1,6 @@
 package Entites.Personnages.Monstre;
 
+import Donjons.Coordonnee;
 import Entites.Caracteristiques.CaracteristiqueMonstre;
 import Entites.Entite;
 import Entites.Personnages.Personnage;
@@ -65,7 +66,7 @@ public class Monstre extends Entite {
         return m_attaque;
     }
 
-    public CaracteristiqueMonstre getCaracteristique(){
+    public CaracteristiqueMonstre getCaracteristiques(){
         return m_caracteristiques;
     }
 
@@ -81,6 +82,34 @@ public class Monstre extends Entite {
                         "   Classe Armure : " + m_caracteristiques.getClasseArmure() + "\n" +
                         "   Vitesse : " + m_caracteristiques.getVitesse() + "\n" +
                         "   Inititative : " + m_caracteristiques.getInitiative() + "\n");
+    }
+
+    private boolean estAportee(Personnage personnage){
+        Coordonnee c1 = getCoordonnee();
+        Coordonnee c2 = personnage.getCoordonnee();
+
+        double distance = Math.sqrt(Math.pow(c1.getX() - c2.getX(), 2) + Math.pow(c1.getY() - c2.getY(), 2)); // Formule chat gpt
+
+        return distance <= getPortee();
+    }
+
+    public boolean estMort(){
+        return m_caracteristiques.getPv() <= 0;
+    }
+
+    @Override
+    public int getInitiative(){
+        return getCaracteristiques().getInitiative();
+    }
+
+    @Override
+    public String getType() {
+        return "Monstre";
+    }
+
+    @Override
+    public int getPortee(){
+        return m_attaque.getPorte();
     }
 
     @Override

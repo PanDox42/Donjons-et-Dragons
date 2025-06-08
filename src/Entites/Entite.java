@@ -4,7 +4,7 @@ import Donjons.Coordonnee;
 import Donjons.Contenu;
 
 public abstract class Entite implements Contenu {
-    public Coordonnee m_coordonnee;
+    private Coordonnee m_coordonnee;
 
     public Coordonnee getCoordonnee(){
         return m_coordonnee;
@@ -13,4 +13,14 @@ public abstract class Entite implements Contenu {
     public void setCoordonnee(int x, int y){
         m_coordonnee = new Coordonnee(x, y);
     }
+
+    public void setCoordonnee(Coordonnee coordonnee){
+        m_coordonnee = coordonnee;
+    }
+
+    public abstract int getInitiative();
+
+    public abstract int getPortee();
+
+    public abstract String getType();
 }

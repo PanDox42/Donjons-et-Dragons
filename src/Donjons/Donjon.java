@@ -17,9 +17,10 @@ public class Donjon {
     private Coordonnee m_coordonnee = null;
     private Contenu[][][] m_donjon_contenu;
     private String m_contexte = "";
-    private List<String> m_joueurNom;
-    private List<Personnage> m_joueur;
+    private ArrayList<String> m_joueurNom;
+    private ArrayList<Personnage> m_joueurs;
     private Map<String, Integer> m_dicoMonstre;
+    private ArrayList<Monstre> m_monstres;
     private ArrayList<String> m_alphabet = new ArrayList<>(Arrays.asList(
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
             "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
@@ -31,7 +32,8 @@ public class Donjon {
         m_coordonnee = new Coordonnee(x, y);
         m_donjon_contenu = new Contenu[m_coordonnee.getX()][m_coordonnee.getY()][2];
         m_joueurNom = new ArrayList<>();
-        m_joueur = new ArrayList<>();
+        m_joueurs = new ArrayList<>();
+        m_monstres = new ArrayList<>();
         m_mdj = mdj;
         m_dicoMonstre = new HashMap<String, Integer>();
     }
@@ -43,9 +45,9 @@ public class Donjon {
     public void placerObstacle(int x, int y, Obstacle obstacle) {
         verifierDeplacerContenuValide(obstacle, new Coordonnee(x, y));
 
-        obstacle.m_coordonnee = new Coordonnee(x, y);
+        obstacle.setCoordonnee(new Coordonnee(x, y));
 
-        modifierDonjon(obstacle, obstacle.m_coordonnee);
+        modifierDonjon(obstacle, obstacle.getCoordonnee());
     }
 
     public void placerObstaclesAvecConfirmation() {
@@ -82,12 +84,12 @@ public class Donjon {
     public void placerJoueur(int x, int y, Personnage joueur) {
         verifierDeplacerContenuValide(joueur, new Coordonnee(x, y));
 
-        joueur.m_coordonnee = new Coordonnee(x, y);
+        joueur.setCoordonnee(x, y);
 
-        modifierDonjon(joueur, joueur.m_coordonnee);
+        modifierDonjon(joueur, joueur.getCoordonnee());
 
         m_joueurNom.add(joueur.getNom().toUpperCase());
-        m_joueur.add(joueur);
+        m_joueurs.add(joueur);
     }
 
     public void placerJoueursAvecConfirmation() {
@@ -98,6 +100,7 @@ public class Donjon {
                 Personnage joueur = PreparerTour.demanderJoueur(m_joueurNom);
 
                 while(true) {
+                    afficherCarte();
                     try {
                         System.out.println("Ajout du/des Joueur(s) :\n\nVeuillez indiquer les coordonnées du joueur à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
                         int[] XY = convertirCoordonnnee(Scan.ScanLine());
@@ -132,9 +135,10 @@ public class Donjon {
     public void placerMonstre(int x, int y, Monstre monstre) {
         verifierDeplacerContenuValide(monstre, new Coordonnee(x, y));
 
-        monstre.m_coordonnee = new Coordonnee(x, y);
+        monstre.setCoordonnee(x, y);
+        m_monstres.add(monstre);
 
-        modifierDonjon(monstre, monstre.m_coordonnee);
+        modifierDonjon(monstre, monstre.getCoordonnee());
     }
 
     public void placerMonstresAvecConfirmation() {
@@ -144,6 +148,7 @@ public class Donjon {
             try {
                 Monstre monstre = PreparerTour.creerMonstre(this);
                 ajouterEspeceDicoMonstre(monstre.getEspece().toUpperCase());
+                m_monstres.add(monstre);
 
                 while(true) {
                     try {
@@ -262,15 +267,40 @@ public class Donjon {
     }
 
     public void deplacerEntite(Entite entite) {
-        while(true) {
+        while (true) {
             int[] XY = convertirCoordonnnee(Scan.ScanLine());
-            Coordonnee coordonnee = new Coordonnee(XY[0], XY[1]);
-            if(verifierDeplacerContenuValide(entite, coordonnee)) {
-                entite.m_coordonnee = coordonnee;
-                afficherCarte();
-                break;
+            Coordonnee newCoordonnee = new Coordonnee(XY[0], XY[1]);
+            if (verifierDeplacerContenuValide(entite, newCoordonnee)) {
+
+                if (entite instanceof Personnage){
+                    Personnage perso = (Personnage) entite;
+                    if ((double) perso.getCaracteristiques().getVitesse() / 3 < distanceEntreCoordonnee(entite.getCoordonnee(), newCoordonnee)) {
+                        System.out.println("Votre vitesse ne permet pas d'atteindre cette case en un coup");
+
+                        System.out.println("Où voulez vous vous déplacer ? (indiquez les coodronnées comme ça : A:5)");
+                    }
+                    else {
+                        // Retirer l'entité de l'ancienne position
+                        Coordonnee ancienneCoordonnee = entite.getCoordonnee();
+                        m_donjon_contenu[ancienneCoordonnee.getX()][ancienneCoordonnee.getY()][1] = null;
+
+                        // Ajouter l'entité à la nouvelle position
+                        m_donjon_contenu[newCoordonnee.getX()][newCoordonnee.getY()][1] = entite;
+
+                        // Mettre à jour sa coordonnée
+                        entite.setCoordonnee(newCoordonnee);
+
+                        // Afficher la carte
+                        afficherCarte();
+                        break;
+                    }
+                }
             }
         }
+    }
+
+    private double distanceEntreCoordonnee(Coordonnee depart, Coordonnee arrivee){
+        return Math.sqrt(Math.pow(depart.getX() - arrivee.getX(), 2) + Math.pow(depart.getY() - arrivee.getY(), 2)); // Formule chat gpt
     }
 
     public boolean detecterEntiteCase(Contenu[] listContenu) {
@@ -316,7 +346,7 @@ public class Donjon {
 
     public boolean verifierDeplacerContenuValide(Contenu contenu, Coordonnee coordonnee) {
         if(coordonnee.getX()<0 || coordonnee.getY()<0 || coordonnee.getX()>m_coordonnee.getX() || coordonnee.getY()>m_coordonnee.getY()) {
-            throw new IllegalArgumentException("L'emplacement est en dehors du donjon");
+            System.out.println("L'emplacement est en dehors du donjon");
         }
         if(m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][0] == null && m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][1] == null) {
             return true;
@@ -331,21 +361,24 @@ public class Donjon {
         }
         else if(Objects.equals(m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][0].getSymbole(), " * ")) {
             if(Objects.equals(contenu.getSymbole(), " * ")) {
-                throw new IllegalArgumentException("L'emplacement contient déjà un objet");
+                System.out.println("L'emplacement contient déjà un objet");
             }
             else if(Objects.equals(contenu.getSymbole(), "[ ]")) {
-                throw new IllegalArgumentException("L'emplacement contient déjà un objet");
+                System.out.println("L'emplacement contient déjà un objet");
             }
         }
         else if(Objects.equals(m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][0].getSymbole(), "[ ]")) {
-            throw new IllegalArgumentException("L'emplacement contient déjà un obstacle");
+            System.out.println("L'emplacement contient déjà un obstacle");
         }
         else if(Objects.equals(m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][1], null)) {
             if(!Objects.equals(contenu.getSymbole(), " * ") && !Objects.equals(contenu.getSymbole(), "[ ]")) {
                 return true;
             }
         }
-        throw new IllegalArgumentException("Endroit non disponible");
+        else {
+            System.out.println("Endroit non disponible");
+        }
+        return false;
     }
 
     public void modifierDonjon(Contenu contenu, Coordonnee coordonee) {
@@ -379,82 +412,95 @@ public class Donjon {
     }
 
     public List<Personnage> getJoueur() {
-        return m_joueur;
-    }
-
-    public void equiperObjetJoueur(int num, Personnage joueur) {
-        if(joueur.getInventaire().get(num).estEquipe()) {
-            throw new IllegalArgumentException("L'objet est déjà équipé");
-        }
-        for(Objet o : joueur.getInventaire()) {
-            if(o.getType()==joueur.getInventaire().get(num).getType()) {
-                if(o.estEquipe()) {
-                    throw new IllegalArgumentException("Il y a déjà un objet de se type d'équipé");
-                }
-            }
-        }
-        joueur.equiperObjet(num);
-        System.out.println("L'objet "+joueur.getInventaire().get(num).getNom()+" est équipé");
+        return m_joueurs;
     }
 
     public void equiperObjet() {
         System.out.println("Equiper les objets :");
-        for(Personnage p : m_joueur) {
-            System.out.println(p.getNom() + " - Voulez-vous équiper un objet ? (o/n)");
+        for(Personnage p : m_joueurs) {
 
-            String reponse = Scan.ScanLine().trim().toLowerCase();
+            while (true) {
+                System.out.println(p.getNom() + " - Voulez-vous équiper un objet ? (o/n)");
+                String reponse = Scan.ScanLine().trim().toLowerCase();
 
-            while (!reponse.equals("o") && !reponse.equals("n")) {
-                System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
-                reponse = Scan.ScanLine().trim().toLowerCase();
-            }
-
-            if (reponse.equals("o")) {
-                for(int i = 0; i<p.getInventaire().size(); i++) {
-                    System.out.println("["+ i + "] " + p.getInventaire().get(i).getNom());
-                }
-                while(true) {
-                    System.out.println(p.getNom() + " - Quel objet voulez-vous équiper ? (rentrer son numéro)");
-                    int num = 0;
-                    try {
-                        try {
-                            num = parseInt(Scan.ScanLine());
-                        } catch(Exception e) {
-                            System.out.println("Le numéro n'est pas valide");
-                        }
-                        equiperObjetJoueur(num, p);
-                    } catch(Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-
-                    System.out.println(p.getNom() + " - Voulez-vous continuer à équiper un objet ? (o/n)");
-
+                while (!reponse.equals("o") && !reponse.equals("n")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
                     reponse = Scan.ScanLine().trim().toLowerCase();
-
-                    while (!reponse.equals("o") && !reponse.equals("n")) {
-                        System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
-                        reponse = Scan.ScanLine().trim().toLowerCase();
-                    }
-
-                    if(reponse.equals("n")) {
-                        break;
-                    }
                 }
+
+                if (reponse.equals("o")) {
+                    p.sEquiper();
+                }
+
+                if (reponse.equals("n")) {
+                    break;
+                }
+
+                System.out.println(p.getNom() + " - Voulez-vous continuer à équiper un objet ? (o/n)");
+
+                reponse = Scan.ScanLine().trim().toLowerCase();
+
+                while (!reponse.equals("o") && !reponse.equals("n")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
+                    reponse = Scan.ScanLine().trim().toLowerCase();
+                }
+
+                if (reponse.equals("n")) {
+                    break;
+                }
+                p.sEquiper();
             }
-            System.out.print("Objet(s) Equipé(s) : ");
-            for(Objet o : p.getObjetEquipe()) {
-                System.out.print(o.getNom()+" | ");
-            }
-            System.out.println();
         }
     }
 
-    public ArrayList<Personnage> getOrdrePersonnage() {
-        ArrayList<Personnage> ordre = new ArrayList<>(m_joueur); // copie de la liste
+    public void attaquerMonstre(Personnage personnage){
+        System.out.println("Veuillez sélectionner le monstre que vous voulez attaquer");
+        for (int i = 0; i < m_monstres.size(); i++) {
+            System.out.print("[" + i + "] ");
+            m_monstres.get(i).afficherSituation();
+            System.out.println();
+        }
+        System.out.println("Entrez le numéro du monstre");
+        try {
+            int num = Integer.parseInt(Scan.ScanLine());
+
+            if (num >= 0 && num < m_monstres.size()) {
+                personnage.attaquer(m_monstres.get(num));
+            }
+            else {
+                System.out.println("Numéro invalide. Veuillez saisir un numéro entre 0 et " + (m_monstres.size() - 1));
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Entrée non valide. Veuillez entrer un nombre entier.");
+        }
+    }
+
+    public ArrayList<Monstre> getMonstres(){
+        return m_monstres;
+    }
+
+    public boolean itemSurCoordonnee(Coordonnee coordonnee){
+        return m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][0] instanceof Objet;
+    }
+
+    public Objet getObjet(Coordonnee coordonnee){
+        return (Objet) m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][0];
+    }
+
+
+
+    public ArrayList<Entite> getOrdreEntite() {
+        ArrayList<Entite> ordre = new ArrayList<>();
+        ordre.addAll(m_joueurs);  // ajoute tous les joueurs
+        ordre.addAll(m_monstres); // ajoute tous les monstres
+
+        // copie de la liste
         ordre.sort((p1, p2) -> Integer.compare(
-                p2.getCaracteristiques().getInitiative(),
-                p1.getCaracteristiques().getInitiative()
+                p2.getInitiative(),
+                p1.getInitiative()
         ));
+
         return ordre;
     }
 }
