@@ -25,7 +25,6 @@ public class Personnage extends Entite {
     private Classe m_classe;
     private Caracteristique m_caracteristiques;
     private ArrayList<Objet> m_inventaire;
-    private Coordonnee m_coordonnee;
 
     public Personnage(String nom, Race race, Classe classe){
         m_nom = nom;
@@ -80,53 +79,53 @@ public class Personnage extends Entite {
         return Armure.sansArmure();
     }
 
-    public void attaquer(Monstre pasGentil){
-        String nom = pasGentil.getNom();
-
+    public void attaquer(Monstre monstre) {
+        String nom = monstre.getNom();
         Arme arme = getArmeEquipe();
 
-        if (arme instanceof Poing){
-            System.out.println("Vous n'avez pas d'arme, votre attaque a échoué ");
+        if (arme instanceof Poing) {
+            System.out.println("Vous n'avez pas d'arme, votre attaque a échoué.");
             return;
         }
 
-        if (!estAportee(pasGentil)){
-            System.out.println("Votre arme n'a pas la portée nécessaire pour attaquer " + nom);
+        if (!estAportee(monstre)) {
+            System.out.println("Votre arme n'a pas la portée nécessaire pour attaquer " + nom + ".");
             return;
         }
 
-        System.out.println("Pour savoir si vous allez toucher " + nom + " vous allez devoir lancer 1d20");
-        int sommePourClasseArmure = De.lancer(1,20);
-        int ajout;
+        System.out.println("Vous tentez d'attaquer " + nom + " !");
+        System.out.println("Lancement d'1d20 pour savoir si vous touchez...");
 
-        if (arme instanceof ArmeDistance){
-            ajout = getCaracteristiques().getDexterite();
-            System.out.println("On ajoute votre dextérité (" + ajout + ") au résultat ");
+        int jetAttaque = De.lancer(1, 20);
+        int bonus;
+
+        if (arme instanceof ArmeDistance) {
+            bonus = getCaracteristiques().getDexterite();
+            System.out.println("Bonus de Dextérité : " + bonus);
+        } else {
+            bonus = getCaracteristiques().getForce();
+            System.out.println("Bonus de Force : " + bonus);
         }
-        else{
-            ajout = getCaracteristiques().getForce();
-            System.out.println("On ajoute votre force (" + ajout + ") au résultat ");
-        }
 
-        sommePourClasseArmure += ajout;
+        jetAttaque += bonus;
 
-        int classeMonstre = pasGentil.getCaracteristiques().getClasseArmure();
+        int classeArmure = monstre.getCaracteristiques().getClasseArmure();
+        System.out.println("Résultat total : " + jetAttaque + " contre CA " + classeArmure);
 
-        System.out.println("Vous avez fait " + sommePourClasseArmure + " et la classe d'armure de " + nom + " est de " + classeMonstre);
+        if (jetAttaque > classeArmure) {
+            int degat = arme.getDegat();
+            int pvAvant = monstre.getCaracteristiques().getPv();
+            monstre.diminuerVie(degat);
+            int pvApres = monstre.getCaracteristiques().getPv();
 
-        if (sommePourClasseArmure > classeMonstre ){
-            System.out.println("Vous allez pouvoir attaquer " + nom);
-
-            System.out.println("Les dégâts que vous allez infliger à " + nom + " seront définie par un lancé " + getArmeEquipe().getDeAttaque().get_nbDes() + "d" +  getArmeEquipe().getDeAttaque().get_nbFaces());
-            int degat = getArmeEquipe().getDegat();
-            System.out.println("Vous avez infligé " + degat + " dégât(s) à " + nom);
-            System.out.println(nom + " est passé de " + pasGentil.getCaracteristiques().getPv() + "pv à " + (pasGentil.getCaracteristiques().getPv() - degat) + "pv");
-            pasGentil.diminuerVie(degat);
-        }
-        else {
-            System.out.println("Vous avez rater " + nom + ", l'attaque ne va pas pouvoir se faire");
+            System.out.println("Attaque réussie !");
+            System.out.println("Dégâts infligés (avec " + arme.getDeAttaque().get_nbDes() + "d" + arme.getDeAttaque().get_nbFaces() + ") : " + degat);
+            System.out.println(nom + " est passé de " + pvAvant + " PV à " + pvApres + " PV.");
+        } else {
+            System.out.println("Vous avez raté " + nom + ", l'attaque échoue.");
         }
     }
+
 
     private boolean estAportee(Monstre cible){
         Coordonnee c1 = getCoordonnee();
@@ -230,10 +229,6 @@ public class Personnage extends Entite {
         System.out.println("L'objet "+ getInventaire().get(num).getNom()+" est équipé");
     }
 
-    public void seDeplacer(Donjon donjon){
-        donjon.deplacerEntite(this);
-    }
-
     @Override
     public int getInitiative(){
         return getCaracteristiques().getInitiative();
@@ -290,5 +285,9 @@ public class Personnage extends Entite {
     public void recupererObjet(Donjon donjon, Coordonnee coordonnee) {
         ajouterInventaire(donjon.getObjet(coordonnee));
         donjon.enleverObjet(coordonnee);
+    }
+
+    public boolean estMort() {
+        return m_caracteristiques.getPv() <= 0;
     }
 }

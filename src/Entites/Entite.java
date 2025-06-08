@@ -2,6 +2,7 @@ package Entites;
 
 import Donjons.Contenu;
 import Donjons.Coordonnee;
+import Donjons.Donjon;
 
 public abstract class Entite implements Contenu {
     private Coordonnee m_coordonnee;
@@ -23,4 +24,10 @@ public abstract class Entite implements Contenu {
     public abstract int getPortee();
 
     public abstract String getType();
+
+    public abstract String getSymbole();
+
+    public void seDeplacer(Donjon donjon) {
+        donjon.deplacerEntite(this);
+    }
 }

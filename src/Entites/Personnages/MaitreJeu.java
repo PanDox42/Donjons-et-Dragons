@@ -2,8 +2,8 @@ package Entites.Personnages;
 
 import Addon.De;
 import Addon.Scan;
-import Donjons.Donjon;
 import Donjons.Obstacle;
+import Donjons.Donjon;
 import Donjons.PreparerTour;
 import Entites.Caracteristiques.CaracteristiqueMonstre;
 import Entites.Personnages.Monstre.Attaque;
@@ -71,12 +71,10 @@ public class MaitreJeu{
             donjon.placerObjet(20, 6, PreparerTour.creerObjetDepuisChoix(1,2));
             donjon.placerObjet(16, 15, PreparerTour.creerObjetDepuisChoix(1,1));
             donjon.placerObjet(9, 3, PreparerTour.creerObjetDepuisChoix(1,4));
-            donjon.placerMonstre(24,15,PreparerTour.creerMonstreDepuisValeurs(0,"Dragon", "Dragou", new Attaque(2, new De(1, 6)), new CaracteristiqueMonstre(12, 4, 4, 12, 10, 15)));
-            donjon.placerMonstre(4,5,PreparerTour.creerMonstreDepuisValeurs(0,"Berserk", "B-Rex", new Attaque(1, new De(1, 4)), new CaracteristiqueMonstre(14, 6, 2, 8, 5, 3)));
-            donjon.placerMonstre(14,15,PreparerTour.creerMonstreDepuisValeurs(0,"Mutant", "Jean-Pierre", new Attaque(1, new De(2, 3)), new CaracteristiqueMonstre(10, 5, 4, 15, 6, 12)));
+            donjon.placerMonstre(6,15,PreparerTour.creerMonstreDepuisValeurs(0,"Dragon", "Dragou", new Attaque(2, new De(1, 6)), new CaracteristiqueMonstre(0, 4, 4, 12, 10, 15)));
+            donjon.placerMonstre(4,5,PreparerTour.creerMonstreDepuisValeurs(0,"Berserk", "B-Rex", new Attaque(1, new De(1, 4)), new CaracteristiqueMonstre(0, 6, 2, 8, 5, 3)));
+            donjon.placerMonstre(14,15,PreparerTour.creerMonstreDepuisValeurs(0,"Mutant", "Jean-Pierre", new Attaque(1, new De(2, 3)), new CaracteristiqueMonstre(0, 5, 4, 15, 6, 12)));
             donjon.afficherCarte();
-            donjon.placerJoueursAvecConfirmation();
-            donjon.equiperObjet();
             donjon.modifierContexte(donjon.raconterTourMdj());
             return donjon;
         } catch(Exception e) {

@@ -28,18 +28,18 @@ public class PreparerTour {
         Classe classeClasse;
 
         switch (race) {
-            case 0 -> raceClasse = new Elfe();
-            case 1 -> raceClasse = new Halfelin();
-            case 2 -> raceClasse = new Humain();
-            case 3 -> raceClasse = new Nain();
+            case 1 -> raceClasse = new Elfe();
+            case 2 -> raceClasse = new Halfelin();
+            case 3 -> raceClasse = new Humain();
+            case 4 -> raceClasse = new Nain();
             default -> throw new IllegalArgumentException("Race inconnue.");
         }
 
         switch (classe) {
-            case 0 -> classeClasse = new Clerc();
-            case 1 -> classeClasse = new Guerrier();
-            case 2 -> classeClasse = new Magicien();
-            case 3 -> classeClasse = new Roublard();
+            case 1 -> classeClasse = new Clerc();
+            case 2 -> classeClasse = new Guerrier();
+            case 3 -> classeClasse = new Magicien();
+            case 4 -> classeClasse = new Roublard();
             default -> throw new IllegalArgumentException("Classe inconnue.");
         }
 
@@ -77,16 +77,16 @@ public class PreparerTour {
             while (true) {
                 try {
                     System.out.println("Quelle sera la race du joueur parmi celles-ci :");
-                    System.out.println("0 - Elfe");
-                    System.out.println("1 - Halfelin");
-                    System.out.println("2 - Humain");
-                    System.out.println("3 - Nain");
+                    System.out.println("1 - Elfe");
+                    System.out.println("2 - Halfelin");
+                    System.out.println("3 - Humain");
+                    System.out.println("4 - Nain");
 
                     race = Integer.parseInt(Scan.ScanLine());
-                    if (race < 0 || race > 3) throw new IllegalArgumentException();
+                    if (race < 1 || race > 4) throw new IllegalArgumentException();
                     break;
                 } catch (Exception e) {
-                    System.out.println("Erreur : veuillez entrer un nombre entier entre 0 et 3 inclus.");
+                    System.out.println("Erreur : veuillez entrer un nombre entier entre 1 et 4 inclus.");
                 }
             }
 
@@ -94,16 +94,16 @@ public class PreparerTour {
             while (true) {
                 try {
                     System.out.println("Quelle sera la classe du joueur parmi celles-ci :");
-                    System.out.println("0 - Clerc");
-                    System.out.println("1 - Guerrier");
-                    System.out.println("2 - Magicien");
-                    System.out.println("3 - Roublard");
+                    System.out.println("1 - Clerc");
+                    System.out.println("2 - Guerrier");
+                    System.out.println("3 - Magicien");
+                    System.out.println("4 - Roublard");
 
                     classe = Integer.parseInt(Scan.ScanLine());
-                    if (classe < 0 || classe > 3) throw new IllegalArgumentException();
+                    if (classe < 1 || classe > 4) throw new IllegalArgumentException();
                     break;
                 } catch (Exception e) {
-                    System.out.println("Erreur : veuillez entrer un nombre entier entre 0 et 3 inclus.");
+                    System.out.println("Erreur : veuillez entrer un nombre entier entre 1 et 4 inclus.");
                 }
             }
 

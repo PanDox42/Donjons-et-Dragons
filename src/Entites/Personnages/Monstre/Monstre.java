@@ -1,9 +1,13 @@
 package Entites.Personnages.Monstre;
 
+import Addon.De;
 import Donjons.Coordonnee;
 import Entites.Caracteristiques.CaracteristiqueMonstre;
 import Entites.Entite;
 import Entites.Personnages.Personnage;
+import Objets.Arme.Arme;
+import Objets.Arme.ArmeDistances.ArmeDistance;
+import Objets.Arme.Poing;
 
 public class Monstre extends Entite {
     private String m_nom;
@@ -128,4 +132,39 @@ public class Monstre extends Entite {
         }
         return afficherDonjon;
     }
+
+    public void attaquer(Personnage personnage){
+        String nom = personnage.getNom();
+
+        // Vérifie la portée
+        if (!estAportee(personnage)) {
+            System.out.println(m_nom + " est trop loin pour attaquer " + nom + ".");
+            return;
+        }
+
+        System.out.println(m_nom + " attaque " + nom + " !");
+        System.out.println("Jet pour toucher : lancer 1d20...");
+
+        int jet = De.lancer(1, 20);
+        int bonusAttaque = m_caracteristiques.getForce();
+        int total = jet + bonusAttaque;
+
+        System.out.println("Résultat du jet : " + jet + " + bonus de Force (" + bonusAttaque + ") = " + total);
+
+        // Classe d'armure du personnage : 10 + Dextérité
+        int classeArmure = 10 + personnage.getCaracteristiques().getDexterite();
+        System.out.println("Classe d'armure de " + nom + " : " + classeArmure);
+
+        if (total > classeArmure) {
+            int degats = m_attaque.getDeAttaque().lancer();
+            System.out.println("Attaque réussie ! " + m_nom + " inflige " + degats + " dégât(s) à " + nom);
+            int pvAvant = personnage.getCaracteristiques().getPv();
+            personnage.diminuerVie(degats);
+            System.out.println(nom + " passe de " + pvAvant + " pv à " + personnage.getCaracteristiques().getPv() + " pv.");
+        } else {
+            System.out.println("Attaque ratée ! " + m_nom + " ne parvient pas à toucher " + nom);
+        }
+    }
+
+
 }

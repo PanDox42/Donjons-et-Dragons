@@ -1,7 +1,5 @@
 package Donjons;
 
-import Donjons.Contenu;
-
 public class Obstacle implements Contenu {
     private Coordonnee m_coordonnee;
     public Obstacle() {
