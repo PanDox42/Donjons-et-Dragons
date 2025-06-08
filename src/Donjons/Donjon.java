@@ -1,11 +1,15 @@
 package Donjons;
 
+import Addon.De;
 import Addon.Scan;
 import Entites.Entite;
 import Entites.Personnages.MaitreJeu;
 import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Personnage;
 import Objets.Objet;
+import Sorts.ArmeMagique;
+import Sorts.BoogieWoogie;
+import Sorts.Guerison;
 
 import java.util.*;
 
@@ -18,11 +22,6 @@ public class Donjon {
     private ArrayList<Personnage> m_joueurs;
     private Map<String, Integer> m_dicoMonstre;
     private ArrayList<Monstre> m_monstres;
-    private ArrayList<String> m_alphabet = new ArrayList<>(Arrays.asList(
-            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-            "U", "V", "W", "X", "Y", "Z"
-    ));
 
     public Donjon(int x, int y, MaitreJeu mdj)
     {
@@ -197,6 +196,11 @@ public class Donjon {
 
 
     public void afficherCarte(){
+        ArrayList<String> m_alphabet = new ArrayList<>(Arrays.asList(
+                "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+                "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+                "U", "V", "W", "X", "Y", "Z"
+        ));
         System.out.print("\n      ");
         for(int i = 0; i < m_coordonnee.getX(); i++) {
             System.out.print(m_alphabet.get(i)+"  ");
@@ -233,62 +237,22 @@ public class Donjon {
         System.out.println("*\n* Equipement   |   [ ] Obstacle  |\n");
     }
 
-    public void deplacerEntite(Entite entite) {
-        while (true) {
-            System.out.println("Où voulez vous vous déplacer ? (indiquez les coodronnées comme ça : A:5)");
-
-            int[] XY = convertirCoordonnnee(Scan.ScanLine());
-            Coordonnee newCoordonnee = new Coordonnee(XY[0], XY[1]);
-
-            if (verifierDeplacerContenuValide(entite, newCoordonnee)) {
-                if (entite instanceof Personnage){
-                    Personnage perso = (Personnage) entite;
-                    if ((double) perso.getCaracteristiques().getVitesse() / 3 < distanceEntreCoordonnee(entite.getCoordonnee(), newCoordonnee)) {
-                        System.out.println("Votre vitesse ne permet pas d'atteindre cette case en un coup");
-
-                        System.out.println("Où voulez vous vous déplacer ? (indiquez les coodronnées comme ça : A:5)");
-                    }
-                    else {
-                        // Retirer l'entité de l'ancienne position
-                        Coordonnee ancienneCoordonnee = entite.getCoordonnee();
-                        m_donjon_contenu[ancienneCoordonnee.getX()][ancienneCoordonnee.getY()][1] = null;
-
-                        // Ajouter l'entité à la nouvelle position
-                        m_donjon_contenu[newCoordonnee.getX()][newCoordonnee.getY()][1] = entite;
-
-                        // Mettre à jour sa coordonnée
-                        entite.setCoordonnee(newCoordonnee);
-
-                        // Afficher la carte
-                        afficherCarte();
-                        break;
-                    }
-                }
-                if (entite instanceof Monstre){
-                    Monstre monstre = (Monstre) entite;
-                    if ((double) monstre.getCaracteristiques().getVitesse() / 3 < distanceEntreCoordonnee(entite.getCoordonnee(), newCoordonnee)) {
-                        System.out.println("Votre vitesse ne permet pas d'atteindre cette case en un coup");
-
-                        System.out.println("Où voulez vous vous déplacer ? (indiquez les coodronnées comme ça : A:5)");
-                    }
-                    else {
-                        // Retirer l'entité de l'ancienne position
-                        Coordonnee ancienneCoordonnee = entite.getCoordonnee();
-                        m_donjon_contenu[ancienneCoordonnee.getX()][ancienneCoordonnee.getY()][1] = null;
-
-                        // Ajouter l'entité à la nouvelle position
-                        m_donjon_contenu[newCoordonnee.getX()][newCoordonnee.getY()][1] = entite;
-
-                        // Mettre à jour sa coordonnée
-                        entite.setCoordonnee(newCoordonnee);
-
-                        // Afficher la carte
-                        afficherCarte();
-                        break;
-                    }
-                }
-            }
+    public void deplacerEntite(Coordonnee coordonnee, Entite entite) {
+        if ((double) entite.getCaracteristiques().getVitesse() / 3 < distanceEntreCoordonnee(entite.getCoordonnee(), coordonnee)) {
+            throw new IllegalArgumentException("Votre vitesse ne permet pas d'atteindre cette case en un coup");
         }
+        // Retirer l'entité de l'ancienne position
+        Coordonnee ancienneCoordonnee = entite.getCoordonnee();
+        m_donjon_contenu[ancienneCoordonnee.getX()][ancienneCoordonnee.getY()][1] = null;
+
+        // Ajouter l'entité à la nouvelle position
+        m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][1] = entite;
+
+        // Mettre à jour sa coordonnée
+        entite.setCoordonnee(coordonnee);
+
+        // Afficher la carte
+        afficherCarte();
     }
 
     private double distanceEntreCoordonnee(Coordonnee depart, Coordonnee arrivee){
@@ -318,7 +282,12 @@ public class Donjon {
         }
     }
 
-    public int[] convertirCoordonnnee(String coordonnee) {
+    public static int[] convertirCoordonnnee(String coordonnee) {
+        ArrayList<String> m_alphabet = new ArrayList<>(Arrays.asList(
+                "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+                "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+                "U", "V", "W", "X", "Y", "Z"
+        ));
         int[] result = new int[2];
         String[] coordonneeSplit = coordonnee.split(":");
         if (coordonneeSplit.length != 2) {
@@ -600,4 +569,40 @@ public class Donjon {
     public void setToutLesPersonnages(ArrayList<Personnage> ListPersonnages) {
         m_joueurs = ListPersonnages;
     }
+
+    public void faireDegats(Entite entite, int degats) {
+        entite.getCaracteristiques().changerPv(-degats);
+    }
+
+    public MaitreJeu getMDJ() {
+        return m_mdj;
+    }
+
+    public void lancerSort(Personnage lanceur) {
+        System.out.println("Quel sort voulez-vous lancer ?");
+        System.out.println("[0] Guérison");
+        System.out.println("[1] Boogie Woogie");
+        System.out.println("[2] Arme magique");
+
+        try {
+            int choix = Integer.parseInt(Scan.ScanLine());
+
+            switch (choix) {
+                case 0:
+                    Guerison.lancer(lanceur, this);
+                    break;
+                case 1:
+                    BoogieWoogie.lancer(lanceur, this);
+                    break;
+                case 2:
+                    ArmeMagique.lancer(lanceur, this);
+                    break;
+                default:
+                    System.out.println("Choix invalide.");
+            }
+        } catch (Exception e) {
+            System.out.println("Entrée invalide.");
+        }
+    }
+
 }

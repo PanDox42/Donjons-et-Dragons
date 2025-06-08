@@ -120,74 +120,85 @@ public class Jouer {
         ArrayList<Entite> ordreJeu = donjon.getOrdreEntite();
 
         for (Entite entite : ordreJeu) {
-            for (int action = 3; action > 0; action--) {
-                if (entite instanceof Personnage personnage) {
-                    jouerTourPersonnage(donjon, personnage, action, nbTour);
-                } else if (entite instanceof Monstre monstre) {
-                    jouerTourMonstre(donjon, monstre, action);
-                }
+            if (entite instanceof Personnage personnage) {
+                jouerTourPersonnage(donjon, personnage, nbTour);
+            } else if (entite instanceof Monstre monstre) {
+                jouerTourMonstre(donjon, monstre);
+            }
+            System.out.println("Maitre du jeu - Voulez vous faire une action ?");
+            if(Scan.demanderChoix()) {
+                jouerMaitreDuJeu(donjon);
             }
         }
     }
 
-    private static void jouerTourPersonnage(Donjon donjon, Personnage personnage, int action, int numTour) {
+    private static void jouerMaitreDuJeu(Donjon donjon) {
+        System.out.println("Que voulez vous faire parmi : \n1 - Déplacer un joueur ou un monstre\n2 - Infliger des dégâts à un joueur ou a un monstre\n3 - Ajouter des obstacles dans le donjon");
+        int choix = Integer.parseInt(Scan.ScanLine().trim());
+
+        switch (choix) {
+            case 1 -> donjon.getMDJ().deplacerEntite(donjon);
+            case 2 -> donjon.getMDJ().infligerDegatsEntite(donjon);
+            case 3 -> donjon.placerObjetsAvecConfirmation();
+
+            default -> throw new NumberFormatException();
+        }
+    }
+
+    private static void jouerTourPersonnage(Donjon donjon, Personnage personnage, int numTour) {
         System.out.println("\n*** C'est à " + personnage.getNom() + " de jouer ***\n");
         donjon.afficherCarte();
         personnage.afficherSituation();
         System.out.println("Vous pouvez vous déplacer de " + personnage.getCaracteristiques().getVitesse() / 3 + " cases");
 
-        System.out.println(personnage.getNom() + " - Vous avez " + action + " action(s), que voulez-vous faire ?");
+        try {
+            afficherMenuActionsPersonnage(donjon, personnage, numTour);
+            int choix = Integer.parseInt(Scan.ScanLine().trim());
 
-        boolean actionEffectuee = false;
-
-        while (!actionEffectuee) {
-            try {
-                afficherMenuActionsPersonnage(donjon, personnage, action, numTour);
-                int choix = Integer.parseInt(Scan.ScanLine().trim());
-
-                actionEffectuee = traiterActionPersonnage(donjon, personnage, choix, action, numTour);
-            } catch (Exception e) {
-                System.out.println("Entrée invalide ou erreur : " + e.getMessage());
-            }
+            traiterActionPersonnage(donjon, personnage, choix, numTour);
+        } catch (Exception e) {
+            System.out.println("Entrée invalide ou erreur : " + e.getMessage());
         }
     }
 
-    private static void afficherMenuActionsPersonnage(Donjon donjon, Personnage personnage, int action, int numTour) {
-        if(numTour==0) {
+    private static void afficherMenuActionsPersonnage(Donjon donjon, Personnage personnage, int numTour) {
+        if(numTour!=1) {
             System.out.println("1 - laisser le maître du jeu commenter l'action précédente");
             System.out.println("2 - commenter action précédente");
             System.out.println("3 - S'équiper");
             System.out.println("4 - Se déplacer");
             System.out.println("5 - Attaquer");
-            if (donjon.itemSurCoordonnee(personnage.getCoordonnee()) && action > 1) {
-                System.out.println("6 - Récupérer " + donjon.getObjet(personnage.getCoordonnee()).getNom());
+            System.out.println("6 - Lancer un sort");
+            if (donjon.itemSurCoordonnee(personnage.getCoordonnee())) {
+                System.out.println("7 - Récupérer " + donjon.getObjet(personnage.getCoordonnee()).getNom());
             }
         }
         else {
             System.out.println("1 - S'équiper");
             System.out.println("2 - Se déplacer");
             System.out.println("3 - Attaquer");
-            if (donjon.itemSurCoordonnee(personnage.getCoordonnee()) && action > 1) {
-                System.out.println("4 - Récupérer " + donjon.getObjet(personnage.getCoordonnee()).getNom());
+            System.out.println("4 - Lancer un sort");
+            if (donjon.itemSurCoordonnee(personnage.getCoordonnee())) {
+                System.out.println("5 - Récupérer " + donjon.getObjet(personnage.getCoordonnee()).getNom());
             }
         }
     }
 
-    private static boolean traiterActionPersonnage(Donjon donjon, Personnage personnage, int choix, int action, int numTour) {
-        if(numTour!=0) {
+    private static void traiterActionPersonnage(Donjon donjon, Personnage personnage, int choix, int numTour) {
+        if(numTour!=1) {
             switch (choix) {
                 case 1 -> demanderCommentaire("Maitre du jeu");
                 case 2 -> demanderCommentaire(personnage.getNom());
                 case 3 -> personnage.sEquiper();
                 case 4 -> personnage.seDeplacer(donjon);
                 case 5 -> donjon.attaquerMonstre(personnage);
-                case 6 -> {
-                    if (donjon.itemSurCoordonnee(personnage.getCoordonnee()) && action > 1) {
+                case 6 -> donjon.lancerSort(personnage);
+                case 7 -> {
+                    if (donjon.itemSurCoordonnee(personnage.getCoordonnee())) {
                         System.out.println("Récupérer l'objet ? (o/n)");
                         if (Scan.demanderChoix()) {
                             personnage.recupererObjet(donjon, personnage.getCoordonnee());
-                            return true;
-                        } else return false;
+                        }
                     } else throw new IllegalArgumentException("Action non disponible.");
                 }
                 default -> throw new NumberFormatException();
@@ -198,47 +209,37 @@ public class Jouer {
                 case 1 -> personnage.sEquiper();
                 case 2 -> personnage.seDeplacer(donjon);
                 case 3 -> donjon.attaquerMonstre(personnage);
-                case 4 -> {
-                    if (donjon.itemSurCoordonnee(personnage.getCoordonnee()) && action > 1) {
+                case 4 -> donjon.lancerSort(personnage);
+                case 5 -> {
+                    if (donjon.itemSurCoordonnee(personnage.getCoordonnee())) {
                         System.out.println("Récupérer l'objet ? (o/n)");
                         if (Scan.demanderChoix()) {
                             personnage.recupererObjet(donjon, personnage.getCoordonnee());
-                            return true;
-                        } else return false;
+                        }
                     } else throw new IllegalArgumentException("Action non disponible.");
                 }
                 default -> throw new NumberFormatException();
             }
         }
-        return true;
     }
 
-    private static void jouerTourMonstre(Donjon donjon, Monstre monstre, int action) {
+    private static void jouerTourMonstre(Donjon donjon, Monstre monstre) {
         System.out.println("Maitre du jeu - Jouer le monstre " + monstre.getNom());
         donjon.afficherCarte();
         monstre.afficherSituation();
-        System.out.println(monstre.getNom() + " - Vous avez " + action + " action(s), que voulez-vous faire ?");
+        try {
+            System.out.println("1 - Se déplacer");
+            System.out.println("2 - Attaquer");
 
-        boolean actionEffectuee = false;
+            int choix = Integer.parseInt(Scan.ScanLine().trim());
 
-        while (!actionEffectuee) {
-            try {
-                System.out.println("1 - Se déplacer");
-                System.out.println("2 - Attaquer");
-
-                int choix = Integer.parseInt(Scan.ScanLine().trim());
-
-                switch (choix) {
-                    case 1 -> monstre.seDeplacer(donjon);
-                    case 2 -> donjon.attaquerPersonnage(monstre);
-                    default -> throw new NumberFormatException();
-                }
-
-                actionEffectuee = true;
-
-            } catch (Exception e) {
-                System.out.println("Entrée invalide ou erreur : " + e.getMessage());
+            switch (choix) {
+                case 1 -> monstre.seDeplacer(donjon);
+                case 2 -> donjon.attaquerPersonnage(monstre);
+                default -> throw new NumberFormatException();
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

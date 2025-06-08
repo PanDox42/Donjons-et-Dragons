@@ -2,11 +2,16 @@ package Entites.Personnages;
 
 import Addon.De;
 import Addon.Scan;
+import Donjons.Coordonnee;
 import Donjons.Obstacle;
 import Donjons.Donjon;
 import Donjons.PreparerTour;
 import Entites.Caracteristiques.CaracteristiqueMonstre;
+import Entites.Entite;
 import Entites.Personnages.Monstre.Attaque;
+import Entites.Personnages.Monstre.Monstre;
+
+import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
 
@@ -71,9 +76,9 @@ public class MaitreJeu{
             donjon.placerObjet(20, 6, PreparerTour.creerObjetDepuisChoix(1,2));
             donjon.placerObjet(16, 15, PreparerTour.creerObjetDepuisChoix(1,1));
             donjon.placerObjet(9, 3, PreparerTour.creerObjetDepuisChoix(1,4));
-            donjon.placerMonstre(6,15,PreparerTour.creerMonstreDepuisValeurs(0,"Dragon", "Dragou", new Attaque(2, new De(1, 6)), new CaracteristiqueMonstre(0, 4, 4, 12, 10, 15)));
-            donjon.placerMonstre(4,5,PreparerTour.creerMonstreDepuisValeurs(0,"Berserk", "B-Rex", new Attaque(1, new De(1, 4)), new CaracteristiqueMonstre(0, 6, 2, 8, 5, 3)));
-            donjon.placerMonstre(14,15,PreparerTour.creerMonstreDepuisValeurs(0,"Mutant", "Jean-Pierre", new Attaque(1, new De(2, 3)), new CaracteristiqueMonstre(0, 5, 4, 15, 6, 12)));
+            donjon.placerMonstre(6,15,PreparerTour.creerMonstreDepuisValeurs(0,"Dragon", "Dragou", new Attaque(2, new De(1, 6)), new CaracteristiqueMonstre(15, 4, 4, 12, 10, 15)));
+            donjon.placerMonstre(4,5,PreparerTour.creerMonstreDepuisValeurs(1,"Berserk", "B-Rex", new Attaque(1, new De(1, 4)), new CaracteristiqueMonstre(8, 6, 2, 8, 5, 3)));
+            donjon.placerMonstre(14,15,PreparerTour.creerMonstreDepuisValeurs(2,"Mutant", "Jean-Pierre", new Attaque(1, new De(2, 3)), new CaracteristiqueMonstre(10, 5, 4, 15, 6, 12)));
             donjon.afficherCarte();
             donjon.modifierContexte(donjon.raconterTourMdj());
             return donjon;
@@ -81,5 +86,140 @@ public class MaitreJeu{
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public void deplacerEntite(Donjon donjon) {
+        System.out.println("Quelle entité voulez-vous déplacer ?");
+        System.out.println("1 - Personnage");
+        System.out.println("2 - Monstre");
+
+        try {
+            int choixType = Integer.parseInt(Scan.ScanLine().trim());
+
+            if (choixType == 1) {
+                ArrayList<Personnage> joueurs = donjon.getJoueur();
+
+                for (int i = 0; i < joueurs.size(); i++) {
+                    System.out.print("[" + i + "] ");
+                    joueurs.get(i).afficherSituation();
+                    System.out.println();
+                }
+
+                System.out.println("Entrez le numéro du personnage à déplacer :");
+                int num = Integer.parseInt(Scan.ScanLine());
+
+                if (num >= 0 && num < joueurs.size()) {
+                    Entite entite = joueurs.get(num);
+                    System.out.println("Maître du Jeu - Entrez les coordonnées cibles pour " + entite.getNom() + " (ex : A:3) :");
+                    int[] XY = Donjon.convertirCoordonnnee(Scan.ScanLine());
+                    donjon.deplacerEntite(new Coordonnee(XY[0], XY[1]), entite);
+                } else {
+                    System.out.println("Numéro de personnage invalide.");
+                }
+
+            } else if (choixType == 2) {
+                ArrayList<Monstre> monstres = donjon.getMonstres();
+
+                for (int i = 0; i < monstres.size(); i++) {
+                    System.out.print("[" + i + "] ");
+                    monstres.get(i).afficherSituation();
+                    System.out.println();
+                }
+
+                System.out.println("Entrez le numéro du monstre à déplacer :");
+                int num = Integer.parseInt(Scan.ScanLine());
+
+                if (num >= 0 && num < monstres.size()) {
+                    Entite entite = monstres.get(num);
+                    System.out.println("Maître du Jeu - Entrez les coordonnées cibles pour " + entite.getNom() + " (ex : A:3) :");
+                    int[] XY = Donjon.convertirCoordonnnee(Scan.ScanLine());
+                    donjon.deplacerEntite(new Coordonnee(XY[0], XY[1]), entite);
+                } else {
+                    System.out.println("Numéro de monstre invalide.");
+                }
+
+            } else {
+                System.out.println("Choix invalide. Veuillez saisir 1 ou 2.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+        } catch (Exception e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+    }
+
+
+    public void infligerDegatsEntite(Donjon donjon) {
+        System.out.println("Sur quel type d'entité voulez-vous infliger des dégâts ?");
+        System.out.println("1 - Personnage");
+        System.out.println("2 - Monstre");
+
+        try {
+            int choixType = Integer.parseInt(Scan.ScanLine().trim());
+
+            Entite entite = null;
+
+            if (choixType == 1) {
+                ArrayList<Personnage> joueurs = donjon.getJoueur();
+                for (int i = 0; i < joueurs.size(); i++) {
+                    System.out.print("[" + i + "] ");
+                    joueurs.get(i).afficherSituation();
+                    System.out.println();
+                }
+
+                System.out.println("Entrez le numéro du personnage ciblé :");
+                int num = Integer.parseInt(Scan.ScanLine());
+
+                if (num >= 0 && num < joueurs.size()) {
+                    entite = joueurs.get(num);
+                } else {
+                    System.out.println("Numéro de personnage invalide.");
+                    return;
+                }
+
+            } else if (choixType == 2) {
+                ArrayList<Monstre> monstres = donjon.getMonstres();
+                for (int i = 0; i < monstres.size(); i++) {
+                    System.out.print("[" + i + "] ");
+                    monstres.get(i).afficherSituation();
+                    System.out.println();
+                }
+
+                System.out.println("Entrez le numéro du monstre ciblé :");
+                int num = Integer.parseInt(Scan.ScanLine());
+
+                if (num >= 0 && num < monstres.size()) {
+                    entite = monstres.get(num);
+                } else {
+                    System.out.println("Numéro de monstre invalide.");
+                    return;
+                }
+
+            } else {
+                System.out.println("Choix invalide. Veuillez saisir 1 ou 2.");
+                return;
+            }
+
+            System.out.println("Maître du Jeu - Indiquez le dé à lancer pour les dégâts (ex : 1d6, 2d8...) :");
+            De degats = De.convertirStringDe(Scan.ScanLine());
+
+            int totalDegats = degats.lancer();
+            donjon.faireDegats(entite, totalDegats);
+            System.out.println(entite.getNom() + " a subi " + totalDegats + " point(s) de dégât.");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+        } catch (Exception e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+    }
+
+
+    public void ajouterObstacle(Donjon donjon) {
+        System.out.println("Maître du Jeu - Veuillez indiquer les coordonnées pour rajouter un obstacle :");
+        int[] XY = Donjon.convertirCoordonnnee(Scan.ScanLine());
+
+        donjon.placerObstacle(XY[0], XY[1], new Obstacle());
     }
 }

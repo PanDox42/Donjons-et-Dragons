@@ -70,6 +70,7 @@ public class Monstre extends Entite {
         return m_attaque;
     }
 
+    @Override
     public CaracteristiqueMonstre getCaracteristiques(){
         return m_caracteristiques;
     }

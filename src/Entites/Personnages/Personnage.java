@@ -16,6 +16,7 @@ import Objets.Armure.Armure;
 import Objets.Objet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
@@ -53,6 +54,7 @@ public class Personnage extends Entite {
         return m_race;
     }
 
+    @Override
     public Caracteristique getCaracteristiques(){
         return m_caracteristiques;
     }
@@ -289,5 +291,15 @@ public class Personnage extends Entite {
 
     public boolean estMort() {
         return m_caracteristiques.getPv() <= 0;
+    }
+
+    public List<Arme> getArme() {
+        List<Arme> armes = new ArrayList<>();
+        for (Objet objet : m_inventaire) {
+            if (objet instanceof Arme) {
+                armes.add((Arme) objet);
+            }
+        }
+        return armes;
     }
 }

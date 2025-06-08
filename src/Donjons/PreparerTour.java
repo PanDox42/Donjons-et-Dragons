@@ -12,6 +12,7 @@ import Objets.Arme.ArmeCourantes.MasseArme;
 import Objets.Arme.ArmeDistances.ArbaleteLegere;
 import Objets.Arme.ArmeDistances.ArcCourt;
 import Objets.Arme.ArmeDistances.Fronde;
+import Objets.Arme.ArmeGuerres.EpeeDeuxMains;
 import Objets.Arme.ArmeGuerres.EpeeLongue;
 import Objets.Arme.ArmeGuerres.Rapiere;
 import Objets.Armure.ArmureLegeres.ArmureEcailles;
@@ -201,7 +202,8 @@ public class PreparerTour {
                 case 5 -> new ArbaleteLegere();
                 case 6 -> new Fronde();
                 case 7 -> new ArcCourt();
-                default -> throw new IllegalArgumentException("ID d'arme invalide (1-7 attendu).");
+                case 8 -> new EpeeDeuxMains();
+                default -> throw new IllegalArgumentException("ID d'arme invalide (1-8 attendu).");
             };
         } else {
             throw new IllegalArgumentException("Type d'objet invalide (0 = armure, 1 = arme).");
@@ -246,6 +248,7 @@ public class PreparerTour {
                     System.out.println("5 - Arbalète légère (1d8, portée 16)");
                     System.out.println("6 - Fronde (1d4, portée 6)");
                     System.out.println("7 - Arc court (1d6, portée 16)");
+                    System.out.println("8 - Epée à deux mains (2d6, portée: 1)");
                 }
 
                 int id = Integer.parseInt(Scan.ScanLine());
