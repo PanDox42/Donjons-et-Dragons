@@ -27,8 +27,4 @@ public class Halfelin implements Race{
         return 2;
     }
 
-    @Override
-    public int getInitiativeAugmentee() {
-        return 0;
-    }
 }

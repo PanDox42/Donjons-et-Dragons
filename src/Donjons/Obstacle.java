@@ -3,9 +3,17 @@ package Donjons;
 import Donjons.Contenu;
 
 public class Obstacle implements Contenu {
-    public Coordonnee m_coordonnee;
+    private Coordonnee m_coordonnee;
     public Obstacle() {
 
+    }
+
+    public void setCoordonnee(Coordonnee coordonnee){
+        m_coordonnee = coordonnee;
+    }
+
+    public Coordonnee getCoordonnee(){
+        return m_coordonnee;
     }
 
     @Override

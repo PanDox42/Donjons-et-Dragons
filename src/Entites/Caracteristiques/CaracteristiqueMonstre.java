@@ -2,10 +2,6 @@ package Entites.Caracteristiques;
 
 import Addon.De;
 import Addon.Scan;
-import Entites.Personnages.Monstre.Attaque;
-import Entites.Personnages.Monstre.Monstre;
-
-import static java.lang.Integer.parseInt;
 
 public class CaracteristiqueMonstre extends Caracteristique{
     private int m_classeArmure;

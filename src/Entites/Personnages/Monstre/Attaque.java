@@ -3,8 +3,6 @@ package Entites.Personnages.Monstre;
 import Addon.De;
 import Addon.Scan;
 
-import static java.lang.Integer.parseInt;
-
 public class Attaque {
     private int m_portee;
     private De m_degat;

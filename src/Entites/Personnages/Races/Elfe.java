@@ -27,8 +27,4 @@ public class Elfe implements Race{
         return 0;
     }
 
-    @Override
-    public int getInitiativeAugmentee() {
-        return 0;
-    }
 }

@@ -27,9 +27,5 @@ public class Nain implements Race{
         return 0;
     }
 
-    @Override
-    public int getInitiativeAugmentee() {
-        return 0;
-    }
 
 }

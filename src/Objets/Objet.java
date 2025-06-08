@@ -1,7 +1,7 @@
 package Objets;
 
-import Donjons.Coordonnee;
 import Donjons.Contenu;
+import Donjons.Coordonnee;
 
 public abstract class Objet implements Contenu {
     private String m_nom;

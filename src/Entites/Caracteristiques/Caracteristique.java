@@ -8,7 +8,7 @@ public class Caracteristique {
     private int m_force;
     private int m_dexterite;
     private int m_vitesse;
-    private int m_initiative;
+    protected int m_initiative;
 
     public Caracteristique(int pv, int force, int dexterite, int vitesse, int initiative){
         m_pv = pv;
@@ -68,10 +68,8 @@ public class Caracteristique {
         // Definition de la initiative
         System.out.println("Definition de votre initiative qui sera un dé '1d20'");
         int initiative = new De(1,20).lancer();
-        System.out.println("Vous avez obtenu " + initiative + " points avec vos lancés de dé. \n" +
-                "Votre race vous ajoute " + personnage.getRace().getInitiativeAugmentee() + " et nous ajoutons 3 au score total");
+        System.out.println("Vous avez obtenu " + initiative + " points avec vos lancés de dé. \n");
 
-        initiative += 3 + personnage.getRace().getInitiativeAugmentee();
         System.out.println("Votre initiative est donc définie à " + initiative + "\n");
 
         return new Caracteristique(vie, force, dexterite, vitesse, initiative);
@@ -97,6 +95,7 @@ public class Caracteristique {
     public int getInitiative(){
         return m_initiative;
     }
+
 
 
     // Les méthodes de modification des propriétés
