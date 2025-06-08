@@ -1,16 +1,13 @@
 package Donjons;
 
+import Addon.Scan;
 import Entites.Entite;
 import Entites.Personnages.MaitreJeu;
 import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Personnage;
-import Addon.Scan;
 import Objets.Objet;
 
-import java.lang.reflect.Array;
 import java.util.*;
-
-import static java.lang.Integer.parseInt;
 
 public class Donjon {
     private MaitreJeu m_mdj = null;
@@ -488,8 +485,6 @@ public class Donjon {
         return (Objet) m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][0];
     }
 
-
-
     public ArrayList<Entite> getOrdreEntite() {
         ArrayList<Entite> ordre = new ArrayList<>();
         ordre.addAll(m_joueurs);  // ajoute tous les joueurs
@@ -502,5 +497,14 @@ public class Donjon {
         ));
 
         return ordre;
+    }
+
+    public boolean joueurMort() {
+        for(Personnage p : m_joueurs) {
+            if(p.getCaracteristiques().getPv()==0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

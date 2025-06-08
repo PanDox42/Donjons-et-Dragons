@@ -1,18 +1,18 @@
 package Entites.Personnages;
+
 import Addon.Scan;
 import Donjons.Coordonnee;
 import Donjons.Donjon;
+import Entites.Caracteristiques.Caracteristique;
 import Entites.Entite;
-import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Classes.Classe;
+import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Races.Race;
 import Objets.Arme.Arme;
 import Objets.Armure.Armure;
-import Entites.Caracteristiques.Caracteristique;
 import Objets.Objet;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.Integer.parseInt;
 

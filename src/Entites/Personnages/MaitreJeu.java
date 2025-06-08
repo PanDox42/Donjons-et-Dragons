@@ -1,16 +1,12 @@
 package Entites.Personnages;
 
 import Addon.De;
-import Donjons.Donjon;
 import Addon.Scan;
-import Donjons.Jouer;
+import Donjons.Donjon;
 import Donjons.Obstacle;
 import Donjons.PreparerTour;
 import Entites.Caracteristiques.CaracteristiqueMonstre;
 import Entites.Personnages.Monstre.Attaque;
-import Entites.Personnages.Monstre.Monstre;
-
-import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
 

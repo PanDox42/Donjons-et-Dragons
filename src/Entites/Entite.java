@@ -1,7 +1,7 @@
 package Entites;
 
-import Donjons.Coordonnee;
 import Donjons.Contenu;
+import Donjons.Coordonnee;
 
 public abstract class Entite implements Contenu {
     private Coordonnee m_coordonnee;
