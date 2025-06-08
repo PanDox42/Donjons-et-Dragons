@@ -42,7 +42,7 @@ public class Monstre extends Entite {
     public void Attaquer(Personnage perso){
         String nom = perso.getNom();
         int degat = m_attaque.getDeAttaque().lancer();
-        System.out.println(m_espece + m_numero +" a infligé " + degat + " dégât(s) à " + nom);
+        System.out.println(m_nom +" a infligé " + degat + " dégât(s) à " + nom);
         perso.diminuerVie(degat);
     }
 
@@ -76,7 +76,9 @@ public class Monstre extends Entite {
                 m_nom + "\n" + // tabulation de 2 espaces à chaque fois
                         "   Espèce : " + m_espece + "\n" +
                         "   Numéro : " + m_numero + "\n" +
-                        "   Attaque : dégats = " + m_attaque.getDegat().toString() + " portée = " + m_attaque.getPorte() + "\n" +
+                        "   Attaque : " + "\n" +
+                        "       Dégâts : " + m_attaque.getDegat().toString() + "\n" +
+                        "       Portée : " + m_attaque.getPorte() + "\n" +
                         "   Force : " + m_caracteristiques.getForce() + "\n" +
                         "   Dexterité : " + m_caracteristiques.getDexterite() + "\n" +
                         "   Classe Armure : " + m_caracteristiques.getClasseArmure() + "\n" +

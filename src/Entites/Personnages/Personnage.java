@@ -81,7 +81,7 @@ public class Personnage extends Entite {
     }
 
     public void attaquer(Monstre pasGentil){
-        String nom = pasGentil.getEspece() + pasGentil.getNumero();
+        String nom = pasGentil.getNom();
 
         Arme arme = getArmeEquipe();
 
@@ -231,7 +231,6 @@ public class Personnage extends Entite {
     }
 
     public void seDeplacer(Donjon donjon){
-        System.out.println("Où voulez vous vous déplacer ? (indiquez les coodronnées comme ça : A:5)");
         donjon.deplacerEntite(this);
     }
 
@@ -290,5 +289,6 @@ public class Personnage extends Entite {
 
     public void recupererObjet(Donjon donjon, Coordonnee coordonnee) {
         ajouterInventaire(donjon.getObjet(coordonnee));
+        donjon.enleverObjet(coordonnee);
     }
 }

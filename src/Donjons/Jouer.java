@@ -26,6 +26,7 @@ public class Jouer {
                 nbTour++;
             }
         }
+        System.out.println("La partie est temrinée");
     }
 
     private static Donjon preparerDonjonManuellement() {
@@ -52,7 +53,7 @@ public class Jouer {
             try {
                 System.out.println("Maître du Jeu - Souhaitez-vous créer le donjon manuellement ou choisir celui par défault ?");
                 System.out.println("1 - Manuellement");
-                System.out.println("2 - Par Default");
+                System.out.println("2 - Par Défaut");
 
                 String saisie = Scan.ScanLine().trim();
                 int choix = Integer.parseInt(saisie);
@@ -107,8 +108,11 @@ public class Jouer {
                             System.out.println("1 - S'équiper (1pt d'action)");
                             System.out.println("2 - Se déplacer (1pt d'action)");
                             System.out.println("3 - Attaquer (1pt d'action)");
-                            if(donjon.itemSurCoordonnee(personnage.getCoordonnee())){
-                                System.out.println("4 - Récupérer l'objet (1pt d'action)");
+
+                            // Il faut que le joueur soit sur une case avec un item ET qu'il ait encore assez d'action pour le recuperer
+                            boolean recupItemSurJoueurPossible = donjon.itemSurCoordonnee(personnage.getCoordonnee()) && action > 1;
+                            if(recupItemSurJoueurPossible){
+                                System.out.println("4 - Récupérer " + donjon.getObjet(personnage.getCoordonnee()).getNom() + " se trouvant sur votre case (1pt d'action)");
                             }
 
                             String saisie = Scan.ScanLine().trim();
@@ -120,6 +124,8 @@ public class Jouer {
                                 // S'équiper
                                 personnage.sEquiper();
                                 continuer = true;
+
+                                System.out.println("Cet action a couté 1 point d'action");
                             }
 
                             else if (choix == 2) {
@@ -128,38 +134,50 @@ public class Jouer {
                                 personnage.seDeplacer(donjon);
 
                                 continuer = true;
+                                System.out.println("Cet action a couté 1 point d'action");
                             }
 
                             else if (choix == 3) {
 
                                 // Attaquer
-                                donjon.attaquerMonstre(personnage); // Prend pas encore en compte la mort des monstres (ca affiche juste il est mort mais est tjr sur la map)
+                                donjon.attaquerMonstre(personnage); // Prend en compte la mort
                                 continuer = true;
+                                System.out.println("Cet action a couté 1 point d'action");
                             }
 
-                            else if(choix == 4) {
-                                System.out.println("il vous reste " + (action - 1) + " pt(s) d'action");
+                            else if(choix == 4 && recupItemSurJoueurPossible) {
+                                System.out.println("il vous reste " + action + " pt(s) d'action");
+
                                 System.out.println("Voulez vous récupérer l'objet : " + donjon.getObjet(personnage.getCoordonnee()).getNom() + " ? (1pt d'action) (o/n)");
-                                if(Scan.demanderChoix()) {
+
+                                boolean choixRecupererObjet = Scan.demanderChoix();
+
+                                if(choixRecupererObjet) {
                                     personnage.recupererObjet(donjon, personnage.getCoordonnee());
+                                    continuer = true;
+                                    System.out.println("Cet action a couté 1 point d'action");
+                                }
+
+                                else{
+                                    System.out.println("Cet action n'a couté aucun point d'action");
                                 }
                             }
 
                             else {
                                 throw new NumberFormatException();
                             }
-                            System.out.println("Cet action a couté 1 point d'action");
+
                             System.out.println(personnage.getNom() + " - Voulez vous commenter votre action ? (o/n)");
                             if (!Scan.demanderChoix()) {
                                 System.out.println("Maitre du jeu - Voulez vous commenter cette action ? (o/n)");
                                 if(Scan.demanderChoix()) {
                                     System.out.println("Maitre du jeu - Écrivez votre commentaire :");
-                                    System.out.println("Maitre du jeu - "+Scan.ScanLine());
+                                    System.out.println("Maitre du jeu - " + Scan.ScanLine());
                                 }
                             }
                             else {
                                 System.out.println(personnage.getNom() + " - Écrivez votre commentaire :");
-                                System.out.println(personnage.getNom() + " - "+Scan.ScanLine());
+                                System.out.println(personnage.getNom() + " - " + Scan.ScanLine());
                             }
 
                         } catch (NumberFormatException e) {

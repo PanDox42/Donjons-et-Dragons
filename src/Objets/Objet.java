@@ -47,4 +47,8 @@ public abstract class Objet implements Contenu {
     public String getType() {
         return m_type;
     }
+
+    public void setType(String type){
+        m_type = type;
+    }
 }

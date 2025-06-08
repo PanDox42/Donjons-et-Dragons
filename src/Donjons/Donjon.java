@@ -265,8 +265,11 @@ public class Donjon {
 
     public void deplacerEntite(Entite entite) {
         while (true) {
+            System.out.println("Où voulez vous vous déplacer ? (indiquez les coodronnées comme ça : A:5)");
+
             int[] XY = convertirCoordonnnee(Scan.ScanLine());
             Coordonnee newCoordonnee = new Coordonnee(XY[0], XY[1]);
+
             if (verifierDeplacerContenuValide(entite, newCoordonnee)) {
                 if (entite instanceof Personnage){
                     Personnage perso = (Personnage) entite;
@@ -364,6 +367,14 @@ public class Donjon {
         else {
             System.out.println("Type d'entité inconnu ou non géré.");
         }
+    }
+
+    public void enleverObjet(Coordonnee coordonnee){
+        int x = coordonnee.getX();
+        int y = coordonnee.getY();
+
+        if (m_donjon_contenu[x][y][0] instanceof Objet) m_donjon_contenu[x][y][0] = null;
+        else if (m_donjon_contenu[x][y][1] instanceof Objet) m_donjon_contenu[x][y][1] = null;
     }
 
     public boolean verifierDeplacerContenuValide(Contenu contenu, Coordonnee coordonnee) {
