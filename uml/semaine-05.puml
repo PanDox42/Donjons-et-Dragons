@@ -102,10 +102,13 @@ package DED {
             + String getSymbole()
         }
         class PreparerTour {
-            +creerJoueur() : Personnage
-            +creerMonstre() : Monstre
-            +creerObjet() : Objet
-            +creerObstacle(donjon : Donjon) : void
+          +creerPersonnage(nom: String, race: int, classe: int) : Personnage
+          +demanderJoueur(Listjoueur: List<String>) : Personnage
+          +creerMonstreDepuisValeurs(numero: int, espece: String, nom: String, attaque: Attaque, caracteristiqueMonstre: CaracteristiqueMonstre) : Monstre
+          +creerMonstreDepuisValeurs(numero: int, espece: String, nom: String) : Monstre
+          +creerMonstre(donjon: Donjon) : Monstre
+          +creerObjetDepuisChoix(type: int, id: int) : Objet
+          +creerObjet() : Objet
         }
     }
 
@@ -135,13 +138,12 @@ package DED {
             }
 
             class CaracteristiqueMonstre {
-                - m_classeArmure : int
-
-                + CaracteristiqueMonstre(pv : int, force : int, dexterite : int, classeArmure : int, vitesse : int, initiative : int)
-                + static creerCaracteristique(monstre : Monstre) : CaracteristiqueMonstre
-
-                + getClasseArmure() : int
-                + changerClasseArmure(changement : int) : void
+              -m_classeArmure : int
+              +CaracteristiqueMonstre(pv: int, force: int, dexterite: int, classeArmure: int, vitesse: int, initiative: int)
+              +getClasseArmure() : int
+              +changerClasseArmure(changement: int) : void
+              +creerCaracteristique() : CaracteristiqueMonstre
+              -demanderEntier(message: String) : int
             }
         }
 
@@ -249,41 +251,67 @@ package DED {
             }
 
             class MaitreJeu {
-                - static ArrayList<String> tour
-                + MaitreJeu()
-                + static void ajouterLignes(String phrase)
-                + void raconterTour()
-                + Donjon creerDonjon()
+              +MaitreJeu()
+              +raconterTour() : String
+              +creerDonjon() : Donjon
+              +creerDonjonParDefaut() : Donjon
+              +deplacerEntite(donjon: Donjon) : void
+              +infligerDegatsEntite(donjon: Donjon) : void
+              +ajouterObstacle(donjon: Donjon) : void
             }
 
             class Personnage {
-                - String m_nom
-                - Race m_race
-                - Classe m_classe
-                - Caracteristique m_caracteristiques
-                - ArrayList<Objet> m_inventaire
-                - Arme m_armeEquipe
-                - Armure m_armureEquipe
+                - m_nom : String
+                - m_race : Race
+                - m_classe : Classe
+                - m_caracteristiques : Caracteristique
+                - m_inventaire : ArrayList<Objet>
 
-                + Personnage(String nom, Race race, Classe classe)
-                + Classe getClasse()
-                + String getNom()
-                + Race getRace()
-                + Caracteristique getCaracteristiques()
-                + String afficherInventaire()
-                + Arme getArmeEquipe()
-                + Armure getArmureEquipe()
-                + void attaquer(Monstre pasGentil)
-                + void diminuerVie(int degat)
-                + void afficherSituation()
-                + String getSymbole()
-            }
+                + Personnage(nom: String, race: Race, classe: Classe)
+                + getClasse() : Classe
+                + getNom() : String
+                + getRace() : Race
+                + getCaracteristiques() : Caracteristique
+                + getInventaire() : ArrayList<Objet>
+                + getArmeEquipe() : Arme
+                + getArmureEquipe() : Armure
+                + attaquer(monstre: Monstre) : void
+                + diminuerVie(degat: int) : void
+                + afficherInventaire() : void
+                + afficherEquipement() : String
+                + afficherSituation() : void
+                + sEquiper() : void
+                + equiperObjet(num: int) : void
+                + getInitiative() : int
+                + getType() : String
+                + getPortee() : int
+                + getSymbole() : String
+                + getObjetEquipe() : ArrayList<Objet>
+                + ajouterInventaire(objet: Objet) : void
+                + recupererObjet(donjon: Donjon, coordonnee: Coordonnee) : void
+                + estMort() : boolean
+                + getArme() : List<Arme>
+
+                - estAportee(cible: Monstre) : boolean
+                - setEquipe(num: int) : void
+                - delEquipe(num: int) : void
+              }
         }
-        class Entite {
-            - Coordonnee m_coordonnee
-            + Coordonnee getCoordonnee()
-            + void setCoordonnee(int x, int y)
-        }
+        abstract class Entite {
+            - m_coordonnee : Coordonnee
+
+            + getCoordonnee() : Coordonnee
+            + setCoordonnee(x: int, y: int) : void
+            + setCoordonnee(coordonnee: Coordonnee) : void
+            + seDeplacer(donjon: Donjon) : void
+
+            + getInitiative() : int
+            + getPortee() : int
+            + getType() : String
+            + getNom() : String
+            + getSymbole() : String
+            + getCaracteristiques() : Caracteristique
+          }
     }
 
     package Objets {
@@ -376,14 +404,23 @@ package DED {
                 + Nu()
             }
         }
-        abstract class Objet {
-            - String m_nom
-            + Coordonnee m_coordonnee
-            # Objet(String nom)
-            + String getNom()
-            + boolean estEquipe()
-            + String getSymbole()
-        }
+        abstract class Objet implements Donjons.Contenu {
+            - m_nom : String
+            - m_coordonnee : Donjons.Coordonnee
+            - m_equipe : boolean
+            - m_type : String
+
+            + Objet(nom: String, type: String)
+            + getNom() : String
+            + estEquipe() : boolean
+            + getSymbole() : String
+            + getCoordonnee() : Donjons.Coordonnee
+            + setCoordonnee(c: Donjons.Coordonnee) : void
+            + setEquipe() : void
+            + setNonEquipe() : void
+            + getType() : String
+            + setType(type: String) : void
+          }
     }
 
     package Sort {
