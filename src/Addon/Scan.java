@@ -16,18 +16,24 @@ public class Scan {
     }
 
     public static boolean demanderChoix() {
-        String reponse = Scan.ScanLine().trim().toLowerCase();
+        while(true) {
+            try {
+                String reponse = Scan.ScanLine().trim().toLowerCase();
 
-        while (!reponse.equals("o") && !reponse.equals("n")) {
-            System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
-            reponse = Scan.ScanLine().trim().toLowerCase();
-        }
+                while (!reponse.equals("o") && !reponse.equals("n")) {
+                    System.out.println("Réponse invalide. Veuillez répondre par 'o' ou 'n'.");
+                    reponse = Scan.ScanLine().trim().toLowerCase();
+                }
 
-        if(reponse.equals("o")) {
-            return true;
-        }
-        else  {
-            return false;
+                if(reponse.equals("o")) {
+                    return true;
+                }
+                else  {
+                    return false;
+                }
+            } catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 }
