@@ -1,16 +1,13 @@
 package Donjons;
 
+import Addon.Scan;
 import Entites.Entite;
 import Entites.Personnages.MaitreJeu;
 import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Personnage;
-import Addon.Scan;
 import Objets.Objet;
 
-import java.lang.reflect.Array;
 import java.util.*;
-
-import static java.lang.Integer.parseInt;
 
 public class Donjon {
     private MaitreJeu m_mdj = null;
@@ -344,6 +341,32 @@ public class Donjon {
         return result;
     }
 
+    public void tuerEntite(Entite entite){
+        int x = entite.getCoordonnee().getX();
+        int y = entite.getCoordonnee().getY();
+
+        if (entite instanceof Monstre) {
+            m_monstres.remove(entite);
+            if (m_donjon_contenu[x][y][0] == entite) m_donjon_contenu[x][y][0] = null;
+            if (m_donjon_contenu[x][y][1] == entite) m_donjon_contenu[x][y][1] = null;
+
+            System.out.println("Vous avez tué " + ((Monstre) entite).getNom());
+        }
+
+        else if (entite instanceof Personnage) {
+            m_joueurs.remove(entite);
+            m_joueurNom.remove(((Personnage) entite).getNom().toUpperCase());
+            if (m_donjon_contenu[x][y][0] == entite) m_donjon_contenu[x][y][0] = null;
+            if (m_donjon_contenu[x][y][1] == entite) m_donjon_contenu[x][y][1] = null;
+
+            System.out.println("Le joueur " + ((Personnage) entite).getNom() + " a été éliminé.");
+        }
+
+        else {
+            System.out.println("Type d'entité inconnu ou non géré.");
+        }
+    }
+
     public boolean verifierDeplacerContenuValide(Contenu contenu, Coordonnee coordonnee) {
         if(coordonnee.getX()<0 || coordonnee.getY()<0 || coordonnee.getX()>m_coordonnee.getX() || coordonnee.getY()>m_coordonnee.getY()) {
             System.out.println("L'emplacement est en dehors du donjon");
@@ -460,12 +483,19 @@ public class Donjon {
             m_monstres.get(i).afficherSituation();
             System.out.println();
         }
+
         System.out.println("Entrez le numéro du monstre");
         try {
             int num = Integer.parseInt(Scan.ScanLine());
 
             if (num >= 0 && num < m_monstres.size()) {
-                personnage.attaquer(m_monstres.get(num));
+                Monstre monstre = m_monstres.get(num);
+                personnage.attaquer(monstre);
+
+                if (monstre.estMort()){
+                    // Ca va le tuer et afficher qu'il l'a tué
+                    tuerEntite(monstre);
+                }
             }
             else {
                 System.out.println("Numéro invalide. Veuillez saisir un numéro entre 0 et " + (m_monstres.size() - 1));
@@ -488,8 +518,6 @@ public class Donjon {
         return (Objet) m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][0];
     }
 
-
-
     public ArrayList<Entite> getOrdreEntite() {
         ArrayList<Entite> ordre = new ArrayList<>();
         ordre.addAll(m_joueurs);  // ajoute tous les joueurs
@@ -502,5 +530,14 @@ public class Donjon {
         ));
 
         return ordre;
+    }
+
+    public boolean joueurMort() {
+        for(Personnage p : m_joueurs) {
+            if(p.getCaracteristiques().getPv() <= 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

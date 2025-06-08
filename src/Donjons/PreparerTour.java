@@ -1,11 +1,10 @@
 package Donjons;
 
 import Addon.Scan;
-import Entites.Caracteristiques.Caracteristique;
 import Entites.Caracteristiques.CaracteristiqueMonstre;
+import Entites.Personnages.Classes.*;
 import Entites.Personnages.Monstre.Attaque;
 import Entites.Personnages.Monstre.Monstre;
-import Entites.Personnages.Classes.*;
 import Entites.Personnages.Personnage;
 import Entites.Personnages.Races.*;
 import Objets.Arme.ArmeCourantes.Baton;
@@ -15,18 +14,13 @@ import Objets.Arme.ArmeDistances.ArcCourt;
 import Objets.Arme.ArmeDistances.Fronde;
 import Objets.Arme.ArmeGuerres.EpeeLongue;
 import Objets.Arme.ArmeGuerres.Rapiere;
-import Objets.Arme.Poing;
 import Objets.Armure.ArmureLegeres.ArmureEcailles;
 import Objets.Armure.ArmureLegeres.DemiPlate;
 import Objets.Armure.ArmureLourdes.CotteMailles;
 import Objets.Armure.ArmureLourdes.Harnois;
-import Objets.Armure.Nu;
 import Objets.Objet;
 
-import java.util.Dictionary;
 import java.util.List;
-
-import static java.lang.Integer.parseInt;
 
 public class PreparerTour {
     public static Personnage creerPersonnage(String nom, int race, int classe) {

@@ -1,18 +1,22 @@
 package Entites.Personnages;
+
+import Addon.De;
 import Addon.Scan;
 import Donjons.Coordonnee;
 import Donjons.Donjon;
+import Entites.Caracteristiques.Caracteristique;
 import Entites.Entite;
-import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Classes.Classe;
+import Entites.Personnages.Monstre.Monstre;
 import Entites.Personnages.Races.Race;
 import Objets.Arme.Arme;
+import Objets.Arme.ArmeCourantes.ArmeCourante;
+import Objets.Arme.ArmeDistances.ArmeDistance;
+import Objets.Arme.Poing;
 import Objets.Armure.Armure;
-import Entites.Caracteristiques.Caracteristique;
 import Objets.Objet;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
@@ -79,20 +83,48 @@ public class Personnage extends Entite {
     public void attaquer(Monstre pasGentil){
         String nom = pasGentil.getEspece() + pasGentil.getNumero();
 
-        if (!estAportee(pasGentil)){
-            System.out.println("Votre arme n'a pas la portée nécessaire pour attaquer " + pasGentil.getNom());
+        Arme arme = getArmeEquipe();
+
+        if (arme instanceof Poing){
+            System.out.println("Vous n'avez pas d'arme, votre attaque a échoué ");
             return;
         }
 
-        System.out.println("Les dégâts que vous allez infliger à " + nom + " seront définie par un lancé " + getArmeEquipe().getDeAttaque().get_nbDes() + "d" +  getArmeEquipe().getDeAttaque().get_nbFaces());
-        int degat = getArmeEquipe().getDegat();
-        System.out.println("Vous avez infligé " + degat + " dégât(s) à " + nom);
-        System.out.println(nom + " est passé de " + pasGentil.getCaracteristiques().getPv() + "pv à " + (pasGentil.getCaracteristiques().getPv() - degat) + "pv");
-        pasGentil.diminuerVie(degat);
+        if (!estAportee(pasGentil)){
+            System.out.println("Votre arme n'a pas la portée nécessaire pour attaquer " + nom);
+            return;
+        }
 
-        if (pasGentil.estMort()){
-            System.out.println("Vous avez tué " + nom);
+        System.out.println("Pour savoir si vous allez toucher " + nom + " vous allez devoir lancer 1d20");
+        int sommePourClasseArmure = De.lancer(1,20);
+        int ajout;
 
+        if (arme instanceof ArmeDistance){
+            ajout = getCaracteristiques().getDexterite();
+            System.out.println("On ajoute votre dextérité (" + ajout + ") au résultat ");
+        }
+        else{
+            ajout = getCaracteristiques().getForce();
+            System.out.println("On ajoute votre force (" + ajout + ") au résultat ");
+        }
+
+        sommePourClasseArmure += ajout;
+
+        int classeMonstre = pasGentil.getCaracteristiques().getClasseArmure();
+
+        System.out.println("Vous avez fait " + sommePourClasseArmure + " et la classe d'armure de " + nom + " est de " + classeMonstre);
+
+        if (sommePourClasseArmure > classeMonstre ){
+            System.out.println("Vous allez pouvoir attaquer " + nom);
+
+            System.out.println("Les dégâts que vous allez infliger à " + nom + " seront définie par un lancé " + getArmeEquipe().getDeAttaque().get_nbDes() + "d" +  getArmeEquipe().getDeAttaque().get_nbFaces());
+            int degat = getArmeEquipe().getDegat();
+            System.out.println("Vous avez infligé " + degat + " dégât(s) à " + nom);
+            System.out.println(nom + " est passé de " + pasGentil.getCaracteristiques().getPv() + "pv à " + (pasGentil.getCaracteristiques().getPv() - degat) + "pv");
+            pasGentil.diminuerVie(degat);
+        }
+        else {
+            System.out.println("Vous avez rater " + nom + ", l'attaque ne va pas pouvoir se faire");
         }
     }
 
