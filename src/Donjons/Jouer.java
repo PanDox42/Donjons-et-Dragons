@@ -125,7 +125,7 @@ public class Jouer {
             } else if (entite instanceof Monstre monstre) {
                 jouerTourMonstre(donjon, monstre);
             }
-            System.out.println("Maitre du jeu - Voulez vous faire une action ?");
+            System.out.println("Maitre du jeu - Voulez vous faire une action ? (o/n)");
             if(Scan.demanderChoix()) {
                 jouerMaitreDuJeu(donjon);
             }

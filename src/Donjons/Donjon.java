@@ -93,7 +93,7 @@ public class Donjon {
                     try {
                         System.out.println("Ajout du/des Joueur(s) :\n\nVeuillez indiquer les coordonnées du joueur à placer dans le donjon : \n(exemple : pour placer le joueur à l'endroit A:5 vous devez indiquer A:5)\n");
                         int[] XY = convertirCoordonnnee(Scan.ScanLine());
-                        placerJoueur(XY[0], XY[1], joueur); // Appel de votre fonction existante
+                        placerJoueur(XY[0], XY[1], joueur); // Appel de la fonction existante
                         break;
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
