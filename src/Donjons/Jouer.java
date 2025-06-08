@@ -55,7 +55,7 @@ public class Jouer {
     public static Donjon preparer(Donjon donjon) {
         while (true) {
             try {
-                System.out.println("Maître du Jeu - Souhaitez-vous créer le donjon manuellement ou choisir celui par défault ?");
+                System.out.println("Maître du Jeu - Souhaitez-vous créer le donjon manuellement ou choisir celui par défaut ?");
                 System.out.println("1 - Manuellement");
                 System.out.println("2 - Par Défaut");
 
@@ -72,7 +72,7 @@ public class Jouer {
                 donjon.placerJoueursAvecConfirmation();
                 donjon.equiperObjet();
 
-                System.out.println("Vous avez bien créée le donjon, ses obstacles, ses monstres ainsi que les joueurs !");
+                System.out.println("Vous avez bien créé le donjon, ses obstacles, ses monstres ainsi que les joueurs !");
                 return donjon;
             } catch (NumberFormatException e) {
                 System.out.println("Entrée invalide. Veuillez entrer un nombre (1 ou 2).");
