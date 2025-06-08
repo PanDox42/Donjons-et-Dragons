@@ -16,7 +16,8 @@ public class BoogieWoogie implements Sort {
 
         System.out.println("Choisissez la première entité à échanger :");
         for (int i = 0; i < entites.size(); i++) {
-            System.out.println("[" + i + "] " + entites.get(i).getNom() + " - Position: " + entites.get(i).getCoordonnee());
+            Coordonnee c = entites.get(i).getCoordonnee();
+            System.out.println("[" + i + "] " + entites.get(i).getNom() + " - Position: " + c.getX() + ":" + c.getY());
         }
 
         try {
@@ -27,13 +28,25 @@ public class BoogieWoogie implements Sort {
             int choix2 = Integer.parseInt(Scan.ScanLine());
             Entite e2 = entites.get(choix2);
 
-            Coordonnee tmp = e1.getCoordonnee();
-            donjon.deplacerEntite(e2.getCoordonnee(), e1);
-            donjon.deplacerEntite(tmp, e2);
+            Coordonnee pos1 = e1.getCoordonnee();
+            Coordonnee pos2 = e2.getCoordonnee();
+
+            // Retirer temporairement les deux entités de la carte pour éviter les conflits
+            donjon.retirerEntite(pos1);
+            donjon.retirerEntite(pos2);
+
+            // Échanger les positions
+            e1.setCoordonnee(pos2);
+            e2.setCoordonnee(pos1);
+
+            // Réinsérer aux nouvelles positions
+            donjon.placerEntite(pos2, e1);
+            donjon.placerEntite(pos1, e2);
 
             System.out.println("Boogie Woogie ! " + e1.getNom() + " et " + e2.getNom() + " ont échangé leurs places.");
         } catch (Exception e) {
             System.out.println("Erreur lors du lancement de Boogie Woogie.");
         }
     }
+
 }

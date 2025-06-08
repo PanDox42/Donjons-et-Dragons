@@ -605,4 +605,11 @@ public class Donjon {
         }
     }
 
+    public void retirerEntite(Coordonnee coordonnee) {
+        m_donjon_contenu[coordonnee.getX()][coordonnee.getY()][1] = null;
+    }
+
+    public void placerEntite(Coordonnee coord, Entite e) {
+        m_donjon_contenu[coord.getX()][coord.getY()][1] = e;
+    }
 }

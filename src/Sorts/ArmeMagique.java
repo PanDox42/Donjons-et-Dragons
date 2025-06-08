@@ -27,7 +27,7 @@ public class ArmeMagique implements Sort {
 
             System.out.println("Choisissez une arme à améliorer :");
             for (int i = 0; i < armes.size(); i++) {
-                System.out.println("[" + i + "] " + armes.get(i));
+                System.out.println("[" + i + "] " + armes.get(i).getNom());
             }
 
             int choixArme = Integer.parseInt(Scan.ScanLine());

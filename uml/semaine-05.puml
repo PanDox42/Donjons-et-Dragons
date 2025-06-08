@@ -26,6 +26,7 @@ package DED {
         class Scan {
             - static Scanner scanner
             + static String ScanLine()
+            + static boolean demanderChoix()
         }
     }
 
@@ -44,24 +45,57 @@ package DED {
             + void SetY(int y)
         }
         class Donjon {
-            - Coordonnee coordonnee
-            - Contenu[][] m_donjon_contenu
-            - ArrayList<String> m_alphabet
-            --
-            + Donjon(int x, int y)
-            + void placerObstacle()
-            + void placerObstaclesAvecConfirmation()
-            + void placerJoueur()
-            + void placerJoueursAvecConfirmation()
-            + void placerMonstre()
-            + void placerMonstresAvecConfirmation()
-            + void placerObjet()
-            + void placerObjetsAvecConfirmation()
-            + void afficherCarte()
+            - m_mdj : MaitreJeu
+            - m_coordonnee : Coordonnee
+            - m_donjon_contenu : Contenu[][][]
+            - m_contexte : String
+            - m_joueurNom : ArrayList<String>
+            - m_joueurs : ArrayList<Personnage>
+            - m_dicoMonstre : Map<String, Integer>
+            - m_monstres : ArrayList<Monstre>
+
+            + Donjon(x: int, y: int, mdj: MaitreJeu)
+            + getCoordonnee() : Coordonnee
+            + placerObstacle(x: int, y: int, o: Obstacle) : void
+            + placerObstaclesAvecConfirmation() : void
+            + placerJoueur(x: int, y: int, p: Personnage) : void
+            + placerJoueursAvecConfirmation() : void
+            + placerMonstre(x: int, y: int, m: Monstre) : void
+            + placerMonstresAvecConfirmation() : void
+            + placerObjet(x: int, y: int, o: Objet) : void
+            + placerObjetsAvecConfirmation() : void
+            + afficherCarte() : void
+            + deplacerEntite(c: Coordonnee, e: Entite) : void
+            + tuerEntite(e: Entite) : void
+            + enleverObjet(c: Coordonnee) : void
+            + verifierDeplacerContenuValide(c: Contenu, co: Coordonnee) : boolean
+            + modifierDonjon(c: Contenu, co: Coordonnee) : void
+            + modifierContexte(c: String) : void
+            + raconterTourMdj() : String
+            + getNombreEspeceMonstre(e: String) : int
+            + ajouterEspeceDicoMonstre(e: String) : void
+            + getJoueur() : ArrayList<Personnage>
+            + equiperObjet() : void
+            + quoiAfficher(c: Contenu[]) : String
+            + detecterEntiteCase(c: Contenu[]) : boolean
+            + static convertirCoordonnnee(s: String) : int[]
         }
+
         class Jouer {
-            + static void jouer()
+            + jouer() : void
+            - preparerDonjonManuellement() : Donjon
+            - preparerDonjonDefault() : Donjon
+            + preparer(donjon : Donjon) : Donjon
+            + preparerSuite(donjon : Donjon) : Donjon
+            - tour(donjon : Donjon, nbTour : int) : void
+            - jouerMaitreDuJeu(donjon : Donjon) : void
+            - jouerTourPersonnage(donjon : Donjon, personnage : Personnage, numTour : int) : void
+            - afficherMenuActionsPersonnage(donjon : Donjon, personnage : Personnage, numTour : int) : void
+            - traiterActionPersonnage(donjon : Donjon, personnage : Personnage, choix : int, numTour : int) : boolean
+            - jouerTourMonstre(donjon : Donjon, monstre : Monstre) : void
+            - demanderCommentaire(auteur : String) : void
         }
+
         class Obstacle {
             + Coordonnee m_coordonnee
             + Obstacle()
@@ -291,6 +325,9 @@ package DED {
                 class Rapiere {
                     + Rapiere()
                 }
+                class EpeeDeuxMains {
+                    + EpeeDeuxMains()
+                  }
             }
             abstract class Arme {
                 - int m_porte
@@ -349,10 +386,28 @@ package DED {
         }
     }
 
+    package Sort {
+        class ArmeMagique {
+            + lancer(lanceur : Personnage, donjon : Donjon)
+          }
+        class BoogieWoogie {
+            + lancer(lanceur : Personnage, donjon : Donjon)
+          }
+        class Guerison {
+             + lancer(lanceur : Personnage, donjon : Donjon)
+           }
+        interface Sort {
+        }
+    }
+
     class Main {
         + static void main(String[] args)
     }
 }
+
+ArmeMagique ..|> Sort
+BoogieWoogie ..|> Sort
+Guerison ..|> Sort
 
 Jouer ..> MaitreJeu : utilise
 Jouer ..> Donjon : utilise
@@ -402,6 +457,7 @@ Fronde --|> ArmeDistance
 ArmeGuerre --|> Arme
 EpeeLongue --|> ArmeGuerre
 Rapiere --|> ArmeGuerre
+EpeeDeuxMains --|> ArmeGuerre
 
 Armure --|> Objet
 Nu --|> Armure
