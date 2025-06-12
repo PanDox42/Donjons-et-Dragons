@@ -8,7 +8,7 @@ En plus de pouvoir commenter l'action d'un joueur, le maître du jeu peut interv
 - par le jet de dés de son choix(nombre de dés et nombre de faces au choix), il peut infliger des dégâts à un joueur ou un monstre,
 - ajouter des obstacles dans le donjon
 
-## Sorts
+## sorts
 Certains personnages vont se voir dotés de sorts. L'utilisation d'un sort se fait au tour de jeu du personnage doté de ce sort. L'utilisation d'un sort compte comme une action. Les monstres ne peuvent pas être dotés de sorts.
 - Guérison: le personnage détenteur du sort peut choisir un personnage (y compris lui-même) et lance 1d10 pour connaître le nombre de points de vie que le personnage visé regagnera. Le personnage soigné ne peut pas dépasser le nombre de points de vie qu'il avait à sa création.
 - Boogie Woogie : le personnage détenteur du sort peut choisir deux personnages (y compris lui-même), de deux monstres ou d'un personnage (y compris lui-même) et d'un monstre et échanger leur position dans le donjon.  

@@ -23,9 +23,9 @@ C'est un jeu de rôle de Medieval Fantasy où les joueurs incarnent des personna
 - Dimanche **18 mai** : rendu intermédiaire
 - Lundi 19 mai : début de la phase 2
 - Dimanche **8 Juin** à minuit : rendu final
-- Addon.De Mercredi **11** à Vendredi **13 juin** : soutenances
+- addon.De Mercredi **11** à Vendredi **13 juin** : soutenances
 
-Addon.De plus, il y aura un rendu hebdomadaire avant chaque **dimanche, minuit**.
+addon.De plus, il y aura un rendu hebdomadaire avant chaque **dimanche, minuit**.
 
 
 
